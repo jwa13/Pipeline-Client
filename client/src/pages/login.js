@@ -1,8 +1,8 @@
-import { useState } from "react";
-import handleSignUp from "../middleware/signup";
-import { useRouter } from "next/router";
+import { useState } from 'react';
+import handleLogin from "../middleware/login";
+import { useRouter } from 'next/router';
 
-export default function signup() {
+export default function login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
@@ -11,13 +11,16 @@ export default function signup() {
     const submit = async (e) => {
         e.preventDefault();
         setError(null);
-        await handleSignUp(email, password);
-        router.push("/index")
+        try {
+            await handleLogin(email, password);
+            router.push("/");
+        } catch (error) {
+            setError(error.message);
+        }
     }
-
-    return (
+        return (
         <div>
-            <h2>Sign Up</h2>
+            <h2>Login</h2>
             {error && <p style={{ color: "red" }}>{error}</p>}
             <form onSubmit={submit}>
                 <input
@@ -34,8 +37,8 @@ export default function signup() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 />
-                <button type="submit">Sign Up</button>
+                <button type="submit">Login</button>
             </form>
         </div>
-    )
+    );
 }
