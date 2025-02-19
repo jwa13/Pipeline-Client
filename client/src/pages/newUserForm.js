@@ -147,19 +147,6 @@ export default function newUserForm() {
                                 <Select options={coachSpecialties} isMulti value={specialty} onChange={setSpecialty} placeholder="Specialty" className="col-span-full w-full mb-2 border-[2px] border-solid border-gray-500" classNamePrefix="react-select" styles={{control: (base) => ({...base, borderRadius: "0px"}), option: (base, {isSelected}) => ({...base, color: isSelected ? "#555" : "#000"})}}/>
                             </>
                         )}
-                        {/* {requiresGuardian && (
-                            <>
-                                <h2 className="text-2xl font-bebas-neue text-center text-black col-span-full">Guardian Info</h2>
-                                <label htmlFor="First Name" className="text-black font-bebas-neue text-m">First Name*</label>
-                                <label htmlFor="Last Name" className="text-black font-bebas-neue text-m">Last Name*</label>
-                                <input type="text" placeholder="First" value={guardianFirstName} onChange={(e) => setGaurdianFirstName(e.target.value)} className="mb-2 mr-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
-                                <input type="text" placeholder="Last" value={guardianLastName} onChange={(e) => setGaurdianLastName(e.target.value)} className="mb-2 pl-1 text-black text-black border-[2px] border-solid border-gray-500"></input>
-                                <label htmlFor="Date of Birth" className="text-black font-bebas-neue text-m">Date of Birth*</label>
-                                <label htmlFor="Phone Number" className="text-black font-bebas-neue text-m">Phone*</label>
-                                <input type="date" name="dateOfBirth" value={gaurdianDOB} onChange={(e) =>setGaurdianDOB(e.target.value)} className="mr-2 mb-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
-                                <input type="tel" name="phone" value={gaurdianPhone} onChange={(e) => setGaurdianPhone(e.target.value)} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="000-000-0000" className="mb-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
-                            </>
-                        )} */}
                         <SubmitButton/>
                     </form>
                 </div>
