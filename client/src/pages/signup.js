@@ -12,7 +12,7 @@ export default function signup() {
         e.preventDefault();
         setError(null);
         await handleSignUp(email, password);
-        router.push("/index")
+        router.push("/newUserForm")
     }
     function SubmitButton() {
         if(email && password) {

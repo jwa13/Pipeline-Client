@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import Select from "react-select"
+import handleNewUser from "../middleware/newUser";
 
 export default function newUserForm() {
-    const [accoutType, setAccType] = useState("athlete");
+    const [accountType, setAccType] = useState("athlete");
     const [firstName, setFirstName] = useState("");
     const [lastName, setlastName] = useState("");
     const [DOB, setDOB] = useState("");
@@ -31,7 +32,7 @@ export default function newUserForm() {
         const cutoffDate = new Date("2010-02-01");
 
         setDOB(e.target.value);
-        if(accoutType == "athlete") {
+        if(accountType == "athlete") {
             setRequiresGuardian(selectedDate > cutoffDate);
         }
     }
@@ -39,19 +40,49 @@ export default function newUserForm() {
     const submit = async (e) => {
         e.preventDefault();
         console.log("submitted");
-        router.push("/login")
+
+        const accountInfo = {};
+        accountInfo.type = accountType;
+        accountInfo.firstName = firstName;
+        accountInfo.lastName = lastName;
+        accountInfo.dateOfBirth = DOB;
+
+        if(accountType == 'coach') {
+            accountInfo.phone = phone;
+            accountInfo.specialty = specialty;
+        } else if(accountType == 'athlete') {
+            accountInfo.height = height;
+            accountInfo.weight = weight;
+            accountInfo.positions = positions;
+            accountInfo.throwing = throwing;
+            accountInfo.hitting = hitting;
+
+            if(phone) {
+                accountInfo.phone = phone;
+            }
+
+            if(requiresGuardian) {
+                accountInfo.guardianFirstName = guardianFirstName;
+                accountInfo.guardianLastName = guardianLastName;
+                accountInfo.guardianDOB = gaurdianDOB;
+                accountInfo.guardianPhone = gaurdianPhone;
+            }
+        }
+        console.log(localStorage.getItem("jwt"));
+        await handleNewUser(accountInfo);
+        router.push("/login");
     }
 
     function SubmitButton() {
-        if((accoutType == "athlete") && requiresGuardian) {
+        if((accountType == "athlete") && requiresGuardian) {
             if(firstName && lastName && DOB && height && weight && positions && throwing && hitting && guardianFirstName && guardianLastName && gaurdianDOB && gaurdianPhone) {
                 return <button onClick={submit} className="col-span-full bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button>
             } else {
                 return <button onClick={submit} disabled className="col-span-full bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button> 
             }
-        } else if(accoutType == "athlete" && firstName && lastName && DOB && height && weight && positions && throwing && hitting){
+        } else if(accountType == "athlete" && firstName && lastName && DOB && height && weight && positions && throwing && hitting){
             return <button onClick={submit} className="col-span-full bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button>
-        }else if(accoutType == "coach" && firstName && lastName && DOB && phone && specialty) {
+        }else if(accountType == "coach" && firstName && lastName && DOB && phone && specialty) {
             return <button onClick={submit} className="col-span-full bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button>
         } else {
             return <button onClick={submit} disabled className="col-span-full bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button>
@@ -100,7 +131,7 @@ export default function newUserForm() {
                 <div className="space-y-4 pt-1 pb-6 flex flex-col items-center">
                     <form className="w-full grid grid-cols-2 md:grid-cols-2">
                         <label htmlFor="Account Type" className="text-black font-bebas-neue text-m mr-[10px]">Account Type</label>
-                        <select value={accoutType} onChange={handleAccType} className="col-span-full mb-2 py-1 text-black border-[2px] border-solid border-gray-500">
+                        <select value={accountType} onChange={handleAccType} className="col-span-full mb-2 py-1 text-black border-[2px] border-solid border-gray-500">
                             <option value={"athlete"}>Athlete</option>
                             <option value={"coach"}>Coach</option>
                         </select>
@@ -109,10 +140,10 @@ export default function newUserForm() {
                         <input type="text" placeholder="First" value={firstName} onChange={(e) => setFirstName(e.target.value)} className="mb-2 mr-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
                         <input type="text" placeholder="Last" value={lastName} onChange={(e) => setlastName(e.target.value)} className="mb-2 pl-1 text-black text-black border-[2px] border-solid border-gray-500"></input>
                         <label htmlFor="Date of Birth" className="text-black font-bebas-neue text-m">Date of Birth*</label>
-                        <label htmlFor="Phone Number" className="text-black font-bebas-neue text-m">Phone{accoutType === 'coach' && <span>*</span>}</label>
+                        <label htmlFor="Phone Number" className="text-black font-bebas-neue text-m">Phone{accountType === 'coach' && <span>*</span>}</label>
                         <input type="date" name="dateofbirth" value={DOB} onChange={handleDOB} className="mr-2 mb-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
                         <input type="tel" name="phone" value={phone} onChange={(e) => setPhone(e.target.value)} pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder="000-000-0000" className="mb-2 pl-1 text-black border-[2px] border-solid border-gray-500"></input>
-                        {accoutType === 'athlete' && (
+                        {accountType === 'athlete' && (
                             <>
                                 <label htmlFor="Height" className="text-black font-bebas-neue text-m">Height*</label>
                                 <label htmlFor="Weight" className="text-black font-bebas-neue text-m">Weight*</label>
@@ -141,7 +172,7 @@ export default function newUserForm() {
                                 )}
                             </>
                         )}
-                        {accoutType === 'coach' && (
+                        {accountType === 'coach' && (
                             <>
                                 <label htmlFor="Areas of Expertise" className="text-black font-bebas-neue text-m col-span-2">Specialties (select all that apply)*</label>
                                 <Select options={coachSpecialties} isMulti value={specialty} onChange={setSpecialty} placeholder="Specialty" className="col-span-full w-full mb-2 border-[2px] border-solid border-gray-500" classNamePrefix="react-select" styles={{control: (base) => ({...base, borderRadius: "0px"}), option: (base, {isSelected}) => ({...base, color: isSelected ? "#555" : "#000"})}}/>
