@@ -1,5 +1,3 @@
-
-
 const handleNewUser = async (accInfo) => {
     try {
         const token = localStorage.getItem("jwt");
