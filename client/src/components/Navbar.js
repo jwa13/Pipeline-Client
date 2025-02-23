@@ -25,7 +25,7 @@ const Navbar = () => {
         return (
             <>
                 {accType === "athlete" && (
-                    <Link href="/">Goals</Link>
+                    <Link className="block hover:bg-gray-700 p-2 rounded" href="/">Goals</Link>
                 )}
                 {accType === "coach" && (
                     <>
