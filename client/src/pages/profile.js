@@ -107,7 +107,7 @@ export default function profile() {
                             <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.guardianPhone}</span></h3>
                         </>
                     )}
-                    {profileData && (profileData.hasGoals === false) && (
+                    {profileData && (profileData.accType === 'athlete') && (profileData.hasGoals === false) && (
                         <>
                             <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 px-10 py-3 mx-10 my-10 rounded relative" role="alert">
                                 <div className="grid grid-flow-col-dense items-center">
