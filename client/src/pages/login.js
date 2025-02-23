@@ -7,15 +7,17 @@ export default function login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
     const router = useRouter();
+    const [badCred, setBadCred] = useState(false);
 
     const submit = async (e) => {
         e.preventDefault();
         setError(null);
         try {
             await handleLogin(email, password);
-            router.push("/");
+            router.push("/home");
         } catch (error) {
-            setError(error.message);
+            setBadCred(true);
+            router.push("/login");
         }
     }
 
@@ -38,6 +40,7 @@ export default function login() {
                         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mb-2 ml-2 mr-2 py-1 pl-2 w-full text-black text-l border-[3px] border-solid border-gray-500"></input>
                         <label htmlFor="password" className="text-black font-bebas-neue text-m mr-[210px]">Your Password:</label>
                         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required className="mb-2 ml-2 mr-2 py-1 pl-2 w-full text-black text-l border-[3px] border-solid border-gray-500"></input>
+                        {badCred && (<p className='text-red-500 font-bebas-neue'>Email or Password do not match our records</p>)}
                         <SubmitButton />
                     </form>
                 </div>

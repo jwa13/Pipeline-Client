@@ -20,7 +20,6 @@ const handleLogin = async (email, password) => {
             console.log("jwt:", data.token);
         }
     } catch (error) {
-        console.error("Login failed", error);
         throw error;
     }
 }
