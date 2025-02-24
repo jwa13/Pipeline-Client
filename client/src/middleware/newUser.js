@@ -6,6 +6,7 @@ const handleNewUser = async (accInfo) => {
             headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
             body: JSON.stringify(accInfo)
         });
+        const status = await response.status;
     } catch (error) {
         console.error(error);
     }
