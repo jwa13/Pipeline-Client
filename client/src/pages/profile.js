@@ -111,7 +111,7 @@ export default function profile() {
                         <>
                             <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 px-10 py-3 mx-10 my-10 rounded relative" role="alert">
                                 <div className="grid grid-flow-col-dense items-center">
-                                    <a href="/home"><img src="/trophy.svg" className="mx-auto h-10 pr-10" alt="Trohy represents goals"></img></a>
+                                    <a href="/goals"><img src="/trophy.svg" className="mx-auto h-10 pr-10" alt="Trohy represents goals"></img></a>
                                     <strong className="font text-white text-xl font-bebas-neue tracking-wide"><span className="text-2xl">{profileData && (profileData.firstName)}!</span> You have not set any goals yet, click the trophy or navigate to the goals tab to set new goals!</strong>
                                 </div>
                             </div>

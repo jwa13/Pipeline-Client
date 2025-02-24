@@ -3,12 +3,12 @@ import 'firebase/auth'
 import { EmailAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCYRRJoZX9r31zz5sxTyCQ22olqigBoVAM",
-  authDomain: "pipelinewebapp-b4d24.firebaseapp.com",
-  projectId: "pipelinewebapp-b4d24",
-  storageBucket: "pipelinewebapp-b4d24.firebasestorage.app",
-  messagingSenderId: "73135204707",
-  appId: "1:73135204707:web:b0039d1b8f3898b50ecb56"
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);
