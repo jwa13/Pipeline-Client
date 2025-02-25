@@ -44,7 +44,7 @@ const Navbar = () => {
                 <Link href="/home" className="block hover:bg-gray-700 p-2 rounded">Home</Link>
                 <Link href="/profile" className="block hover:bg-gray-700 p-2 rounded">Profile</Link>
                 <Views/>
-                <Link href="/" className="block hover:bg-gray-700 p-2 rounded">Reports</Link>
+                <Link href="/reports" className="block hover:bg-gray-700 p-2 rounded">Reports</Link>
                 <Link href="/" className="block hover:bg-gray-700 p-2 rounded">Data</Link>
                 <Link href="/" className="block hover:bg-gray-700 p-2 rounded">Calendar</Link>
             </div>
