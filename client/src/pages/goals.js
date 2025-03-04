@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
 import Select from "react-select";
-import { comment } from "postcss";
 
 export default function goals() {
     const router = useRouter();
@@ -108,7 +107,7 @@ export default function goals() {
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
                             <>
-                                
+
                             </>
                         )}
                     </div>
