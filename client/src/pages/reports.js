@@ -253,7 +253,7 @@ export default function reports() {
     return (
         <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex flex-col flex-1 ml-64">
+            <div className="flex flex-col flex-1 md:ml-64">
                 <TopBar pageName={"Reports"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
                     {accInfo && accInfo === 'coach' && (

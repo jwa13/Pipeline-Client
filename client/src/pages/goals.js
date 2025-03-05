@@ -100,7 +100,7 @@ export default function goals() {
     return (
         <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex flex-col flex-1 ml-64">
+            <div className="flex flex-col flex-1 md:ml-64">
                 <TopBar pageName={"Goals"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
                     <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Active Goals</h2>
