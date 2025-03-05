@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
 import Select from "react-select";
+import Goal from "../components/Goal";
 
 export default function goals() {
     const router = useRouter();
@@ -11,11 +12,11 @@ export default function goals() {
     const [completedGoals, setCompletedGoals] = useState(null);
 
     const types = [
-        {value: "throwing", label: "Throwing"},
-        {value: "hitting", label: "Hitting"},
-        {value: "strength", label: "Strength"},
-        {value: "speed", label: "Speed"},
-        {value: "body", label: "Body"},
+        {value: "Throwing", label: "Throwing"},
+        {value: "Hitting", label: "Hitting"},
+        {value: "Strength", label: "Strength"},
+        {value: "Speed", label: "Speed"},
+        {value: "Body", label: "Body"},
     ];
 
     const [goalType, setGoalType] = useState("");
@@ -103,11 +104,11 @@ export default function goals() {
                 <TopBar pageName={"Goals"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
                     <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Active Goals</h2>
-                    <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
+                    <div className="flex flex-col flex-1 ml-6 pt-1 xl:grid xl:grid-cols-3">
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
                             <>
-
+                                <Goal goals={activeGoals}/>
                             </>
                         )}
                     </div>
@@ -145,9 +146,14 @@ export default function goals() {
                             </div>
                         </>
                     )}
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-4 tracking-wider">Completed Goals</h2>
-                    <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-4 tracking-wider">Inactive Goals</h2>
+                    <div className="flex flex-col flex-1 ml-6 pt-1">
                         {completedGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No completed goals</h2>)}
+                        {completedGoals && (
+                            <>
+                                <Goal goals={completedGoals}/>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>
