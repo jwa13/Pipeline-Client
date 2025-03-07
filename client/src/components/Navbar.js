@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { jwtDecode } from "jwt-decode";
-import { React, useEffect, useState } from "react";
+import { React, useEffect, useState, useMemo } from "react";
 import { HomeIcon, UserIcon, ChartBarSquareIcon, FolderIcon, CalendarDaysIcon, TrophyIcon, UserGroupIcon, DocumentTextIcon } from "@heroicons/react/24/solid"
 
 const Navbar = () => {
@@ -21,9 +21,7 @@ const Navbar = () => {
             }
         }, []);
 
-        if(!accType) return null;
-
-        return (
+        return useMemo(() => (
             <>
                 {accType === "athlete" && (
                     <Link className="block hover:bg-gray-700 p-2 rounded" href="/goals">Goals</Link>
@@ -35,7 +33,7 @@ const Navbar = () => {
                     </>
                 )}
             </>
-        );
+        ), [accType]);
     }
 
     function IconViews() {
@@ -53,11 +51,9 @@ const Navbar = () => {
                     }
                 }
             }
-        }, []);
+        }, [accType]);
 
-        if(!accType) return null;
-
-        return (
+        return useMemo(() => (
             <>
                 {accType === 'athlete' && (
                     <Link className="block hover:bg-gray-700 p-2 rounded" href="/goals"><TrophyIcon className="h-6 w-6"/></Link>
@@ -69,7 +65,7 @@ const Navbar = () => {
                     </>
                 )}
             </>
-        )
+        ), [accType]);
     }
 
     return (
