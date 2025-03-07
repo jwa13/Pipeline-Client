@@ -7,6 +7,7 @@ import TopBar from "../components/TopBar";
 import HittingAssesment from "../components/HittingAssesment";
 import PitchingAssesment from "../components/PitchingAssesment";
 import SkillsAssesment from "../components/SkillsAssesment";
+import StrengthAssesment from "../components/StrengthAssesment";
 
 export default function reports() {
     const router = useRouter();
@@ -82,6 +83,7 @@ export default function reports() {
                                             <Select options={reportTypes} value={reportType} onChange={setReportType} placeholder="Report Type: " className="" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
                                             {reportType.value === 'pitching' && ( <PitchingAssesment /> )}
                                             {reportType.value === 'hitting' && ( <HittingAssesment /> )}
+                                            {reportType.value === 'strength' && ( <StrengthAssesment /> )}
                                             {reportType.value === 'skills' && ( <SkillsAssesment /> )}
                                         </form>
                                     </div>
