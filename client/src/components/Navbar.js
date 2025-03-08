@@ -82,7 +82,7 @@ const Navbar = () => {
                 </div>
             </aside>
 
-            <nav className="fixed bottom-0 left-0 w-full bg-gray-700 p-4 flex justify-around md:hidden">
+            <nav className="fixed bottom-0 left-0 w-full bg-gray-700 p-4 z-50 flex justify-around md:hidden">
                 <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><HomeIcon className="h-6 w-6" /></Link>
                 <Link href="/profile" className="block hover:bg-gray-700 p-2 rounded"><UserIcon className="h-6 w-6" /></Link>
                 <IconViews />
