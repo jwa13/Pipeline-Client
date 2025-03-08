@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const HittingAssesment = () => {
+const HittingAssesment = ({ ready }) => {
     const [loadRatings, setLoadRatings] = useState({
         'Weight Transfer': '',
         'Hip Hinge': '',
@@ -19,10 +19,10 @@ const HittingAssesment = () => {
         'Front Leg': '',
     });
 
-    const [evTee, setEvTee] = useState();
-    const [distanceTee, setDistanceTee] = useState();
-    const [evFrontToss, setEvFrontToss] = useState();
-    const [distanceFrontToss, setDistanceFrontToss] = useState();
+    const [evTee, setEvTee] = useState(null);
+    const [distanceTee, setDistanceTee] = useState(null);
+    const [evFrontToss, setEvFrontToss] = useState(null);
+    const [distanceFrontToss, setDistanceFrontToss] = useState(null);
 
     const [swingNotes, setSwingNotes] = useState("");
 
@@ -71,6 +71,13 @@ const HittingAssesment = () => {
         )
     }
 
+    useEffect(() => {
+        const data = {
+            loadRatings, swingRatings, evTee, distanceTee, evFrontToss, distanceFrontToss, swingNotes, loadRatings, swingRatings
+        }
+        ready(data);
+    }, [loadRatings, swingRatings, evTee, distanceTee, evFrontToss, distanceFrontToss, swingNotes, loadRatings, swingRatings]);
+
     return (
         <>
             <div className="col-span-full">
@@ -92,7 +99,7 @@ const HittingAssesment = () => {
             <SwingRating label="Front Leg" id="Front Leg" rating={swingRatings["Front Leg"]} onRatingChange={handleSwingChange} />
             <SwingRating label="Back Leg" id="Back Leg" rating={swingRatings["Back Leg"]} onRatingChange={handleSwingChange} />
             <label htmlFor="Notes" className="text-black col-span-2 pl-2">Notes</label>
-            <input type="text" placeholder="Additional Notes" id="Notes" value={swingNotes} onChange={setSwingNotes} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+            <input type="text" autoComplete="off" placeholder="Additional Notes" id="Notes" value={swingNotes} onChange={(e) => setSwingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
             <div className="col-span-full">
                 <h3 className="text-black underline text-lg font-semibold">Metrics</h3>
             </div>

@@ -13,6 +13,7 @@ export default function reports() {
     const router = useRouter();
     const [reportVisible, setReportVisible] = useState(false);
     const [accInfo, setAccInfo] = useState(null);
+    const [uid, setUid] = useState(null);
     const [recentReport, setRecentReport] = useState(null);
 
     const [athletes, setAthletes] = useState([]);
@@ -23,14 +24,26 @@ export default function reports() {
         {value: "skills", label: "Skills"},
     ]
 
-    const [athlete, setAthlete] = useState('');
+    const [athlete, setAthlete] = useState(null);
     const [reportType, setReportType] = useState([]);
+
+    const [reportData, setReportData] = useState(null);
+
+    const handleReportData = (data) => {
+        setReportData(data);
+        setReportData((prevData) => ({
+            ...prevData,
+            athleteUid: athlete.value,
+            reportType: reportType.value,
+        }));
+    }
 
     useEffect(() => {
         if (typeof window != 'undefined') {
             const token = localStorage.getItem('jwt');
             const decodedToken = jwtDecode(token);
             setAccInfo(decodedToken.accType);
+            setUid(decodedToken.uid);
         }
         const GetAthletes = async () => {
             try {
@@ -59,6 +72,31 @@ export default function reports() {
         setReportVisible(true);
     }
 
+    function SubmitButton() {
+        if(athlete && reportType.value) {
+            return <button onClick={handleSubmit} className="col-span-full mt-2 justify-self-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Create Report</button>
+        } else {
+            return <button onClick={handleSubmit} disabled className="col-span-full mt-2 justify-self-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Create Report</button>
+        }
+    }
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(reportData);
+        try{
+            const token = localStorage.getItem("jwt");
+            const response = await fetch("http://localhost:3001/api/newReport", {
+                method: "POST",
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+                body: JSON.stringify(reportData)
+            });
+            const status = await response.status;
+            router.reload("/reports");
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     return (
         <div className="flex min-h-screen">
             <Navbar />
@@ -80,11 +118,12 @@ export default function reports() {
                                             <label htmlFor="Athlete Name" className="text-black text-center">Athlete</label>
                                             <label htmlFor="Report Type" className="text-black text-center">Report Type</label>
                                             <Select options={athletes} value={athlete} onChange={setAthlete} placeholder="Report For: " className="mr-2" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
-                                            <Select options={reportTypes} value={reportType} onChange={setReportType} placeholder="Report Type: " className="" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
-                                            {reportType.value === 'pitching' && ( <PitchingAssesment /> )}
-                                            {reportType.value === 'hitting' && ( <HittingAssesment /> )}
-                                            {reportType.value === 'strength' && ( <StrengthAssesment /> )}
-                                            {reportType.value === 'skills' && ( <SkillsAssesment /> )}
+                                            <Select options={reportTypes} value={reportType} onChange={setReportType} placeholder="Report Type: " isDisabled={!athlete} className="" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
+                                            {reportType.value === 'pitching' && ( <PitchingAssesment ready={handleReportData}/> )}
+                                            {reportType.value === 'hitting' && ( <HittingAssesment ready={handleReportData} /> )}
+                                            {reportType.value === 'strength' && ( <StrengthAssesment ready={handleReportData}/> )}
+                                            {reportType.value === 'skills' && ( <SkillsAssesment ready={handleReportData}/> )}
+                                            <SubmitButton />
                                         </form>
                                     </div>
                                 </>

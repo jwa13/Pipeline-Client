@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const StrengthAssesment = () => {
+const StrengthAssesment = ({ ready }) => {
     const [lowerBodyRatings, setLowerBodyRatings] = useState({
         'Overhead Squat': '',
         Lunge: '',
@@ -72,6 +72,13 @@ const StrengthAssesment = () => {
             </div>
         );
     }
+
+    useEffect(() => {
+        const data = {
+            lowerBodyRatings, upperBodyRatings, fullBodyROM, posturalAssesment
+        }
+        ready(data);
+    }, [lowerBodyRatings, upperBodyRatings, fullBodyROM, posturalAssesment]);
 
     return (
         <>

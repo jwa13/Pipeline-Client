@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-const PitchingAssesment = () => {
+const PitchingAssesment = ({ ready }) => {
     const [movementScreenChecked, setMovementScreenChecked] = useState(false);
     const [mechEvalChecked, setMechEvalChecked] = useState(false);
     const [pitchMetricsChecked, setPitchMetricsChecked] = useState(false);
@@ -141,6 +141,42 @@ const PitchingAssesment = () => {
         );
     }
 
+    useEffect(() => {
+        let data = {};
+        if(movementScreenChecked) {
+            data = {...data, ratings}
+        }
+        if(mechEvalChecked) {
+            data = {...data, mechRatings, mechComments}
+        }
+        if(pitchMetricsChecked) {
+            data = {...data, pitchMetricsChecked}
+            if(fsfb) {
+                data = {...data, fsfbAvgVelo, fsfbMaxVelo, fsfbAvgRPM, fsfbMaxRPM, fsfbAvgSpin, fsfbSpinAxis, fsfbAvgReleaseHeight, fsfbAvgReleaseSide, fsfbAvgHBreak, fsfbAvgVBreak}
+            }
+            if(tsfb) {
+                data = {...data, tsfbAvgVelo, tsfbMaxVelo, tsfbAvgRPM, tsfbMaxRPM, tsfbAvgSpin, tsfbSpinAxis, tsfbAvgReleaseHeight, tsfbAvgReleaseSide, tsfbAvgHBreak, tsfbAvgVBreak}
+            }
+            if(ctfb) {
+                data = {...data, ctfbAvgVelo, ctfbMaxVelo, ctfbAvgRPM, ctfbMaxRPM, ctfbAvgSpin, ctfbSpinAxis, ctfbAvgReleaseHeight, ctfbAvgReleaseSide, ctfbAvgHBreak, ctfbAvgVBreak}
+            }
+            if(sl) {
+                data = {...data, slAvgVelo, slMaxVelo, slAvgRPM, slMaxRPM, slAvgSpin, slSpinAxis, slAvgReleaseHeight, slAvgReleaseSide, slAvgHBreak, slAvgVBreak}
+            }
+            if(cb) {
+                data = {...data, cbAvgVelo, cbMaxVelo, cbAvgRPM, cbMaxRPM, cbAvgSpin, cbSpinAxis, cbAvgReleaseHeight, cbAvgReleaseSide, cbAvgHBreak, cbAvgVBreak}
+            }
+            if(ch) {
+                data = {...data, chAvgVelo, chMaxVelo, chAvgRPM, chMaxRPM, chAvgSpin, chSpinAxis, chAvgReleaseHeight, chAvgReleaseSide, chAvgHBreak, chAvgVBreak}
+            }
+        }
+        ready(data);
+    }, [ratings, mechRatings, mechComments, fsfbAvgVelo, fsfbMaxVelo, fsfbAvgRPM, fsfbMaxRPM, fsfbAvgSpin, fsfbSpinAxis, fsfbAvgReleaseHeight, fsfbAvgReleaseSide, fsfbAvgHBreak, fsfbAvgVBreak, 
+        tsfbAvgVelo, tsfbMaxVelo, tsfbAvgRPM, tsfbMaxRPM, tsfbAvgSpin, tsfbSpinAxis, tsfbAvgReleaseHeight, tsfbAvgReleaseSide, tsfbAvgHBreak, tsfbAvgVBreak, ctfbAvgVelo, ctfbMaxVelo, 
+        ctfbAvgRPM, ctfbMaxRPM, ctfbAvgSpin, ctfbSpinAxis, ctfbAvgReleaseHeight, ctfbAvgReleaseSide, ctfbAvgHBreak, ctfbAvgVBreak, slAvgVelo, slMaxVelo, slAvgRPM, slMaxRPM, 
+        slAvgSpin, slSpinAxis, slAvgReleaseHeight, slAvgReleaseSide, slAvgHBreak, slAvgVBreak, cbAvgVelo, cbMaxVelo, cbAvgRPM, cbMaxRPM, cbAvgSpin, cbSpinAxis, cbAvgReleaseHeight, 
+        cbAvgReleaseSide, cbAvgHBreak, cbAvgVBreak, chAvgVelo, chMaxVelo, chAvgRPM, chMaxRPM, chAvgSpin, chSpinAxis, chAvgReleaseHeight, chAvgReleaseSide, chAvgHBreak, chAvgVBreak]);
+
     return (
         <>
             <div className="col-span-full">
@@ -185,7 +221,7 @@ const PitchingAssesment = () => {
                     <AssesmentRating label="Proper Arm Path" id="Arm Path" rating={mechRatings["Arm Path"]} onRatingChange={handleMechRatingChange} />
                     <AssesmentRating label="ER Rotation" id="ER Rotation" rating={mechRatings["ER Rotation"]} onRatingChange={handleMechRatingChange} />
                     <label htmlFor="Notes" className="text-black col-span-2 pl-2">Notes</label>
-                    <input type="text" placeholder="Additional Notes" id="Notes" value={mechComments} onChange={setMechComments} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+                    <input type="text" placeholder="Additional Notes" id="Notes" autoComplete="off" value={mechComments} onChange={(e) => setMechComments(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
                 </>
             )}
 

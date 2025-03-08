@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const SkillsAssesment = () => {
+const SkillsAssesment = ({ ready }) => {
     const [pitchingChecked, setPitchingChecked] = useState(false);
     const [catchingChecked, setCatchingChecked] = useState(false);
 
@@ -141,6 +141,38 @@ const SkillsAssesment = () => {
         )
     }
 
+    useEffect(() => {
+        let data = {infieldRatings, infieldNotes, outfieldRatings, outfieldNotes, throwingRatings, throwingNotes, hittingRatings, hittingNotes};
+        if(pitchingChecked) {
+            data = {...data, pitchingRatings, pitchingNotes}
+            if(fsfb) {
+                data = {...data, fsfbAvg, fsfbMax, fsfbCommand, fsfbMovement}
+            }
+            if(tsfb) {
+                data = {...data, tsfbAvg, tsfbMax, tsfbCommand, tsfbMovement}
+            }
+            if(ctfb) {
+                data = {...data, ctfbAvg, ctfbMax, ctfbCommand, ctfbMovement}
+            }
+            if(sl) {
+                data = {...data, slAvg, slMax, slCommand, slMovement}
+            }
+            if(cb) {
+                data = {...data, cbAvg, cbMax, cbCommand, cbMovement}
+            }
+            if(ch) {
+                data = {...data, chAvg, chMax, chCommand, chMovement}
+            }
+        }
+        if(catchingChecked) {
+            data = {...data, catchingRatings, catchingNotes}
+        }
+        ready(data);
+    }, [infieldRatings, infieldNotes, outfieldRatings, outfieldRatings, throwingRatings, throwingNotes, hittingRatings, hittingNotes,
+        pitchingRatings, pitchingNotes, fsfbAvg, fsfbMax, fsfbCommand, fsfbMovement, tsfbAvg, tsfbMax, tsfbCommand, tsfbMovement,
+        ctfbAvg, ctfbMax, ctfbCommand, ctfbMovement, slAvg, slMax, slCommand, slMovement, cbAvg, cbMax, cbCommand, cbMovement, 
+        chAvg, chMax, chCommand, chMovement, catchingRatings, catchingNotes]);
+
     return (
         <>
             <div className="col-span-full">
@@ -205,8 +237,8 @@ const SkillsAssesment = () => {
             <input type="text" placeholder="Additional Notes" id="hittingNotes" value={hittingNotes} onChange={(e) => setHittingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
 
             <div className="col-span-full">
-                <label htmlFor="movementScreenCheckbox" className="text-black text-center pr-1 text-lg font-semibold underline">Pitching</label>
-                <input type="checkbox" id="movementScreenCheckbox" checked={pitchingChecked} onChange={(e) => setPitchingChecked(e.target.checked)}></input>
+                <label htmlFor="pitchingCheckbox" className="text-black text-center pr-1 text-lg font-semibold underline">Pitching</label>
+                <input type="checkbox" id="pitchingCheckbox" checked={pitchingChecked} onChange={(e) => setPitchingChecked(e.target.checked)}></input>
             </div>
             {pitchingChecked && (
                 <>
@@ -379,8 +411,8 @@ const SkillsAssesment = () => {
             )}
 
             <div className="col-span-full">
-                <label htmlFor="movementScreenCheckbox" className="text-black text-center pr-1 text-lg font-semibold underline">Catching</label>
-                <input type="checkbox" id="movementScreenCheckbox" checked={catchingChecked} onChange={(e) => setCatchingChecked(e.target.checked)}></input>
+                <label htmlFor="catchingCheckbox" className="text-black text-center pr-1 text-lg font-semibold underline">Catching</label>
+                <input type="checkbox" id="catchingCheckbox" checked={catchingChecked} onChange={(e) => setCatchingChecked(e.target.checked)}></input>
             </div>
             {catchingChecked && (
                 <>
