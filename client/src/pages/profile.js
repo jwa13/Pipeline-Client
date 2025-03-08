@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
+import HealthAlert from "../components/HealthAlert";
 
 export default function profile() {
     const router = useRouter();
@@ -115,6 +116,11 @@ export default function profile() {
                                     <strong className="font text-white text-xl font-bebas-neue tracking-wide"><span className="text-2xl">{profileData && (profileData.firstName)}!</span> You have not set any goals yet, click the trophy or navigate to the goals tab to set new goals!</strong>
                                 </div>
                             </div>
+                        </>
+                    )}
+                    {profileData && (profileData.accType === 'athlete') && (profileData.hasHealth === false) && (
+                        <>
+                            <HealthAlert />
                         </>
                     )}
                 </div>
