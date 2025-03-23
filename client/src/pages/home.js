@@ -3,7 +3,9 @@ import { useRouter } from "next/router";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
 import { jwtDecode } from "jwt-decode";
+import HealthAlert from "../components/HealthAlert";
 import Goal from "../components/Goal";
+import HittingReport from "../components/HittingReport";
 
 export default function home() {
     const router = useRouter();
@@ -44,7 +46,6 @@ export default function home() {
             }
         }
         getHomePageInfo();
-        console.log(profileData);
     }, []);
 
     return (
@@ -61,6 +62,17 @@ export default function home() {
                             </div>
 
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Most Recent Report</h2>
+                            {profileData && (console.log(profileData.data.recentReport))}
+                            <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
+                                {profileData && (
+                                    <>
+                                        {profileData.data.recentReport.report.reportType === 'hitting' && (
+                                            <HittingReport report={profileData.data.recentReport} accType={accType} />
+                                        )}
+                                    </>
+                                )}
+                            </div>
+                            {profileData && !profileData.data.health && (<HealthAlert />)}
                         </>
                     )}
                 </div>
