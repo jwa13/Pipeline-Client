@@ -111,6 +111,22 @@ export default function profile() {
                             <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.guardianPhone}</span></h3>
                         </>
                     )}
+                    {profileData && profileData.hasHealth &&  (
+                        <>
+                            {console.log(profileData.healthInfo)}
+                            <h3 className="text-gray-500 font-bebas-neue text-2xl pl-6 pt-4 underline">Health Information</h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Emergency Contact Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.name}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Emergency Contact Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.phone}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Emergency Contact Relationship - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.relation}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Current Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.currentConditions}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Past Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.pastConditions}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Surgery - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.surgery}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Injury - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.injury}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Heart - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.heart}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Past Restriction - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.restriction}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl pl-6 pt-2">Shortness of Breath - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.breath}</span></h3>
+                        </>
+                    )}
                     {profileData && (profileData.accType === 'athlete') && (profileData.hasGoals === false) && (
                         <>
                             <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 px-10 py-3 mx-10 my-10 rounded relative" role="alert">
