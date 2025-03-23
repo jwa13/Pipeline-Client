@@ -8,6 +8,7 @@ import HittingAssesment from "../components/HittingAssesment";
 import PitchingAssesment from "../components/PitchingAssesment";
 import SkillsAssesment from "../components/SkillsAssesment";
 import StrengthAssesment from "../components/StrengthAssesment";
+import HittingReport from "../components/HittingReport";
 
 export default function reports() {
     const router = useRouter();
@@ -58,8 +59,24 @@ export default function reports() {
                 console.error(error);
             }
         }
-        GetAthletes(); 
-    }, []);
+        const GetRecentReport = async () => {
+            try {
+                const token = localStorage.getItem('jwt');
+                const response = await fetch("http://localhost:3001/api/recentReport", {
+                    method: "GET",
+                    headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+                });
+                const data = await response.json();
+                setRecentReport(data.recentReport);
+            } catch (error) {
+                console.error(error);
+            }
+        }
+        if(accInfo === 'coach') {
+            GetAthletes();
+            GetRecentReport();
+        }
+    }, [accInfo]);
 
     const handleLogout = () => {
         if(typeof window != 'undefined') {
@@ -108,6 +125,10 @@ export default function reports() {
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Most Recent Report</h2>
                             <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
+                                {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
+                                {recentReport && recentReport.report.reportType === 'pitching' && (<></>)}
+                                {recentReport && recentReport.report.reportType === 'skills' && (<></>)}
+                                {recentReport && recentReport.report.reportType === 'strength' && (<></>)}
                             </div>
                             {!reportVisible && (<button onClick={handleCreateButton} className="text-gray-500 pl-8 pt-1 hover:underline">Create Report</button>)}
                             {reportVisible && (
@@ -128,6 +149,11 @@ export default function reports() {
                                     </div>
                                 </>
                             )}
+                        </>
+                    )}
+                    {accInfo && accInfo === 'athlete' && (
+                        <>
+
                         </>
                     )}
                 </div>
