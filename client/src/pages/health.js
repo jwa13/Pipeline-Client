@@ -29,18 +29,18 @@ export default function health() {
         healthInfo.restricted = restricted;
         healthInfo.breath = breath;
 
-        if(surgery === 'yes') {
+        if(surgery === 'Yes') {
             healthInfo.surgeryDetails = surgeryDetails;
         }
         if(pastConditions) {
             healthInfo.pastConditions = pastConditions;
         } else {
-            healthInfo.pastConditions = 'none';
+            healthInfo.pastConditions = 'None';
         }
         if(currentConditions) {
             healthInfo.currentConditions = currentConditions; 
         } else {
-            healthInfo.currentConditions = 'none';
+            healthInfo.currentConditions = 'None';
         }
 
         try {
@@ -83,7 +83,7 @@ export default function health() {
 
     function SubmitButton() {
         if(emContactName && emContactPhone && emContactRelation && surgery && injury && heart && restricted && breath) {
-            if((surgery === 'yes' && surgeryDetails) || surgery === 'no') {
+            if((surgery === 'Yes' && surgeryDetails) || surgery === 'No') {
                 return <button onClick={submit} className="py-1 px-2 bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white hover:bg-gray-400 transition border-[3px] border-solid border-white">Submit</button>
             } else {
                 return <button onClick={submit} disabled className="py-1 px-2 bg-gray-500 text-black font-bebas-neue text-2xl rounded-none font-bold text-white border-[3px] border-solid border-white">Submit</button>
@@ -123,15 +123,15 @@ export default function health() {
                         <label className="block text-sm font-medium text-gray-700">Have you ever had surgery? If yes, please list all surgical procedures and dates:</label>
                         <div className="flex items-center space-x-4">
                             <label className="flex items-center">
-                                <input type="radio" name="details" value="yes" className="form-radio" checked={surgery === 'yes'} onChange={handleSurgery} />
+                                <input type="radio" name="details" value="Yes" className="form-radio" checked={surgery === 'Yes'} onChange={handleSurgery} />
                                 <span className="ml-2">Yes</span>
                             </label>
                             <label className="flex items-center">
-                                <input type="radio" name="details" value="no" className="form-radio" checked={surgery === 'no'} onChange={handleSurgery} />
+                                <input type="radio" name="details" value="No" className="form-radio" checked={surgery === 'No'} onChange={handleSurgery} />
                                 <span className="ml-2">No</span>
                             </label>
                         </div>
-                        {surgery === 'yes' && (
+                        {surgery === 'Yes' && (
                             <textarea value={surgeryDetails} onChange={(e) => setSurgeryDetails(e.target.value)} id="detailsTextarea" className="mt-1 block pl-1 w-full border-gray-300 text-black rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"></textarea>
                         )}
                     </div>
@@ -139,11 +139,11 @@ export default function health() {
                         <label className="block text-sm font-medium text-gray-700">Did you ever injure a bone, muscle, ligament, joint, or tendon that caused you to miss a practice or game?</label>
                         <div className="flex items-center space-x-4">
                             <label className="flex items-center">
-                                <input type="radio" name="option1" value="yes" className="form-radio" checked={injury === 'yes'} onChange={handleInjury} />
+                                <input type="radio" name="option1" value="Yes" className="form-radio" checked={injury === 'Yes'} onChange={handleInjury} />
                                 <span className="ml-2">Yes</span>
                             </label>
                             <label className="flex items-center">
-                                <input type="radio" name="option1" value="no" className="form-radio" checked={injury === 'no'} onChange={handleInjury} />
+                                <input type="radio" name="option1" value="No" className="form-radio" checked={injury === 'No'} onChange={handleInjury} />
                                 <span className="ml-2">No</span>
                             </label>
                         </div>
@@ -152,11 +152,11 @@ export default function health() {
                         <label className="block text-sm font-medium text-gray-700">Has a doctor ever requested a test for your heart? For example, electrocardiography (ECG) or echocardiography (ECHO)</label>
                         <div className="flex items-center space-x-4">
                             <label className="flex items-center">
-                                <input type="radio" name="option2" value="yes" className="form-radio" checked={heart === 'yes'} onChange={handleHeart} />
+                                <input type="radio" name="option2" value="Yes" className="form-radio" checked={heart === 'Yes'} onChange={handleHeart} />
                                 <span className="ml-2">Yes</span>
                             </label>
                             <label className="flex items-center">
-                                <input type="radio" name="option2" value="no" className="form-radio" checked={heart === 'no'} onChange={handleHeart} />
+                                <input type="radio" name="option2" value="No" className="form-radio" checked={heart === 'No'} onChange={handleHeart} />
                                 <span className="ml-2">No</span>
                             </label>
                         </div>
@@ -165,11 +165,11 @@ export default function health() {
                         <label className="block text-sm font-medium text-gray-700">Has a provider ever denied or restricted your participation in sports for any reason? </label>
                         <div className="flex items-center space-x-4">
                             <label className="flex items-center">
-                                <input type="radio" name="option3" value="yes" className="form-radio" checked={restricted === 'yes'} onChange={handleRestricted} />
+                                <input type="radio" name="option3" value="Yes" className="form-radio" checked={restricted === 'Yes'} onChange={handleRestricted} />
                                 <span className="ml-2">Yes</span>
                             </label>
                             <label className="flex items-center">
-                                <input type="radio" name="option3" value="no" className="form-radio" checked={restricted === 'no'} onChange={handleRestricted} />
+                                <input type="radio" name="option3" value="No" className="form-radio" checked={restricted === 'No'} onChange={handleRestricted} />
                                 <span className="ml-2">No</span>
                             </label>
                         </div>
@@ -178,11 +178,11 @@ export default function health() {
                         <label className="block text-sm font-medium text-gray-700">Do you get light-headed or feel shorter of breath than your friends during exercise?</label>
                         <div className="flex items-center space-x-4">
                             <label className="flex items-center">
-                                <input type="radio" name="option4" value="yes" className="form-radio" checked={breath === 'yes'} onChange={handleBreath} />
+                                <input type="radio" name="option4" value="Yes" className="form-radio" checked={breath === 'Yes'} onChange={handleBreath} />
                                 <span className="ml-2">Yes</span>
                             </label>
                             <label className="flex items-center">
-                                <input type="radio" name="option4" value="no" className="form-radio" checked={breath === 'no'} onChange={handleBreath} />
+                                <input type="radio" name="option4" value="No" className="form-radio" checked={breath === 'No'} onChange={handleBreath} />
                                 <span className="ml-2">No</span>
                             </label>
                         </div>
