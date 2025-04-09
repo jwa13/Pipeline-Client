@@ -1,4 +1,63 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, memo, useRef, useCallback } from "react";
+
+function PitchMix({ label, id, value, onChange }) {
+    const handleChange = (e) => {
+        onChange(id, e.target.checked);
+    }
+    return (
+        <div>
+            <label className="text-black mr-1">{label}</label>
+            <input type="checkbox" name={id} value={true} checked={value == true} onChange={handleChange}></input>
+        </div>
+    )
+}
+
+function AssesmentRating({ label, id, rating, onRatingChange }) {
+    const handleRadioChange = (e) => {
+        onRatingChange(id, e.target.value)
+    }
+    return (
+        <div className="pl-2 shadow-md">
+            <label htmlFor={id} className="text-black">{label}</label>
+            <div className="flex space-x-4">
+                <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange} />Good</label>
+                <label className="text-yellow-500"><input type="radio" className="mr-1" name={id} value="average" checked={rating === 'average'} onChange={handleRadioChange} />Average</label>
+                <label className="text-red-500"><input type="radio" className="mr-1" name={id} value="needs improvement" checked={rating === 'needs improvement'} onChange={handleRadioChange} />Needs Improvement</label>
+            </div>
+        </div>
+    );
+}
+
+const MetricInput = React.memo(({ pitchTypeAbrev, metricsConfig, value, onChange }) => {
+    const { key, label, placeholder, width } = metricsConfig;
+    const inputId = `${pitchTypeAbrev}-${key}`
+
+    const handleChange = (e) => {
+        onChange(key, e.target.value)
+    };
+
+    return (
+        <div>
+            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${pitchTypeAbrev} ${label}`}</label>
+            <input type="text" id={inputId} name={inputId} placeholder={placeholder} value={value} onChange={handleChange} className={`text-black pl-1 ${width} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded`} />
+        </div>
+    )
+});
+
+const PitchDataInputGroup = React.memo(({ pitchType, pitchTypeAbrev, pitchData, metricsConfig, onMetricChange }) => {
+    const handleInputChange = useCallback((metricKey, value) => {
+        onMetricChange(pitchType, metricKey, value);
+    }, [onMetricChange, pitchType]);
+
+    return (
+        <div className="col-span-2 grid grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
+            <h3 className="col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
+            {metricsConfig.map((metricsConf) => (
+                <MetricInput key={metricsConf.key} pitchTypeAbrev={pitchTypeAbrev} metricsConfig={metricsConf} value={pitchData[metricsConf.key]} onChange={handleInputChange} />
+            ))}
+        </div>
+    )
+});
 
 const PitchingAssesment = ({ ready }) => {
     const [movementScreenChecked, setMovementScreenChecked] = useState(false);
@@ -39,77 +98,109 @@ const PitchingAssesment = ({ ready }) => {
 
     const [mechComments, setMechComments] = useState("");
 
-    const [fsfb, setfsfb] = useState(false);
-    const [fsfbAvgVelo, setfsfbAvgVelo] = useState();
-    const [fsfbMaxVelo, setfsfbMaxVelo] = useState();
-    const [fsfbAvgRPM, setfsfbAvgRPM] = useState();
-    const [fsfbMaxRPM, setfsfbMaxRPM] = useState();
-    const [fsfbAvgSpin, setfsfbAvgSpin] = useState();
-    const [fsfbSpinAxis, setfsfbSpinAxis] = useState();
-    const [fsfbAvgReleaseHeight, setfsfbAvgReleaseHeight] = useState();
-    const [fsfbAvgReleaseSide, setfsfbAvgReleaseSide] = useState();
-    const [fsfbAvgHBreak, setfsfbAvgHBreak] = useState();
-    const [fsfbAvgVBreak, setfsfbAvgVBreak] = useState();
+    const [arsenal, setArsenal] = useState({
+        FourSeamFastball: false,
+        TwoSeamFastball: false,
+        Cutter: false,
+        Slider: false,
+        Curveball: false,
+        ChangeUp: false,
+    });
 
-    const [tsfb, settsfb] = useState(false);
-    const [tsfbAvgVelo, settsfbAvgVelo] = useState();
-    const [tsfbMaxVelo, settsfbMaxVelo] = useState();
-    const [tsfbAvgRPM, settsfbAvgRPM] = useState();
-    const [tsfbMaxRPM, settsfbMaxRPM] = useState();
-    const [tsfbAvgSpin, settsfbAvgSpin] = useState();
-    const [tsfbSpinAxis, settsfbSpinAxis] = useState();
-    const [tsfbAvgReleaseHeight, settsfbAvgReleaseHeight] = useState();
-    const [tsfbAvgReleaseSide, settsfbAvgReleaseSide] = useState();
-    const [tsfbAvgHBreak, settsfbAvgHBreak] = useState();
-    const [tsfbAvgVBreak, settsfbAvgVBreak] = useState();
+    const initialPitchMetrics = {
+        FourSeamFastball: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }, TwoSeamFastball: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }, Cutter: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }, Slider: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }, Curveball: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }, ChangeUp: {
+            AverageVelo: '',
+            MaxVelo: '',
+            AverageRPM: '',
+            MaxRPM: '',
+            SpinEfficencyAvg: '',
+            SpinAxis: '',
+            HorizontalBreak: '',
+            VerticalBreak: '',
+            AverageReleaseHeight: '',
+            AverageReleaseSide: ''
+        }
+    };
 
-    const [ctfb, setctfb] = useState(false);
-    const [ctfbAvgVelo, setctfbAvgVelo] = useState();
-    const [ctfbMaxVelo, setctfbMaxVelo] = useState();
-    const [ctfbAvgRPM, setctfbAvgRPM] = useState();
-    const [ctfbMaxRPM, setctfbMaxRPM] = useState();
-    const [ctfbAvgSpin, setctfbAvgSpin] = useState();
-    const [ctfbSpinAxis, setctfbSpinAxis] = useState();
-    const [ctfbAvgReleaseHeight, setctfbAvgReleaseHeight] = useState();
-    const [ctfbAvgReleaseSide, setctfbAvgReleaseSide] = useState();
-    const [ctfbAvgHBreak, setctfbAvgHBreak] = useState();
-    const [ctfbAvgVBreak, setctfbAvgVBreak] = useState();
+    const metricsConfig = [
+        { key: 'AverageVelo', label: 'Average Velo', placeholder: '75', width: 'w-[75px]' },
+        { key: 'MaxVelo', label: 'Max Velo', placeholder: '80', width: 'w-[75px]' },
+        { key: 'AverageRPM', label: 'Average RPM', placeholder: '2750', width: 'w-[75px]' },
+        { key: 'MaxRPM', label: 'Max RPM', placeholder: '3000', width: 'w-[75px]' },
+        { key: 'SpinEfficencyAvg', label: 'Spin Efficiency Average', placeholder: '97', width: 'w-[50px]' },
+        { key: 'SpinAxis', label: 'Spin Axis', placeholder: '12:00', width: 'w-[75px]' },
+        { key: 'HorizontalBreak', label: 'Horizontal Break', placeholder: '5', width: 'w-[75px]' },
+        { key: 'VerticalBreak', label: 'Vertical Break', placeholder: '5', width: 'w-[75px]' },
+        { key: 'AverageReleaseHeight', label: 'Average Release Height', placeholder: '4.5', width: 'w-[50px]' },
+        { key: 'AverageReleaseSide', label: 'Average Release Side', placeholder: '4', width: 'w-[50px]' }
+    ]
 
-    const [cb, setcb] = useState(false);
-    const [cbAvgVelo, setcbAvgVelo] = useState();
-    const [cbMaxVelo, setcbMaxVelo] = useState();
-    const [cbAvgRPM, setcbAvgRPM] = useState();
-    const [cbMaxRPM, setcbMaxRPM] = useState();
-    const [cbAvgSpin, setcbAvgSpin] = useState();
-    const [cbSpinAxis, setcbSpinAxis] = useState();
-    const [cbAvgReleaseHeight, setcbAvgReleaseHeight] = useState();
-    const [cbAvgReleaseSide, setcbAvgReleaseSide] = useState();
-    const [cbAvgHBreak, setcbAvgHBreak] = useState();
-    const [cbAvgVBreak, setcbAvgVBreak] = useState();
+    const [pitchMetrics, setPitchMetrics] = useState(initialPitchMetrics);
 
-    const [sl, setsl] = useState(false);
-    const [slAvgVelo, setslAvgVelo] = useState();
-    const [slMaxVelo, setslMaxVelo] = useState();
-    const [slAvgRPM, setslAvgRPM] = useState();
-    const [slMaxRPM, setslMaxRPM] = useState();
-    const [slAvgSpin, setslAvgSpin] = useState();
-    const [slSpinAxis, setslSpinAxis] = useState();
-    const [slAvgReleaseHeight, setslAvgReleaseHeight] = useState();
-    const [slAvgReleaseSide, setslAvgReleaseSide] = useState();
-    const [slAvgHBreak, setslAvgHBreak] = useState();
-    const [slAvgVBreak, setslAvgVBreak] = useState();
-
-    const [ch, setch] = useState(false);
-    const [chAvgVelo, setchAvgVelo] = useState();
-    const [chMaxVelo, setchMaxVelo] = useState();
-    const [chAvgRPM, setchAvgRPM] = useState();
-    const [chMaxRPM, setchMaxRPM] = useState();
-    const [chAvgSpin, setchAvgSpin] = useState();
-    const [chSpinAxis, setchSpinAxis] = useState();
-    const [chAvgReleaseHeight, setchAvgReleaseHeight] = useState();
-    const [chAvgReleaseSide, setchAvgReleaseSide] = useState();
-    const [chAvgHBreak, setchAvgHBreak] = useState();
-    const [chAvgVBreak, setchAvgVBreak] = useState();
+    const handleMetricChange = useCallback((pitchType, metricKey, value) => {
+        setPitchMetrics(prevMetrics => ({
+            ...prevMetrics,
+            [pitchType]: {
+                ...prevMetrics[pitchType],
+                [metricKey]: value
+            }
+        }));
+    }, []);
 
     const handleRatingChange = (id, value) => {
         setRatings((prevRatings) => ({
@@ -125,57 +216,32 @@ const PitchingAssesment = ({ ready }) => {
         }));
     }
 
-    function AssesmentRating({ label, id, rating, onRatingChange }) {
-        const handleRadioChange = (e) => {
-            onRatingChange(id, e.target.value)
-        }
-        return (
-            <div className="pl-2 shadow-md">
-                <label htmlFor={id} className="text-black">{label}</label>
-                <div className="flex space-x-4">
-                    <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange} />Good</label>
-                    <label className="text-yellow-500"><input type="radio" className="mr-1" name={id} value="average" checked={rating === 'average'} onChange={handleRadioChange} />Average</label>
-                    <label className="text-red-500"><input type="radio" className="mr-1" name={id} value="needs improvement" checked={rating === 'needs improvement'} onChange={handleRadioChange} />Needs Improvement</label>
-                </div>
-            </div>
-        );
+    const handleArsenalChange = (id, value) => {
+        setArsenal((prevArsenal) => ({
+            ...prevArsenal,
+            [id]: value,
+        }));
     }
 
     useEffect(() => {
         let data = {};
-        if(movementScreenChecked) {
-            data = {...data, ratings}
+        if (movementScreenChecked) {
+            data = { ...data, ratings }
         }
-        if(mechEvalChecked) {
-            data = {...data, mechRatings, mechComments}
+        if (mechEvalChecked) {
+            data = { ...data, mechRatings, mechComments }
         }
-        if(pitchMetricsChecked) {
-            data = {...data, pitchMetricsChecked}
-            if(fsfb) {
-                data = {...data, fsfbAvgVelo, fsfbMaxVelo, fsfbAvgRPM, fsfbMaxRPM, fsfbAvgSpin, fsfbSpinAxis, fsfbAvgReleaseHeight, fsfbAvgReleaseSide, fsfbAvgHBreak, fsfbAvgVBreak}
+        if (pitchMetricsChecked) {
+            const activePitchData = {};
+            for (const pitchType in arsenal) {
+                if (arsenal[pitchType]) {
+                    activePitchData[pitchType] = pitchMetrics[pitchType];
+                }
             }
-            if(tsfb) {
-                data = {...data, tsfbAvgVelo, tsfbMaxVelo, tsfbAvgRPM, tsfbMaxRPM, tsfbAvgSpin, tsfbSpinAxis, tsfbAvgReleaseHeight, tsfbAvgReleaseSide, tsfbAvgHBreak, tsfbAvgVBreak}
-            }
-            if(ctfb) {
-                data = {...data, ctfbAvgVelo, ctfbMaxVelo, ctfbAvgRPM, ctfbMaxRPM, ctfbAvgSpin, ctfbSpinAxis, ctfbAvgReleaseHeight, ctfbAvgReleaseSide, ctfbAvgHBreak, ctfbAvgVBreak}
-            }
-            if(sl) {
-                data = {...data, slAvgVelo, slMaxVelo, slAvgRPM, slMaxRPM, slAvgSpin, slSpinAxis, slAvgReleaseHeight, slAvgReleaseSide, slAvgHBreak, slAvgVBreak}
-            }
-            if(cb) {
-                data = {...data, cbAvgVelo, cbMaxVelo, cbAvgRPM, cbMaxRPM, cbAvgSpin, cbSpinAxis, cbAvgReleaseHeight, cbAvgReleaseSide, cbAvgHBreak, cbAvgVBreak}
-            }
-            if(ch) {
-                data = {...data, chAvgVelo, chMaxVelo, chAvgRPM, chMaxRPM, chAvgSpin, chSpinAxis, chAvgReleaseHeight, chAvgReleaseSide, chAvgHBreak, chAvgVBreak}
-            }
+            data = { ...data, pitchMetrics: activePitchData };
         }
         ready(data);
-    }, [ratings, mechRatings, mechComments, fsfbAvgVelo, fsfbMaxVelo, fsfbAvgRPM, fsfbMaxRPM, fsfbAvgSpin, fsfbSpinAxis, fsfbAvgReleaseHeight, fsfbAvgReleaseSide, fsfbAvgHBreak, fsfbAvgVBreak, 
-        tsfbAvgVelo, tsfbMaxVelo, tsfbAvgRPM, tsfbMaxRPM, tsfbAvgSpin, tsfbSpinAxis, tsfbAvgReleaseHeight, tsfbAvgReleaseSide, tsfbAvgHBreak, tsfbAvgVBreak, ctfbAvgVelo, ctfbMaxVelo, 
-        ctfbAvgRPM, ctfbMaxRPM, ctfbAvgSpin, ctfbSpinAxis, ctfbAvgReleaseHeight, ctfbAvgReleaseSide, ctfbAvgHBreak, ctfbAvgVBreak, slAvgVelo, slMaxVelo, slAvgRPM, slMaxRPM, 
-        slAvgSpin, slSpinAxis, slAvgReleaseHeight, slAvgReleaseSide, slAvgHBreak, slAvgVBreak, cbAvgVelo, cbMaxVelo, cbAvgRPM, cbMaxRPM, cbAvgSpin, cbSpinAxis, cbAvgReleaseHeight, 
-        cbAvgReleaseSide, cbAvgHBreak, cbAvgVBreak, chAvgVelo, chMaxVelo, chAvgRPM, chMaxRPM, chAvgSpin, chSpinAxis, chAvgReleaseHeight, chAvgReleaseSide, chAvgHBreak, chAvgVBreak]);
+    }, [ratings, mechRatings, mechComments, pitchMetrics, arsenal]);
 
     return (
         <>
@@ -232,305 +298,41 @@ const PitchingAssesment = ({ ready }) => {
             {pitchMetricsChecked && (
                 <>
                     <div className="col-span-2 grid grid-cols-6 shadow-md pl-2 py-1">
-                        <div>
-                            <label htmlFor="4SFB" className="text-black mr-1">4SFB</label>
-                            <input type="checkbox" id="4FBChecked" checked={fsfb} onChange={(e) => setfsfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="2SFB" className="text-black mr-1">2SFB</label>
-                            <input type="checkbox" id="2FBChecked" checked={tsfb} onChange={(e) => settsfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CT" className="text-black mr-1">CT</label>
-                            <input type="checkbox" id="CTFBChecked" checked={ctfb} onChange={(e) => setctfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CB" className="text-black mr-1">CB</label>
-                            <input type="checkbox" id="CBChecked" checked={cb} onChange={(e) => setcb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="SL" className="text-black mr-1">SL</label>
-                            <input type="checkbox" id="SLChecked" checked={sl} onChange={(e) => setsl(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CH" className="text-black mr-1">CH</label>
-                            <input type="checkbox" id="CHChecked" checked={ch} onChange={(e) => setch(e.target.checked)}></input>
-                        </div>
+                        <PitchMix label="4SFB" id="FourSeamFastball" value={arsenal.FourSeamFastball} onChange={handleArsenalChange} />
+                        <PitchMix label="2SFB" id="TwoSeamFastball" value={arsenal.TwoSeamFastball} onChange={handleArsenalChange} />
+                        <PitchMix label="CT" id="Cutter" value={arsenal.Cutter} onChange={handleArsenalChange} />
+                        <PitchMix label="CB" id="Curveball" value={arsenal.Curveball} onChange={handleArsenalChange} />
+                        <PitchMix label="SL" id="Slider" value={arsenal.Slider} onChange={handleArsenalChange} />
+                        <PitchMix label="CH" id="ChangeUp" value={arsenal.ChangeUp} onChange={handleArsenalChange} />
                     </div>
-                    {fsfb && (
+                    {arsenal.FourSeamFastball && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="4SFB Average Velo" className="text-black mr-2">4SFB Average Velo</label>
-                                    <input type="number" name="4SFB Average Velo" placeholder="75" value={fsfbAvgVelo} onChange={(e) => setfsfbAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Max Velo" className="text-black mr-2">4SFB Max Velo</label>
-                                    <input type="number" name="4SFB Max Velo" placeholder="80" value={fsfbMaxVelo} onChange={(e) => setfsfbMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Max RPM" className="text-black mr-2">4SFB Max RPM</label>
-                                    <input type="number" name="4SFB Max RPM" placeholder="3000" value={fsfbMaxRPM} onChange={(e) => setfsfbMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Average RPM" className="text-black mr-2">4SFB Average RPM</label>
-                                    <input type="number" name="4SFB Average RPM" placeholder="2750" value={fsfbAvgRPM} onChange={(e) => setfsfbAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Spin Efficency" className="text-black mr-2">4SFB Spin Efficency Average</label>
-                                    <input type="number" name="4SFB Spin Efficency" placeholder="97" value={fsfbAvgSpin} onChange={(e) => setfsfbAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Spin Axis" className="text-black mr-2">4SFB Spin Axis</label>
-                                    <input type="number" name="4SFB Spin Axis" placeholder="12:00" value={fsfbSpinAxis} onChange={(e) => setfsfbSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Horizontal Break" className="text-black mr-2">4SFB Horizontal Break</label>
-                                    <input type="number" name="4SFB Horizontal Break" placeholder="5" value={fsfbAvgHBreak} onChange={(e) => setfsfbAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Vertical Break" className="text-black mr-2">4SFB Vertical Break</label>
-                                    <input type="number" name="4SFB Vertical Break" placeholder="5" value={fsfbAvgVBreak} onChange={(e) => setfsfbAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Average Release Height" className="text-black mr-2">4SFB Average Release Height</label>
-                                    <input type="number" name="4SFB Average Release Height" placeholder="4.5" value={fsfbAvgReleaseHeight} onChange={(e) => setfsfbAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Average Release Side" className="text-black mr-2">4SFB Average Release Side</label>
-                                    <input type="number" name="4SFB Average Release Side" placeholder="4" value={fsfbAvgReleaseSide} onChange={(e) => setfsfbAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="FourSeamFastball" pitchTypeAbrev="4SFB" pitchData={pitchMetrics.FourSeamFastball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {tsfb && (
+                    {arsenal.TwoSeamFastball && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="2SFB Average Velo" className="text-black mr-2">2SFB Average Velo</label>
-                                    <input type="number" name="2SFB Average Velo" placeholder="75" value={tsfbAvgVelo} onChange={(e) => settsfbAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Max Velo" className="text-black mr-2">2SFB Max Velo</label>
-                                    <input type="number" name="2SFB Max Velo" placeholder="80" value={tsfbMaxVelo} onChange={(e) => settsfbMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Max RPM" className="text-black mr-2">2SFB Max RPM</label>
-                                    <input type="number" name="2SFB Max RPM" placeholder="3000" value={tsfbMaxRPM} onChange={(e) => settsfbMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Average RPM" className="text-black mr-2">2SFB Average RPM</label>
-                                    <input type="number" name="2SFB Average RPM" placeholder="2750" value={tsfbAvgRPM} onChange={(e) => settsfbAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Spin Efficency" className="text-black mr-2">2SFB Spin Efficency Average</label>
-                                    <input type="number" name="2SFB Spin Efficency" placeholder="97" value={tsfbAvgSpin} onChange={(e) => settsfbAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Spin Axis" className="text-black mr-2">2SFB Spin Axis</label>
-                                    <input type="number" name="2SFB Spin Axis" placeholder="12:00" value={tsfbSpinAxis} onChange={(e) => settsfbSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Horizontal Break" className="text-black mr-2">2SFB Horizontal Break</label>
-                                    <input type="number" name="2SFB Horizontal Break" placeholder="5" value={tsfbAvgHBreak} onChange={(e) => settsfbAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Vertical Break" className="text-black mr-2">2SFB Vertical Break</label>
-                                    <input type="number" name="2SFB Vertical Break" placeholder="5" value={tsfbAvgVBreak} onChange={(e) => settsfbAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Average Release Height" className="text-black mr-2">2SFB Average Release Height</label>
-                                    <input type="number" name="2SFB Average Release Height" placeholder="4.5" value={tsfbAvgReleaseHeight} onChange={(e) => settsfbAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Average Release Side" className="text-black mr-2">2SFB Average Release Side</label>
-                                    <input type="number" name="2SFB Average Release Side" placeholder="4" value={tsfbAvgReleaseSide} onChange={(e) => settsfbAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="TwoSeamFastball" pitchTypeAbrev="2SFB" pitchData={pitchMetrics.TwoSeamFastball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {ctfb && (
+                    {arsenal.Cutter && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="CTFB Average Velo" className="text-black mr-2">CTFB Average Velo</label>
-                                    <input type="number" name="CTFB Average Velo" placeholder="75" value={ctfbAvgVelo} onChange={(e) => setctfbAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Max Velo" className="text-black mr-2">CTFB Max Velo</label>
-                                    <input type="number" name="CTFB Max Velo" placeholder="80" value={ctfbMaxVelo} onChange={(e) => setctfbMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Max RPM" className="text-black mr-2">CTFB Max RPM</label>
-                                    <input type="number" name="CTFB Max RPM" placeholder="3000" value={ctfbMaxRPM} onChange={(e) => setctfbMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Average RPM" className="text-black mr-2">CTFB Average RPM</label>
-                                    <input type="number" name="CTFB Average RPM" placeholder="2750" value={ctfbAvgRPM} onChange={(e) => setctfbAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Spin Efficency" className="text-black mr-2">CTFB Spin Efficency Average</label>
-                                    <input type="number" name="CTFB Spin Efficency" placeholder="97" value={ctfbAvgSpin} onChange={(e) => setctfbAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Spin Axis" className="text-black mr-2">CTFB Spin Axis</label>
-                                    <input type="number" name="CTFB Spin Axis" placeholder="12:00" value={ctfbSpinAxis} onChange={(e) => setctfbSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Horizontal Break" className="text-black mr-2">CTFB Horizontal Break</label>
-                                    <input type="number" name="CTFB Horizontal Break" placeholder="5" value={ctfbAvgHBreak} onChange={(e) => setctfbAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Vertical Break" className="text-black mr-2">CTFB Vertical Break</label>
-                                    <input type="number" name="CTFB Vertical Break" placeholder="5" value={ctfbAvgVBreak} onChange={(e) => setctfbAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Average Release Height" className="text-black mr-2">CTFB Average Release Height</label>
-                                    <input type="number" name="CTFB Average Release Height" placeholder="4.5" value={ctfbAvgReleaseHeight} onChange={(e) => setctfbAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Average Release Side" className="text-black mr-2">CTFB Average Release Side</label>
-                                    <input type="number" name="CTFB Average Release Side" placeholder="4" value={ctfbAvgReleaseSide} onChange={(e) => setctfbAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Cutter" pitchTypeAbrev="CTFB" pitchData={pitchMetrics.Cutter} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {cb && (
+                    {arsenal.Curveball && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="CB Average Velo" className="text-black mr-2">CB Average Velo</label>
-                                    <input type="number" name="CB Average Velo" placeholder="75" value={cbAvgVelo} onChange={(e) => setcbAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Max Velo" className="text-black mr-2">CB Max Velo</label>
-                                    <input type="number" name="CB Max Velo" placeholder="80" value={cbMaxVelo} onChange={(e) => setcbMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Max RPM" className="text-black mr-2">CB Max RPM</label>
-                                    <input type="number" name="CB Max RPM" placeholder="3000" value={cbMaxRPM} onChange={(e) => setcbMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Average RPM" className="text-black mr-2">CB Average RPM</label>
-                                    <input type="number" name="CB Average RPM" placeholder="2750" value={cbAvgRPM} onChange={(e) => setcbAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Spin Efficency" className="text-black mr-2">CB Spin Efficency Average</label>
-                                    <input type="number" name="CB Spin Efficency" placeholder="97" value={cbAvgSpin} onChange={(e) => setcbAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Spin Axis" className="text-black mr-2">CB Spin Axis</label>
-                                    <input type="number" name="CB Spin Axis" placeholder="12:00" value={cbSpinAxis} onChange={(e) => setcbSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Horizontal Break" className="text-black mr-2">CB Horizontal Break</label>
-                                    <input type="number" name="CB Horizontal Break" placeholder="5" value={cbAvgHBreak} onChange={(e) => setcbAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Vertical Break" className="text-black mr-2">CB Vertical Break</label>
-                                    <input type="number" name="CB Vertical Break" placeholder="5" value={cbAvgVBreak} onChange={(e) => setcbAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Average Release Height" className="text-black mr-2">CB Average Release Height</label>
-                                    <input type="number" name="CB Average Release Height" placeholder="4.5" value={cbAvgReleaseHeight} onChange={(e) => setcbAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Average Release Side" className="text-black mr-2">CB Average Release Side</label>
-                                    <input type="number" name="CB Average Release Side" placeholder="4" value={cbAvgReleaseSide} onChange={(e) => setcbAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Curveball" pitchTypeAbrev="CB" pitchData={pitchMetrics.Curveball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {sl && (
+                    {arsenal.Slider && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="SL Average Velo" className="text-black mr-2">SL Average Velo</label>
-                                    <input type="number" name="SL Average Velo" placeholder="75" value={slAvgVelo} onChange={(e) => setslAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Max Velo" className="text-black mr-2">SL Max Velo</label>
-                                    <input type="number" name="SL Max Velo" placeholder="80" value={slMaxVelo} onChange={(e) => setslMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Max RPM" className="text-black mr-2">SL Max RPM</label>
-                                    <input type="number" name="SL Max RPM" placeholder="3000" value={slMaxRPM} onChange={(e) => setslMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Average RPM" className="text-black mr-2">SL Average RPM</label>
-                                    <input type="number" name="SL Average RPM" placeholder="2750" value={slAvgRPM} onChange={(e) => setslAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Spin Efficency" className="text-black mr-2">SL Spin Efficency Average</label>
-                                    <input type="number" name="SL Spin Efficency" placeholder="97" value={slAvgSpin} onChange={(e) => setslAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Spin Axis" className="text-black mr-2">SL Spin Axis</label>
-                                    <input type="number" name="SL Spin Axis" placeholder="12:00" value={slSpinAxis} onChange={(e) => setslSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Horizontal Break" className="text-black mr-2">SL Horizontal Break</label>
-                                    <input type="number" name="SL Horizontal Break" placeholder="5" value={slAvgHBreak} onChange={(e) => setslAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Vertical Break" className="text-black mr-2">SL Vertical Break</label>
-                                    <input type="number" name="SL Vertical Break" placeholder="5" value={slAvgVBreak} onChange={(e) => setslAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Average Release Height" className="text-black mr-2">SL Average Release Height</label>
-                                    <input type="number" name="SL Average Release Height" placeholder="4.5" value={slAvgReleaseHeight} onChange={(e) => setslAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Average Release Side" className="text-black mr-2">SL Average Release Side</label>
-                                    <input type="number" name="SL Average Release Side" placeholder="4" value={slAvgReleaseSide} onChange={(e) => setslAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Slider" pitchTypeAbrev="SL" pitchData={pitchMetrics.Slider} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {ch && (
+                    {arsenal.ChangeUp && (
                         <>
-                            <div className="col-span-2 grid grid-cols-3 shadow-md pt-1 pl-2 pb-1">
-                                <div>
-                                    <label htmlFor="CH Average Velo" className="text-black mr-2">CH Average Velo</label>
-                                    <input type="number" name="CH Average Velo" placeholder="75" value={chAvgVelo} onChange={(e) => setchAvgVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Max Velo" className="text-black mr-2">CH Max Velo</label>
-                                    <input type="number" name="CH Max Velo" placeholder="80" value={chMaxVelo} onChange={(e) => setchMaxVelo(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Max RPM" className="text-black mr-2">CH Max RPM</label>
-                                    <input type="number" name="CH Max RPM" placeholder="3000" value={chMaxRPM} onChange={(e) => setchMaxRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Average RPM" className="text-black mr-2">CH Average RPM</label>
-                                    <input type="number" name="CH Average RPM" placeholder="2750" value={chAvgRPM} onChange={(e) => setchAvgRPM(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Spin Efficency" className="text-black mr-2">CH Spin Efficency Average</label>
-                                    <input type="number" name="CH Spin Efficency" placeholder="97" value={chAvgSpin} onChange={(e) => setchAvgSpin(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Spin Axis" className="text-black mr-2">CH Spin Axis</label>
-                                    <input type="number" name="CH Spin Axis" placeholder="12:00" value={chSpinAxis} onChange={(e) => setchSpinAxis(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Horizontal Break" className="text-black mr-2">CH Horizontal Break</label>
-                                    <input type="number" name="CH Horizontal Break" placeholder="5" value={chAvgHBreak} onChange={(e) => setchAvgHBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Vertical Break" className="text-black mr-2">CH Vertical Break</label>
-                                    <input type="number" name="CH Vertical Break" placeholder="5" value={chAvgVBreak} onChange={(e) => setchAvgVBreak(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Average Release Height" className="text-black mr-2">CH Average Release Height</label>
-                                    <input type="number" name="CH Average Release Height" placeholder="4.5" value={chAvgReleaseHeight} onChange={(e) => setchAvgReleaseHeight(e.target.value)} className="text-black pl-1 w-[50px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Average Release Side" className="text-black mr-2">CH Average Release Side</label>
-                                    <input type="number" name="CH Average Release Side" placeholder="4" value={chAvgReleaseSide} onChange={(e) => setchAvgReleaseSide(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="ChangeUp" pitchTypeAbrev="CH" pitchData={pitchMetrics.ChangeUp} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
                 </>
