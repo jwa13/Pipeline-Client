@@ -9,6 +9,7 @@ import PitchingAssesment from "../components/PitchingAssesment";
 import SkillsAssesment from "../components/SkillsAssesment";
 import StrengthAssesment from "../components/StrengthAssesment";
 import HittingReport from "../components/HittingReport";
+import PitchingReport from "../components/PitchingReport";
 
 export default function reports() {
     const router = useRouter();
@@ -126,7 +127,7 @@ export default function reports() {
                             <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
                                 {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
-                                {recentReport && recentReport.report.reportType === 'pitching' && (<></>)}
+                                {recentReport && recentReport.report.reportType === 'pitching' && (<PitchingReport report={recentReport} accType={accInfo}/>)}
                                 {recentReport && recentReport.report.reportType === 'skills' && (<></>)}
                                 {recentReport && recentReport.report.reportType === 'strength' && (<></>)}
                             </div>
