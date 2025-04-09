@@ -1,4 +1,48 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+
+function PitchMix({ label, id, value, onChange }) {
+    const handleChange = (e) => {
+        onChange(id, e.target.checked);
+    }
+
+    return (
+        <div>
+            <label className="text-black mr-1">{label}</label>
+            <input type="checkbox" name={id} value={true} checked={value == true} onChange={handleChange}></input>
+        </div>
+    )
+}
+
+const MetricInput = React.memo(({ pitchTypeAbbrev, metricsConfig, value, onChange }) => {
+    const { key, label, placeholder, width } = metricsConfig;
+    const inputId = `${pitchTypeAbbrev}-${key}`;
+
+    const handleChange = (e) => {
+        onChange(key, e.target.value)
+    };
+
+    return (
+        <div>
+            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${pitchTypeAbbrev} ${label}`}</label>
+            <input type="text" id={inputId} name={inputId} placeholder={placeholder} value={value} onChange={handleChange} className={`text-black pl-1 ${width} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded`} />
+        </div>
+    )
+});
+
+const PitchDataInputGroup = React.memo(({ pitchType, pitchTypeAbbrev, pitchData, metricsConfig, onMetricChange }) => {
+    const handleInputChange = useCallback((metricKey, value) => {
+        onMetricChange(pitchType, metricKey, value);
+    }, [onMetricChange, pitchType]);
+
+    return (
+        <div className="col-span-2 grid grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
+            <h3 className="col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
+            {metricsConfig.map((metricConfig) => (
+                <MetricInput key={metricConfig.key} pitchTypeAbbrev={pitchTypeAbbrev} metricsConfig={metricConfig} value={pitchData[metricConfig.key]} onChange={handleInputChange} />
+            ))}
+        </div>
+    )
+});
 
 const SkillsAssesment = ({ ready }) => {
     const [pitchingChecked, setPitchingChecked] = useState(false);
@@ -50,41 +94,49 @@ const SkillsAssesment = ({ ready }) => {
         'Arm Strength': '',
     });
 
-    const [fsfb, setfsfb] = useState(false);
-    const [fsfbMax, setfsfbMax] = useState("");
-    const [fsfbAvg, setfsfbAvg] = useState("");
-    const [fsfbCommand, setfsfbCommand] = useState("");
-    const [fsfbMovement, setfsfbMovement] = useState("");
+    const [arsenal, setArsenal] = useState({
+        FourSeamFastball: false,
+        TwoSeamFastball: false,
+        Cutter: false,
+        Slider: false,
+        Curveball: false,
+        ChangeUp: false,
+    });
 
-    const [tsfb, settsfb] = useState(false);
-    const [tsfbMax, settsfbMax] = useState(false);
-    const [tsfbAvg, settsfbAvg] = useState(false);
-    const [tsfbCommand, settsfbCommand] = useState(false);
-    const [tsfbMovement, settsfbMovement] = useState(false);
+    const initialPitchMetrics = {
+        FourSeamFastball: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+        TwoSeamFastball: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+        Cutter: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+        Slider: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+        Curveball: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+        ChangeUp: { MaxVelo: '', AverageVelo: '', Command: '', Movement: '' },
+    }
 
-    const [ctfb, setctfb] = useState(false);
-    const [ctfbMax, setctfbMax] = useState(false);
-    const [ctfbAvg, setctfbAvg] = useState(false);
-    const [ctfbCommand, setctfbCommand] = useState(false);
-    const [ctfbMovement, setctfbMovement] = useState(false);
+    const metricsConfig = [
+        { key: 'MaxVelo', label: 'Max Velo', placeholder: '75', width: 'w-[75px]' },
+        { key: 'AverageVelo', label: 'Average Velo', placeholder: '80', width: 'w-[75px]' },
+        { key: 'Command', label: 'Command', placeholder: '5', width: 'w-[75px]' },
+        { key: 'Movement', label: 'Movement', placeholder: '5', width: 'w-[75px]' }
+    ]
 
-    const [cb, setcb] = useState(false);
-    const [cbMax, setcbMax] = useState(false);
-    const [cbAvg, setcbAvg] = useState(false);
-    const [cbCommand, setcbCommand] = useState(false);
-    const [cbMovement, setcbMovement] = useState(false);
+    const [pitchMetrics, setPitchMetrics] = useState(initialPitchMetrics);
 
-    const [sl, setsl] = useState(false);
-    const [slMax, setslMax] = useState(false);
-    const [slAvg, setslAvg] = useState(false);
-    const [slCommand, setslCommand] = useState(false);
-    const [slMovement, setslMovement] = useState(false);
+    const handleMetricChange = useCallback((pitchType, metricKey, value) => {
+        setPitchMetrics(prevMetrics => ({
+            ...prevMetrics,
+            [pitchType]: {
+                ...prevMetrics[pitchType],
+                [metricKey]: value
+            }
+        }));
+    }, []);
 
-    const [ch, setch] = useState(false);
-    const [chMax, setchMax] = useState(false);
-    const [chAvg, setchAvg] = useState(false);
-    const [chCommand, setchCommand] = useState(false);
-    const [chMovement, setchMovement] = useState(false);
+    const handleArsenalChange = (id, value) => {
+        setArsenal((prevArsenal) => ({
+            ...prevArsenal,
+            [id]: value,
+        }));
+    }
 
     const [infieldNotes, setInfieldNotes] = useState("");
     const [outfieldNotes, setOutfieldNotes] = useState("");
@@ -142,36 +194,22 @@ const SkillsAssesment = ({ ready }) => {
     }
 
     useEffect(() => {
-        let data = {infieldRatings, infieldNotes, outfieldRatings, outfieldNotes, throwingRatings, throwingNotes, hittingRatings, hittingNotes};
-        if(pitchingChecked) {
-            data = {...data, pitchingRatings, pitchingNotes}
-            if(fsfb) {
-                data = {...data, fsfbAvg, fsfbMax, fsfbCommand, fsfbMovement}
+        let data = { infieldRatings, infieldNotes, outfieldRatings, outfieldNotes, throwingRatings, throwingNotes, hittingRatings, hittingNotes };
+        if (pitchingChecked) {
+            const activePitchData = {};
+            for (const pitchType in arsenal) {
+                if (arsenal[pitchType]) {
+                    activePitchData[pitchType] = pitchMetrics[pitchType];
+                }
             }
-            if(tsfb) {
-                data = {...data, tsfbAvg, tsfbMax, tsfbCommand, tsfbMovement}
-            }
-            if(ctfb) {
-                data = {...data, ctfbAvg, ctfbMax, ctfbCommand, ctfbMovement}
-            }
-            if(sl) {
-                data = {...data, slAvg, slMax, slCommand, slMovement}
-            }
-            if(cb) {
-                data = {...data, cbAvg, cbMax, cbCommand, cbMovement}
-            }
-            if(ch) {
-                data = {...data, chAvg, chMax, chCommand, chMovement}
-            }
+            data = { ...data, pitchMetrics: activePitchData, pitchingRatings, pitchingNotes }
         }
-        if(catchingChecked) {
-            data = {...data, catchingRatings, catchingNotes}
+        if (catchingChecked) {
+            data = { ...data, catchingRatings, catchingNotes }
         }
         ready(data);
-    }, [infieldRatings, infieldNotes, outfieldRatings, outfieldRatings, throwingRatings, throwingNotes, hittingRatings, hittingNotes,
-        pitchingRatings, pitchingNotes, fsfbAvg, fsfbMax, fsfbCommand, fsfbMovement, tsfbAvg, tsfbMax, tsfbCommand, tsfbMovement,
-        ctfbAvg, ctfbMax, ctfbCommand, ctfbMovement, slAvg, slMax, slCommand, slMovement, cbAvg, cbMax, cbCommand, cbMovement, 
-        chAvg, chMax, chCommand, chMovement, catchingRatings, catchingNotes]);
+    }, [infieldRatings, infieldNotes, outfieldRatings, throwingRatings, throwingNotes, hittingRatings, hittingNotes,
+        pitchingRatings, pitchingNotes, pitchMetrics, arsenal, catchingRatings, catchingNotes]);
 
     return (
         <>
@@ -229,7 +267,7 @@ const SkillsAssesment = ({ ready }) => {
                 <div className="pl-2">
                     <div className="py-1">
                         <label htmlFor="Tee Exit Velocity" className="text-black pr-2">Velocity</label>
-                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" name={"Tee Exit Velocity"} value={hittingRatings["Tee Exit Velo"]} onChange={(e) => setThrowingRatings((prevRatings) => ({ ...prevRatings, ["Tee Exit Velo"]: e.target.value, }))} />
+                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" name={"Tee Exit Velocity"} value={hittingRatings["Tee Exit Velo"]} onChange={(e) => setHittingRatings((prevRatings) => ({ ...prevRatings, ["Tee Exit Velo"]: e.target.value, }))} />
                     </div>
                 </div>
             </div>
@@ -248,161 +286,41 @@ const SkillsAssesment = ({ ready }) => {
                         <SkillScore label="Arm Path" id="Arm Path" rating={pitchingRatings["Arm Path"]} onRatingChange={handleSkillScore} subset="pitching" />
                     </div>
                     <div className="col-span-2 grid grid-cols-6 shadow-md pl-2 py-1">
-                        <div>
-                            <label htmlFor="4SFB" className="text-black mr-1">4SFB</label>
-                            <input type="checkbox" id="4FBChecked" checked={fsfb} onChange={(e) => setfsfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="2SFB" className="text-black mr-1">2SFB</label>
-                            <input type="checkbox" id="2FBChecked" checked={tsfb} onChange={(e) => settsfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CT" className="text-black mr-1">CT</label>
-                            <input type="checkbox" id="CTFBChecked" checked={ctfb} onChange={(e) => setctfb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CB" className="text-black mr-1">CB</label>
-                            <input type="checkbox" id="CBChecked" checked={cb} onChange={(e) => setcb(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="SL" className="text-black mr-1">SL</label>
-                            <input type="checkbox" id="SLChecked" checked={sl} onChange={(e) => setsl(e.target.checked)}></input>
-                        </div>
-                        <div>
-                            <label htmlFor="CH" className="text-black mr-1">CH</label>
-                            <input type="checkbox" id="CHChecked" checked={ch} onChange={(e) => setch(e.target.checked)}></input>
-                        </div>
+                        <PitchMix label="4SFB" id="FourSeamFastball" value={arsenal.FourSeamFastball} onChange={handleArsenalChange} />
+                        <PitchMix label="2SFB" id="TwoSeamFastball" value={arsenal.TwoSeamFastball} onChange={handleArsenalChange} />
+                        <PitchMix label="CT" id="Cutter" value={arsenal.Cutter} onChange={handleArsenalChange} />
+                        <PitchMix label="CB" id="Curveball" value={arsenal.Curveball} onChange={handleArsenalChange} />
+                        <PitchMix label="SL" id="Slider" value={arsenal.Slider} onChange={handleArsenalChange} />
+                        <PitchMix label="CH" id="ChangeUp" value={arsenal.ChangeUp} onChange={handleArsenalChange} />
                     </div>
-                    {fsfb && (
+                    {arsenal.FourSeamFastball && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="4SFB Average Velo" className="text-black mr-2">4SFB Average Velo</label>
-                                    <input type="number" name="4SFB Average Velo" placeholder="75" value={fsfbAvg} onChange={(e) => setfsfbAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Max Velo" className="text-black mr-2">4SFB Max Velo</label>
-                                    <input type="number" name="4SFB Max Velo" placeholder="80" value={fsfbMax} onChange={(e) => setfsfbMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Command" className="text-black mr-2">4SFB Command</label>
-                                    <input type="number" name="4SFB Command" placeholder="1-10" value={fsfbCommand} onChange={(e) => setfsfbCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="4SFB Movement" className="text-black mr-2">4SFB Movement</label>
-                                    <input type="number" name="4SFB Movement" placeholder="1-10" value={fsfbMovement} onChange={(e) => setfsfbMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="FourSeamFastball" pitchTypeAbbrev="4SFB" pitchData={pitchMetrics.FourSeamFastball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {tsfb && (
+                    {arsenal.TwoSeamFastball && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="2SFB Average Velo" className="text-black mr-2">2SFB Average Velo</label>
-                                    <input type="number" name="2SFB Average Velo" placeholder="75" value={tsfbAvg} onChange={(e) => settsfbAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Max Velo" className="text-black mr-2">2SFB Max Velo</label>
-                                    <input type="number" name="2SFB Max Velo" placeholder="80" value={tsfbMax} onChange={(e) => settsfbMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Command" className="text-black mr-2">2SFB Command</label>
-                                    <input type="number" name="2SFB Command" placeholder="1-10" value={tsfbCommand} onChange={(e) => settsfbCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="2SFB Movement" className="text-black mr-2">2SFB Movement</label>
-                                    <input type="number" name="2SFB Movement" placeholder="1-10" value={tsfbMovement} onChange={(e) => settsfbMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="TwoSeamFastball" pitchTypeAbbrev="2SFB" pitchData={pitchMetrics.TwoSeamFastball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {ctfb && (
+                    {arsenal.Cutter && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="CTFB Average Velo" className="text-black mr-2">CTFB Average Velo</label>
-                                    <input type="number" name="CTFB Average Velo" placeholder="75" value={ctfbAvg} onChange={(e) => setctfbAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Max Velo" className="text-black mr-2">CTFB Max Velo</label>
-                                    <input type="number" name="CTFB Max Velo" placeholder="80" value={ctfbMax} onChange={(e) => setctfbMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Command" className="text-black mr-2">CTFB Command</label>
-                                    <input type="number" name="CTFB Command" placeholder="1-10" value={ctfbCommand} onChange={(e) => setctfbCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CTFB Movement" className="text-black mr-2">CTFB Movement</label>
-                                    <input type="number" name="CTFB Movement" placeholder="1-10" value={ctfbMovement} onChange={(e) => setctfbMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Cutter" pitchTypeAbbrev="CTFB" pitchData={pitchMetrics.Cutter} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {cb && (
+                    {arsenal.Curveball && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="CB Average Velo" className="text-black mr-2">CB Average Velo</label>
-                                    <input type="number" name="CB Average Velo" placeholder="75" value={cbAvg} onChange={(e) => setcbAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Max Velo" className="text-black mr-2">CB Max Velo</label>
-                                    <input type="number" name="CB Max Velo" placeholder="80" value={cbMax} onChange={(e) => setcbMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Command" className="text-black mr-2">CB Command</label>
-                                    <input type="number" name="CB Command" placeholder="1-10" value={cbCommand} onChange={(e) => setcbCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CB Movement" className="text-black mr-2">CB Movement</label>
-                                    <input type="number" name="CB Movement" placeholder="1-10" value={cbMovement} onChange={(e) => setcbMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Curveball" pitchTypeAbbrev="CB" pitchData={pitchMetrics.Curveball} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {sl && (
+                    {arsenal.Slider && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="SL Average Velo" className="text-black mr-2">SL Average Velo</label>
-                                    <input type="number" name="SL Average Velo" placeholder="75" value={slAvg} onChange={(e) => setslAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Max Velo" className="text-black mr-2">SL Max Velo</label>
-                                    <input type="number" name="SL Max Velo" placeholder="80" value={slMax} onChange={(e) => setslMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Command" className="text-black mr-2">SL Command</label>
-                                    <input type="number" name="SL Command" placeholder="1-10" value={slCommand} onChange={(e) => setslCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="SL Movement" className="text-black mr-2">SL Movement</label>
-                                    <input type="number" name="SL Movement" placeholder="1-10" value={slMovement} onChange={(e) => setslMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="Slider" pitchTypeAbbrev="SL" pitchData={pitchMetrics.Slider} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
-                    {ch && (
+                    {arsenal.ChangeUp && (
                         <>
-                            <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
-                                <div>
-                                    <label htmlFor="CH Average Velo" className="text-black mr-2">CH Average Velo</label>
-                                    <input type="number" name="CH Average Velo" placeholder="75" value={chAvg} onChange={(e) => setchAvg(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Max Velo" className="text-black mr-2">CH Max Velo</label>
-                                    <input type="number" name="CH Max Velo" placeholder="80" value={chMax} onChange={(e) => setchMax(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Command" className="text-black mr-2">CH Command</label>
-                                    <input type="number" name="CH Command" placeholder="1-10" value={chCommand} onChange={(e) => setchCommand(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                                <div>
-                                    <label htmlFor="CH Movement" className="text-black mr-2">CH Movement</label>
-                                    <input type="number" name="CH Movement" placeholder="1-10" value={chMovement} onChange={(e) => setchMovement(e.target.value)} className="text-black pl-1 w-[75px] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"></input>
-                                </div>
-                            </div>
+                            <PitchDataInputGroup pitchType="ChangeUp" pitchTypeAbbrev="CH" pitchData={pitchMetrics.ChangeUp} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
                     <label htmlFor="pitchingNotes" className="text-black col-span-2 pl-2">Notes</label>
