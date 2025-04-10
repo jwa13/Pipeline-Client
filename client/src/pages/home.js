@@ -6,6 +6,9 @@ import { jwtDecode } from "jwt-decode";
 import HealthAlert from "../components/HealthAlert";
 import Goal from "../components/Goal";
 import HittingReport from "../components/HittingReport";
+import PitchingReport from "../components/PitchingReport";
+import StrengthReport from "../components/StrengthReport";
+import SkillsReport from "../components/SkillsReport";
 
 export default function home() {
     const router = useRouter();
@@ -68,6 +71,15 @@ export default function home() {
                                     <>
                                         {profileData.data.recentReport.report.reportType === 'hitting' && (
                                             <HittingReport report={profileData.data.recentReport} accType={accType} />
+                                        )}
+                                        {profileData.data.recentReport.report.reportType === 'pitching' && (
+                                            <PitchingReport report={profileData.data.recentReport} accType={accType} />
+                                        )}
+                                        {profileData.data.recentReport.report.reportType === 'strength' && (
+                                            <StrengthReport report={profileData.data.recentReport} accType={accType} />
+                                        )}
+                                        {profileData.data.recentReport.report.reportType === 'skills' && (
+                                            <SkillsReport report={profileData.data.recentReport} accType={accType} />
                                         )}
                                     </>
                                 )}
