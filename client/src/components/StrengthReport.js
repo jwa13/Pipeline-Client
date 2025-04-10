@@ -55,7 +55,7 @@ const StrengthReport = ({report, accType}) => {
                 <div className="flex flex-wrap items-center p-1">
                     {accType === 'coach' && (<h2 className="mr-4 text-black">Athlete Name: <span className="text-gray-600">{report.athleteName}</span></h2>)}
                     {accType === 'athlete' && (<h2 className="mr-4 text-black">Coach: <span className="text-gray-600">{report.coachName}</span></h2>)}
-                    <h2 className="mr-4 text-black">Type: <span className="text-gray-600">Pitching</span></h2>
+                    <h2 className="mr-4 text-black">Type: <span className="text-gray-600">Strength</span></h2>
                     <h2 className="mr-4 text-gray-600">{formatDate(report.report.dateCreated)}</h2>
                     <button className="mr-2 text-gray-600 hover:underline" onClick={handleSeeMore}>See More</button>
                 </div>
