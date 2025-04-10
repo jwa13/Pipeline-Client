@@ -21,7 +21,6 @@ const handleSignUp = async (email, password) => {
             console.log("jwt:", data.token);
         }
     } catch (error) {
-        console.error("Sign-up failed", error.message);
         throw error;
     }
 }
