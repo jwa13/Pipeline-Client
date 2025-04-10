@@ -19,6 +19,7 @@ export default function reports() {
     const [accInfo, setAccInfo] = useState(null);
     const [uid, setUid] = useState(null);
     const [recentReport, setRecentReport] = useState(null);
+    const [allReports, setAllReports] = useState(null);
 
     const [athletes, setAthletes] = useState([]);
     const reportTypes = [
@@ -75,9 +76,25 @@ export default function reports() {
                 console.error(error);
             }
         }
+        const GetAllReports = async () => {
+            try {
+                const token = localStorage.getItem('jwt');
+                const response = await fetch("http://localhost:3001/api/allReports", {
+                    method: "GET",
+                    headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+                });
+                const data = await response.json();
+                setAllReports(data);
+            } catch (error) {
+                console.error(error);
+            }
+        }
         if(accInfo === 'coach') {
             GetAthletes();
             GetRecentReport();
+        }
+        if(accInfo === 'athlete') {
+            GetAllReports();
         }
     }, [accInfo]);
 
@@ -117,6 +134,25 @@ export default function reports() {
         }
     }
 
+    function DisplayReports({allReports, accInfo}) {
+        return (
+            <>
+                {allReports.map((report) => {
+                    switch (report.report.reportType) {
+                        case 'hitting': 
+                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        case 'pitching':
+                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        case 'strength':
+                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        case 'skills':
+                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                    }
+                })}
+            </>
+        )
+    }
+
     return (
         <div className="flex min-h-screen">
             <Navbar />
@@ -154,9 +190,10 @@ export default function reports() {
                             )}
                         </>
                     )}
-                    {accInfo && accInfo === 'athlete' && (
+                    {accInfo && (accInfo === 'athlete') && allReports && (
                         <>
-
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">All Reports</h2>
+                            <DisplayReports allReports={allReports} accInfo={accInfo} />
                         </>
                     )}
                 </div>
