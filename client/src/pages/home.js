@@ -37,8 +37,9 @@ export default function home() {
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
                 const status = await response.status;
-                if(status === '401') {
+                if(status === 401) {
                     router.push("/login");
+                    return;
                 }
 
                 const data = await response.json();
