@@ -51,6 +51,8 @@ export default function signup() {
         } catch(error) {
             if(error.code === 'auth/email-already-in-use') {
                 router.push('/login?message=account-exists');
+            } else {
+                router.push('/');
             }
         }
     }
