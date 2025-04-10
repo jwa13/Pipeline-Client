@@ -57,6 +57,10 @@ export default function reports() {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
+                const status = await response.status;
+                if(status === 401) {
+                    router.push("/login");
+                }
                 const data = await response.json();
                 setAthletes(data.athletes);
             } catch (error) {
@@ -70,6 +74,10 @@ export default function reports() {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
+                const status = await response.status;
+                if(status === 401) {
+                    router.push("/login");
+                }
                 const data = await response.json();
                 setRecentReport(data.recentReport);
             } catch (error) {
@@ -83,6 +91,10 @@ export default function reports() {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
+                const status = await response.status;
+                if(status === 401) {
+                    router.push("/login");
+                }
                 const data = await response.json();
                 setAllReports(data);
             } catch (error) {

@@ -32,6 +32,10 @@ export default function goals() {
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
 
+                const status = await response.status;
+                if(status === 401) {
+                    router.push("/login");
+                }
                 const data = await response.json();
                 console.log(data);
                 console.log(data.inactive.length);
