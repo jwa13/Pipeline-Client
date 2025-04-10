@@ -10,6 +10,7 @@ import SkillsAssesment from "../components/SkillsAssesment";
 import StrengthAssesment from "../components/StrengthAssesment";
 import HittingReport from "../components/HittingReport";
 import PitchingReport from "../components/PitchingReport";
+import StrengthReport from "../components/StrengthReport";
 
 export default function reports() {
     const router = useRouter();
@@ -127,9 +128,9 @@ export default function reports() {
                             <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
                                 {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
-                                {recentReport && recentReport.report.reportType === 'pitching' && (<PitchingReport report={recentReport} accType={accInfo}/>)}
+                                {recentReport && recentReport.report.reportType === 'pitching' && (<PitchingReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'skills' && (<></>)}
-                                {recentReport && recentReport.report.reportType === 'strength' && (<></>)}
+                                {recentReport && recentReport.report.reportType === 'strength' && (<StrengthReport report={recentReport} accType={accInfo} />)}
                             </div>
                             {!reportVisible && (<button onClick={handleCreateButton} className="text-gray-500 pl-8 pt-1 hover:underline">Create Report</button>)}
                             {reportVisible && (
