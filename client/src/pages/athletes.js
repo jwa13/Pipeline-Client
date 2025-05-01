@@ -6,7 +6,6 @@ import TopBar from "../components/TopBar";
 import ProfileView from "../components/ProfileView";
 
 export default function athletes() {
-    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
     const [athletes, setAthletes] = useState([]);
     const [selectedAthlete, setSelectedAthlete] = useState(null);
@@ -16,7 +15,7 @@ export default function athletes() {
         const GetAthletes = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${baseURL}/api/athletes`, {
+                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -47,7 +46,7 @@ export default function athletes() {
         // setAtheteInfo(null); - clears out previous athlete information if this is the n+1th selection
         try {
             const token = localStorage.getItem('jwt');
-            const response = await fetch(`http://localhost:3001/api/athlete-info/${athlete.value}`, {
+            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/${athlete.value}`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
             });

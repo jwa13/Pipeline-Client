@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 
 export default function health() {
-    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
     const [emContactName, setEmContactName] = useState('');
     const [emContactPhone, setEmContactPhone] = useState('');
@@ -46,7 +45,7 @@ export default function health() {
 
         try {
             const token = localStorage.getItem("jwt");
-            const response = await fetch(`${baseURL}/api/newHealth`, {
+            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/newHealth`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(healthInfo),

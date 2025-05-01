@@ -2,7 +2,6 @@ import { auth } from '../middleware/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const handleSignUp = async (email, password) => {
-    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     try {
         const userCredentail = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredentail.user;
@@ -10,7 +9,7 @@ const handleSignUp = async (email, password) => {
 
         console.log("Firebase Token:", idToken);
 
-        const response = await fetch(`${baseURL}/api/signup`, {
+        const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/signup`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({idToken})

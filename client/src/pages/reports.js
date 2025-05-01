@@ -14,7 +14,6 @@ import StrengthReport from "../components/StrengthReport";
 import SkillsReport from "../components/SkillsReport";
 
 export default function reports() {
-    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
     const [reportVisible, setReportVisible] = useState(false);
     const [accInfo, setAccInfo] = useState(null);
@@ -54,7 +53,7 @@ export default function reports() {
         const GetAthletes = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${baseURL}/api/athletes`, {
+                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -71,7 +70,7 @@ export default function reports() {
         const GetRecentReport = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${baseURL}/api/recentReport`, {
+                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/recentReport`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -88,7 +87,7 @@ export default function reports() {
         const GetAllReports = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${baseURL}/api/allReports`, {
+                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/allReports`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -135,7 +134,7 @@ export default function reports() {
         console.log(reportData);
         try{
             const token = localStorage.getItem("jwt");
-            const response = await fetch(`${baseURL}/api/newReport`, {
+            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/newReport`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(reportData)
