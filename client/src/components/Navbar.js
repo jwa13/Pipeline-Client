@@ -28,7 +28,7 @@ const Navbar = () => {
                 )}
                 {accType === "coach" && (
                     <>
-                        <Link href="/" className="block hover:bg-gray-700 p-2 rounded">Athletes</Link>
+                        <Link href="/athletes" className="block hover:bg-gray-700 p-2 rounded">Athletes</Link>
                         <Link href="/" className="block hover:bg-gray-700 p-2 rounded">Programs</Link>
                     </>
                 )}
@@ -60,7 +60,7 @@ const Navbar = () => {
                 )}
                 {accType === 'coach' && (
                     <>
-                        <Link href="/" className="block hover:bg-gray-700 p-2 rounded"><UserGroupIcon className="h-6 w-6"/></Link>
+                        <Link href="/athletes" className="block hover:bg-gray-700 p-2 rounded"><UserGroupIcon className="h-6 w-6"/></Link>
                         <Link href="/" className="block hover:bg-gray-700 p-2 rounded"><DocumentTextIcon className="h-6 w-6"/></Link>
                     </>
                 )}
