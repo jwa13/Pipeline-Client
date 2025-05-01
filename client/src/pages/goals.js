@@ -27,7 +27,7 @@ export default function goals() {
         const GetGoalsInfo = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/goals`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/goals`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -89,7 +89,7 @@ export default function goals() {
 
         try {
             const token = localStorage.getItem("jwt");
-            const response = await fetch(`${baseURL}/api/newGoal`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/newGoal`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(goal)

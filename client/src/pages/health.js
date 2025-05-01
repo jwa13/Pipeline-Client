@@ -45,7 +45,7 @@ export default function health() {
 
         try {
             const token = localStorage.getItem("jwt");
-            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/newHealth`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/newHealth`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(healthInfo),

@@ -32,7 +32,7 @@ export default function home() {
         const getHomePageInfo = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/home`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/home`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });

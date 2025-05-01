@@ -15,7 +15,7 @@ export default function athletes() {
         const GetAthletes = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -46,7 +46,7 @@ export default function athletes() {
         // setAtheteInfo(null); - clears out previous athlete information if this is the n+1th selection
         try {
             const token = localStorage.getItem('jwt');
-            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/${athlete.value}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${athlete.value}`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
             });

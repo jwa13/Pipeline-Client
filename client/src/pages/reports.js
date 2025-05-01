@@ -53,7 +53,7 @@ export default function reports() {
         const GetAthletes = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -70,7 +70,7 @@ export default function reports() {
         const GetRecentReport = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/recentReport`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/recentReport`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -87,7 +87,7 @@ export default function reports() {
         const GetAllReports = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/allReports`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/allReports`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
