@@ -5,6 +5,7 @@ import TopBar from "../components/TopBar";
 import HealthAlert from "../components/HealthAlert";
 
 export default function profile() {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
     const [profileData, setProfileData] = useState(null);
 
@@ -19,7 +20,7 @@ export default function profile() {
         const GetProfileInfo = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch("http://localhost:3001/api/profile", {
+                const response = await fetch(`${baseURL}/api/profile`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });

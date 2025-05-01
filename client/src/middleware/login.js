@@ -2,13 +2,14 @@ import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../middleware/firebase'
 
 const handleLogin = async (email, password) => {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     try {
         const result = await signInWithEmailAndPassword(auth, email, password);
         const user = result.user;
         const idToken = await user.getIdToken();
         console.log(idToken);
 
-        const response = await fetch("http://localhost:3001/api/login", {
+        const response = await fetch(`${baseURL}/api/login`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({idToken})

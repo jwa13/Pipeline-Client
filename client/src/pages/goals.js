@@ -6,6 +6,7 @@ import Select from "react-select";
 import Goal from "../components/Goal";
 
 export default function goals() {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
     const [formVisible, setFormVisible] = useState(false);
     const [activeGoals, setActiveGoals] = useState(null);
@@ -27,7 +28,7 @@ export default function goals() {
         const GetGoalsInfo = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch("http://localhost:3001/api/goals", {
+                const response = await fetch(`${baseURL}/api/goals`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
@@ -89,7 +90,7 @@ export default function goals() {
 
         try {
             const token = localStorage.getItem("jwt");
-            const response = await fetch("http://localhost:3001/api/newGoal", {
+            const response = await fetch(`${baseURL}/api/newGoal`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(goal)

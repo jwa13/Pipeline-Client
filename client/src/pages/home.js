@@ -11,6 +11,7 @@ import StrengthReport from "../components/StrengthReport";
 import SkillsReport from "../components/SkillsReport";
 
 export default function home() {
+    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:3001';
     const router = useRouter();
 
     const [profileData, setProfileData] = useState(null);
@@ -32,7 +33,7 @@ export default function home() {
         const getHomePageInfo = async () => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch("http://localhost:3001/api/home", {
+                const response = await fetch(`${baseURL}/api/home`, {
                     method: "GET",
                     headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 });
