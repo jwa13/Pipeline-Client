@@ -152,13 +152,13 @@ export default function reports() {
                 {allReports.map((report) => {
                     switch (report.report.reportType) {
                         case 'hitting': 
-                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'pitching':
-                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'strength':
-                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'skills':
-                            return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     }
                 })}
             </>
@@ -168,23 +168,23 @@ export default function reports() {
     return (
         <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex flex-col flex-1 md:ml-64">
+            <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
                 <TopBar pageName={"Reports"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
                     {accInfo && accInfo === 'coach' && (
                         <>
-                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Most Recent Report</h2>
-                            <div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md">
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
+                            <div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
                                 {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'pitching' && (<PitchingReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'skills' && (<SkillsReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'strength' && (<StrengthReport report={recentReport} accType={accInfo} />)}
                             </div>
-                            {!reportVisible && (<button onClick={handleCreateButton} className="text-gray-500 pl-8 pt-1 hover:underline">Create Report</button>)}
+                            {!reportVisible && (<button onClick={handleCreateButton} className="text-gray-500 pl-2 md:pl-8 pt-1 hover:underline">Create Report</button>)}
                             {reportVisible && (
                                 <>
-                                    <div className="flex flex-col flex-1 ml-6 pl-2 pt-2 pr-2 pb-2 shadow-md">
+                                    <div className="flex flex-col flex-1 md:ml-6 pl-2 pt-2 pr-2 pb-2 shadow-md">
                                         <h2 className="text-gray-600 text-center underline text-xl font-bebas-neue pb-1">New Report</h2>
                                         <form className="w-full grid grid-cols-2 md:grid-cols-2 gap-1 md:p-1 sm:grid-cols-1">
                                             <label htmlFor="Athlete Name" className="text-black text-center">Athlete</label>
@@ -204,7 +204,7 @@ export default function reports() {
                     )}
                     {accInfo && (accInfo === 'athlete') && allReports && (
                         <>
-                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">All Reports</h2>
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">All Reports</h2>
                             <DisplayReports allReports={allReports} accInfo={accInfo} />
                         </>
                     )}

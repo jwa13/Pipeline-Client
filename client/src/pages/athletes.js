@@ -46,7 +46,7 @@ export default function athletes() {
         // setAtheteInfo(null); - clears out previous athlete information if this is the n+1th selection
         try {
             const token = localStorage.getItem('jwt');
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${athlete.value}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athlete-info/${athlete.value}`, {
                 method: "GET",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
             });
@@ -66,11 +66,11 @@ export default function athletes() {
     return (
         <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex flex-col flex-1 md:ml-64">
+            <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
                 <TopBar pageName={"Athletes"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Select Athlete</h2>
-                    {athletes && (<><Select options={athletes} value={selectedAthlete} onChange={handleSelectedAthlete} placeholder="View _____'s Profile: " className="mr-2 px-6 pt-1" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} /></>)}
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Select Athlete</h2>
+                    {athletes && (<><Select options={athletes} value={selectedAthlete} onChange={handleSelectedAthlete} placeholder="View _____'s Profile: " className="md:mr-2 md:px-6 pt-1" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} /></>)}
                     {athleteInfo && (
                         <><ProfileView profileData={athleteInfo}/></>
                     )}
