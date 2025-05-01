@@ -191,10 +191,12 @@ export default function reports() {
                                             <label htmlFor="Report Type" className="text-black text-center">Report Type</label>
                                             <Select options={athletes} value={athlete} onChange={setAthlete} placeholder="Report For: " className="mr-2" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
                                             <Select options={reportTypes} value={reportType} onChange={setReportType} placeholder="Report Type: " isDisabled={!athlete} className="" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
-                                            {reportType.value === 'pitching' && ( <PitchingAssesment ready={handleReportData}/> )}
-                                            {reportType.value === 'hitting' && ( <HittingAssesment ready={handleReportData} /> )}
-                                            {reportType.value === 'strength' && ( <StrengthAssesment ready={handleReportData}/> )}
-                                            {reportType.value === 'skills' && ( <SkillsAssesment ready={handleReportData}/> )}
+                                            <div className="col-span-2 grid grid-cols-1 md:grid-cols-2">
+                                                {reportType.value === 'pitching' && (<PitchingAssesment ready={handleReportData} />)}
+                                                {reportType.value === 'hitting' && (<HittingAssesment ready={handleReportData} />)}
+                                                {reportType.value === 'strength' && (<StrengthAssesment ready={handleReportData} />)}
+                                                {reportType.value === 'skills' && (<SkillsAssesment ready={handleReportData} />)}
+                                            </div>
                                             <SubmitButton />
                                         </form>
                                     </div>
