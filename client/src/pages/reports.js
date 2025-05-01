@@ -134,7 +134,7 @@ export default function reports() {
         console.log(reportData);
         try{
             const token = localStorage.getItem("jwt");
-            const response = await fetch(`${NEXT_PUBLIC_API_BASE_URL}/api/newReport`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/newReport`, {
                 method: "POST",
                 headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
                 body: JSON.stringify(reportData)
