@@ -16,7 +16,7 @@ export default function goals() {
         {value: "Hitting", label: "Hitting"},
         {value: "Strength", label: "Strength"},
         {value: "Speed", label: "Speed"},
-        {value: "Body", label: "Body"},
+        {value: "Physique", label: "Physique"},
     ];
 
     const [goalType, setGoalType] = useState("");
@@ -104,11 +104,11 @@ export default function goals() {
     return (
         <div className="flex min-h-screen">
             <Navbar />
-            <div className="flex flex-col flex-1 md:ml-64">
+            <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
                 <TopBar pageName={"Goals"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-2 tracking-wider">Active Goals</h2>
-                    <div className="flex flex-col flex-1 ml-6 pt-1 xl:grid xl:grid-cols-3">
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Active Goals</h2>
+                    <div className="flex flex-col flex-1 md:ml-6 pt-1 xl:grid xl:grid-cols-3">
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
                             <>
@@ -117,7 +117,7 @@ export default function goals() {
                         )}
                     </div>
 
-                    {!formVisible && (<button onClick={handleAddButton} className="text-gray-500 pl-8 pt-1 hover:underline">Add a Goal</button>)}
+                    {!formVisible && (<button onClick={handleAddButton} className="text-gray-500 pl-2 md:pl-8 pt-1 hover:underline">Add a Goal</button>)}
                     {formVisible && (
                         <>
                             <div className="bg-white shadow-md mx-6 p-1 mt-6 mx-auto border">
@@ -150,8 +150,8 @@ export default function goals() {
                             </div>
                         </>
                     )}
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline px-6 pt-4 tracking-wider">Inactive Goals</h2>
-                    <div className="flex flex-col flex-1 ml-6 pt-1">
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-4 tracking-wider">Inactive Goals</h2>
+                    <div className="flex flex-col flex-1 md:ml-6 pt-1">
                         {completedGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No completed goals</h2>)}
                         {completedGoals && (
                             <>

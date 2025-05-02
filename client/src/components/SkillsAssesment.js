@@ -23,7 +23,7 @@ const MetricInput = React.memo(({ pitchTypeAbbrev, metricsConfig, value, onChang
 
     return (
         <div>
-            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${pitchTypeAbbrev} ${label}`}</label>
+            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${label}`}</label>
             <input type="text" id={inputId} name={inputId} placeholder={placeholder} value={value} onChange={handleChange} className={`text-black pl-1 ${width} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded`} />
         </div>
     )
@@ -35,8 +35,8 @@ const PitchDataInputGroup = React.memo(({ pitchType, pitchTypeAbbrev, pitchData,
     }, [onMetricChange, pitchType]);
 
     return (
-        <div className="col-span-2 grid grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
-            <h3 className="col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
+        <div className="col-span-2 grid grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
+            <h3 className="col-span-2 md:col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
             {metricsConfig.map((metricConfig) => (
                 <MetricInput key={metricConfig.key} pitchTypeAbbrev={pitchTypeAbbrev} metricsConfig={metricConfig} value={pitchData[metricConfig.key]} onChange={handleInputChange} />
             ))}
@@ -113,10 +113,10 @@ const SkillsAssesment = ({ ready }) => {
     }
 
     const metricsConfig = [
-        { key: 'MaxVelo', label: 'Max Velo', placeholder: '75', width: 'w-[75px]' },
-        { key: 'AverageVelo', label: 'Average Velo', placeholder: '80', width: 'w-[75px]' },
-        { key: 'Command', label: 'Command', placeholder: '5', width: 'w-[75px]' },
-        { key: 'Movement', label: 'Movement', placeholder: '5', width: 'w-[75px]' }
+        { key: 'MaxVelo', label: 'Max Velo', placeholder: '75', width: 'w-[40px]' },
+        { key: 'AverageVelo', label: 'Average Velo', placeholder: '80', width: 'w-[40px]' },
+        { key: 'Command', label: 'Command', placeholder: '5', width: 'w-[25px]' },
+        { key: 'Movement', label: 'Movement', placeholder: '5', width: 'w-[25px]' }
     ]
 
     const [pitchMetrics, setPitchMetrics] = useState(initialPitchMetrics);
@@ -187,7 +187,7 @@ const SkillsAssesment = ({ ready }) => {
             <div className="pl-2">
                 <div className="py-1">
                     <label htmlFor={id} className="text-black pr-2">{label}</label>
-                    <input type="number" placeholder="1-10" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" name={id} value={rating} onChange={handleSkillRating} />
+                    <input type="number" placeholder="1-10" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded" name={id} value={rating} onChange={handleSkillRating} />
                 </div>
             </div>
         )
@@ -248,7 +248,7 @@ const SkillsAssesment = ({ ready }) => {
                 <div className="pl-2">
                     <div className="py-1">
                         <label htmlFor="Velocity" className="text-black pr-2">Velocity</label>
-                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" name={"Velocity"} value={throwingRatings.Velocity} onChange={(e) => setThrowingRatings((prevRatings) => ({ ...prevRatings, ["Velocity"]: e.target.value, }))} />
+                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded" name={"Velocity"} value={throwingRatings.Velocity} onChange={(e) => setThrowingRatings((prevRatings) => ({ ...prevRatings, ["Velocity"]: e.target.value, }))} />
                     </div>
                 </div>
             </div>
@@ -267,7 +267,7 @@ const SkillsAssesment = ({ ready }) => {
                 <div className="pl-2">
                     <div className="py-1">
                         <label htmlFor="Tee Exit Velocity" className="text-black pr-2">Velocity</label>
-                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none" name={"Tee Exit Velocity"} value={hittingRatings["Tee Exit Velo"]} onChange={(e) => setHittingRatings((prevRatings) => ({ ...prevRatings, ["Tee Exit Velo"]: e.target.value, }))} />
+                        <input type="number" placeholder="mph" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded" name={"Tee Exit Velocity"} value={hittingRatings["Tee Exit Velo"]} onChange={(e) => setHittingRatings((prevRatings) => ({ ...prevRatings, ["Tee Exit Velo"]: e.target.value, }))} />
                     </div>
                 </div>
             </div>
@@ -280,12 +280,12 @@ const SkillsAssesment = ({ ready }) => {
             </div>
             {pitchingChecked && (
                 <>
-                    <div className="col-span-full grid md:grid-cols-4 sm:grid-cols-2">
+                    <div className="col-span-full grid grid-cols-1 md:grid-cols-4">
                         <SkillScore label="Upper Body Mechanics" id="Upper Body Mechanics" rating={pitchingRatings["Upper Body Mechanics"]} onRatingChange={handleSkillScore} subset="pitching" />
                         <SkillScore label="Lower Body Mechanics" id="Lower Body Mechanics" rating={pitchingRatings["Lower Body Mechanics"]} onRatingChange={handleSkillScore} subset="pitching" />
                         <SkillScore label="Arm Path" id="Arm Path" rating={pitchingRatings["Arm Path"]} onRatingChange={handleSkillScore} subset="pitching" />
                     </div>
-                    <div className="col-span-2 grid grid-cols-6 shadow-md pl-2 py-1">
+                    <div className="col-span-2 grid grid-cols-3 md:grid-cols-6 shadow-md pl-2 py-1">
                         <PitchMix label="4SFB" id="FourSeamFastball" value={arsenal.FourSeamFastball} onChange={handleArsenalChange} />
                         <PitchMix label="2SFB" id="TwoSeamFastball" value={arsenal.TwoSeamFastball} onChange={handleArsenalChange} />
                         <PitchMix label="CT" id="Cutter" value={arsenal.Cutter} onChange={handleArsenalChange} />

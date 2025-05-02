@@ -17,7 +17,7 @@ function AssesmentRating({ label, id, rating, onRatingChange }) {
         onRatingChange(id, e.target.value)
     }
     return (
-        <div className="pl-2 shadow-md">
+        <div className="pl-2 shadow-md py-2 md:py-0">
             <label htmlFor={id} className="text-black">{label}</label>
             <div className="flex space-x-4">
                 <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange} />Good</label>
@@ -38,7 +38,7 @@ const MetricInput = React.memo(({ pitchTypeAbrev, metricsConfig, value, onChange
 
     return (
         <div>
-            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${pitchTypeAbrev} ${label}`}</label>
+            <label htmlFor={inputId} className="text-black mr-2 text-sm">{`${label}`}</label>
             <input type="text" id={inputId} name={inputId} placeholder={placeholder} value={value} onChange={handleChange} className={`text-black pl-1 ${width} [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded`} />
         </div>
     )
@@ -50,8 +50,8 @@ const PitchDataInputGroup = React.memo(({ pitchType, pitchTypeAbrev, pitchData, 
     }, [onMetricChange, pitchType]);
 
     return (
-        <div className="col-span-2 grid grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
-            <h3 className="col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
+        <div className="col-span-2 grid grid-cols-2 md:grid-cols-3 gap-y-2 gap-x-4 shadow-md pt-2 pl-3 pb-3 pr-2 mb-4 border border-gray-200 rounded">
+            <h3 className="col-span-2 md:col-span-3 text-black text-lg font-semibold">{pitchType}</h3>
             {metricsConfig.map((metricsConf) => (
                 <MetricInput key={metricsConf.key} pitchTypeAbrev={pitchTypeAbrev} metricsConfig={metricsConf} value={pitchData[metricsConf.key]} onChange={handleInputChange} />
             ))}
@@ -178,16 +178,16 @@ const PitchingAssesment = ({ ready }) => {
     };
 
     const metricsConfig = [
-        { key: 'AverageVelo', label: 'Average Velo', placeholder: '75', width: 'w-[75px]' },
-        { key: 'MaxVelo', label: 'Max Velo', placeholder: '80', width: 'w-[75px]' },
-        { key: 'AverageRPM', label: 'Average RPM', placeholder: '2750', width: 'w-[75px]' },
-        { key: 'MaxRPM', label: 'Max RPM', placeholder: '3000', width: 'w-[75px]' },
-        { key: 'SpinEfficencyAvg', label: 'Spin Efficiency Average', placeholder: '97', width: 'w-[50px]' },
-        { key: 'SpinAxis', label: 'Spin Axis', placeholder: '12:00', width: 'w-[75px]' },
-        { key: 'HorizontalBreak', label: 'Horizontal Break', placeholder: '5', width: 'w-[75px]' },
-        { key: 'VerticalBreak', label: 'Vertical Break', placeholder: '5', width: 'w-[75px]' },
-        { key: 'AverageReleaseHeight', label: 'Average Release Height', placeholder: '4.5', width: 'w-[50px]' },
-        { key: 'AverageReleaseSide', label: 'Average Release Side', placeholder: '4', width: 'w-[50px]' }
+        { key: 'AverageVelo', label: 'Average Velo', placeholder: '75', width: 'w-[40px]' },
+        { key: 'MaxVelo', label: 'Max Velo', placeholder: '80', width: 'w-[40px]' },
+        { key: 'AverageRPM', label: 'Average RPM', placeholder: '2750', width: 'w-[50px]' },
+        { key: 'MaxRPM', label: 'Max RPM', placeholder: '3000', width: 'w-[50px]' },
+        { key: 'SpinEfficencyAvg', label: 'Spin Eff Avg', placeholder: '97', width: 'w-[30px]' },
+        { key: 'SpinAxis', label: 'Spin Axis', placeholder: '12:00', width: 'w-[55px]' },
+        { key: 'HorizontalBreak', label: 'Horizontal Break', placeholder: '5', width: 'w-[30px]' },
+        { key: 'VerticalBreak', label: 'Vertical Break', placeholder: '5', width: 'w-[30px]' },
+        { key: 'AverageReleaseHeight', label: 'Avg Rel Height', placeholder: '4.5', width: 'w-[35px]' },
+        { key: 'AverageReleaseSide', label: 'Avg Rel Side', placeholder: '4', width: 'w-[35px]' }
     ]
 
     const [pitchMetrics, setPitchMetrics] = useState(initialPitchMetrics);
@@ -286,8 +286,8 @@ const PitchingAssesment = ({ ready }) => {
                     <AssesmentRating label="Gloveside Control" id="Gloveside" rating={mechRatings.Gloveside} onRatingChange={handleMechRatingChange} />
                     <AssesmentRating label="Proper Arm Path" id="Arm Path" rating={mechRatings["Arm Path"]} onRatingChange={handleMechRatingChange} />
                     <AssesmentRating label="ER Rotation" id="ER Rotation" rating={mechRatings["ER Rotation"]} onRatingChange={handleMechRatingChange} />
-                    <label htmlFor="Notes" className="text-black col-span-2 pl-2">Notes</label>
-                    <input type="text" placeholder="Additional Notes" id="Notes" autoComplete="off" value={mechComments} onChange={(e) => setMechComments(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
+                    <label htmlFor="Notes" className="text-black col-span-1 md:col-span-2 pl-2">Notes</label>
+                    <input type="text" placeholder="Additional Notes" id="Notes" autoComplete="off" value={mechComments} onChange={(e) => setMechComments(e.target.value)} className="col-span-1 md:col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
                 </>
             )}
 
@@ -297,7 +297,8 @@ const PitchingAssesment = ({ ready }) => {
             </div>
             {pitchMetricsChecked && (
                 <>
-                    <div className="col-span-2 grid grid-cols-6 shadow-md pl-2 py-1">
+                <div className="grid grid-cols-2 md:col-span-full">
+                    <div className="col-span-2 grid grid-cols-3 md:grid-cols-6 shadow-md pl-2 py-1">
                         <PitchMix label="4SFB" id="FourSeamFastball" value={arsenal.FourSeamFastball} onChange={handleArsenalChange} />
                         <PitchMix label="2SFB" id="TwoSeamFastball" value={arsenal.TwoSeamFastball} onChange={handleArsenalChange} />
                         <PitchMix label="CT" id="Cutter" value={arsenal.Cutter} onChange={handleArsenalChange} />
@@ -335,6 +336,7 @@ const PitchingAssesment = ({ ready }) => {
                             <PitchDataInputGroup pitchType="ChangeUp" pitchTypeAbrev="CH" pitchData={pitchMetrics.ChangeUp} metricsConfig={metricsConfig} onMetricChange={handleMetricChange} />
                         </>
                     )}
+                    </div>
                 </>
             )}
         </>
