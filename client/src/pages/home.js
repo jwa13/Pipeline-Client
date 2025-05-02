@@ -56,20 +56,20 @@ export default function home() {
         <div className="flex min-h-screen">
             <Navbar />
             <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
-                <TopBar pageName={"Home"} onLogout={handleLogout}/>
+                <TopBar pageName={"Home"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
                     {accType && accType === 'athlete' && (
                         <>
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Active Goals</h2>
                             <div className="flex flex-col flex-1 md:ml-6 pt-1 xl:grid xl:grid-cols-3">
-                                {profileData && profileData.data.goals[0] && (<Goal goals={profileData.data.goals} />)}
+                                {profileData?.data?.goals?.[0] ? (<Goal goals={profileData.data.goals} />) : (<p className="text-black">You have no active goals right now, to set a new goal navigate to the goals page or click <a href="/goals" className="underline">here</a></p>)}
                             </div>
 
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
                             {profileData && (console.log(profileData.data.recentReport))}
-                            <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
-                                {profileData && (
-                                    <>
+                            {profileData ? (
+                                <>
+                                    <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
                                         {profileData.data.recentReport.report.reportType === 'hitting' && (
                                             <HittingReport report={profileData.data.recentReport} accType={accType} />
                                         )}
@@ -82,9 +82,11 @@ export default function home() {
                                         {profileData.data.recentReport.report.reportType === 'skills' && (
                                             <SkillsReport report={profileData.data.recentReport} accType={accType} />
                                         )}
-                                    </>
-                                )}
-                            </div>
+                                    </div>
+                                </>
+                            ) : (
+                                <p className="text-black">No reports available, schedule an evaluation!</p>
+                            )}
                             {profileData && !profileData.data.health && (<HealthAlert />)}
                         </>
                     )}
