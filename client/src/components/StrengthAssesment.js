@@ -62,7 +62,7 @@ const StrengthAssesment = ({ ready }) => {
             onRatingChange(id, e.target.value)
         }
         return (
-            <div className="pl-2 shadow-md">
+            <div className="pl-2 py-2 shadow-md">
                 <label htmlFor={id} className="text-black">{label}</label>
                 <div className="flex space-x-4">
                     <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange}/>Good</label>
@@ -107,9 +107,9 @@ const StrengthAssesment = ({ ready }) => {
             <AssesmentRating label="R Knee" id="R Knee" rating={fullBodyROM["R Knee"]} onRatingChange={handleROMChange} />
             <AssesmentRating label="L Ankle" id="L Ankle" rating={fullBodyROM["L Ankle"]} onRatingChange={handleROMChange} />
             <AssesmentRating label="R Ankle" id="R Ankle" rating={fullBodyROM["R Ankle"]} onRatingChange={handleROMChange} />
-            <div className="col-span-full">
+            {/* <div className="col-span-full">
                 <h3 className="text-black underline text-lg font-semibold">Postural Assesment</h3>
-            </div>
+            </div> */}
         </>
     )
 }
