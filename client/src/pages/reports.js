@@ -173,7 +173,7 @@ export default function reports() {
                 <div className="flex-1 p-4 bg-white">
                     {accInfo && accInfo === 'coach' && (
                         <>
-                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Most Recent Report</h2>
                             <div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
                                 {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
