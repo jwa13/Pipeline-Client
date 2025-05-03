@@ -11,13 +11,13 @@ function DisplayReports({allReports, accInfo}) {
             {allReports.map((report) => {
                 switch (report.report.reportType) {
                     case 'hitting': 
-                        return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'pitching':
-                        return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'strength':
-                        return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'skills':
-                        return (<div className="flex flex-col flex-1 ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
                 }
             })}
         </>
@@ -54,52 +54,68 @@ const ProfileView = ({profileData}) => {
 
     return (
         <>
-            <h3 className="text-gray-600 text-xl">Profile Info</h3>
+            <h3 className="text-gray-600 text-xl cursor-pointer flex items-center pt-1" onClick={() => setSeeMoreProfile(!seeMoreProfile)}>Profile Info <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeMoreProfile ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
             {seeMoreProfile && (
                 <>
-                    <h4 className="">Name {profileData.profileData.firstName}</h4>
-                    <h4 className="">Age {getAge(profileData.profileData.DOB)}</h4>
-                    <h4 className="">Height {profileData.profileData.height} inches</h4>
-                    <h4 className="">Weight {profileData.profileData.weight} lbs</h4>
-                    <h4 className="">Positions {profileData.profileData.positions.map(item => item.label).join(', ')}</h4>
-                    <h4 className="">Throwing Hand {profileData.profileData.throwing.value}</h4>
-                    <h4 className="">Bats {profileData.profileData.hitting.value}</h4>
-                    <h4 className="">Email {profileData.profileData.email}</h4>
-                    <h4 className="">Phone {profileData.profileData.phone}</h4>
-                    <h3 className="text-gray-600 text-lg">Guardian Info</h3>
-                    {seeGuardian && (
+                    <div className="shadow-md px-2 bg-gray-100 py-1">
+                        <div className="grid grid-cols-2 gap-1">
+                            <h4 className="text-black text-lg">{profileData.profileData.firstName} {profileData.profileData.lastName}</h4>
+                            <h4 className="text-gray-500 pt-1">Age: <span className="text-black">{getAge(profileData.profileData.DOB)}</span></h4>
+                            <h4 className="text-gray-500">Height: <span className="text-black">{profileData.profileData.height} inches</span></h4>
+                            <h4 className="text-gray-500">Weight: <span className="text-black">{profileData.profileData.weight} lbs</span></h4>
+                            <h4 className="text-gray-500">Positions: <span className="text-black">{profileData.profileData.positions.map(item => item.label).join(', ')}</span></h4>
+                            <h4 className="text-gray-500">Throws: <span className="text-black">{profileData.profileData.throwing.value}</span></h4>
+                            <h4 className="text-gray-500">Bats: <span className="text-black">{profileData.profileData.hitting.value}</span></h4>
+                        </div>
+                        <h4 className="text-gray-500 pt-1">Email: <span className="text-black">{profileData.profileData.email}</span></h4>
+                        <h4 className="text-gray-500 pt-1">Phone: <span className="text-black">{profileData.profileData.phone}</span></h4>
+                    </div>
+                    {profileData.profileData.guardianFirstName && (
                         <>
-                            <h4 className="">Name</h4>
-                            <h4 className="">Phone</h4>
+                            <h3 className="text-gray-600 text-lg cursor-pointer flex items-center pt-1" onClick={() => setSeeGuardian(!seeGuardian)}>Guardian Info <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeGuardian ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
+                            {seeGuardian && (
+                                <>
+                                    <div className="shadow-md px-2 bg-gray-100 py-1">
+                                        <h4 className="text-gray-500 pb-1">Name: <span className="text-black">{profileData.profileData.guardianFirstName} {profileData.profileData.guardianLastName}</span></h4>
+                                        <h4 className="text-gray-500">Phone: <span className="text-black">{profileData.profileData.guardianPhone}</span></h4>
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
-                    <h3 className="text-gray-600 text-lg">Health Info</h3>
-                    {seeHealth && (
+                    {profileData.profileData.healthInfo && (
                         <>
-                            <h4 className="">Emergency Contact Name</h4>
-                            <h4 className="">Emergency Contact Phone</h4>
-                            <h4 className="">Relationship to Athlete</h4>
-                            <h4 className="">Current Conditions</h4>
-                            <h4 className="">Past Conditions</h4>
-                            <h4 className="">Surgery</h4>
-                            <h4 className="">Injury</h4>
-                            <h4 className="">Heart</h4>
-                            <h4 className="">Past Restriction</h4>
-                            <h4 className="">Shortness of Breath</h4>
+                            <h3 className="text-gray-600 text-lg cursor-pointer flex items-center pt-1" onClick={() => setSeeHealth(!seeHealth)}>Health <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeHealth ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
+                            {seeHealth && (
+                                <>
+                                    <div className="shadow-md px-2 bg-gray-100 py-1">
+                                        <h4 className="text-gray-500">Emergency Contact: <span className="text-black">{profileData.profileData.healthInfo.emContact.name}</span></h4>
+                                        <h4 className="text-gray-500">Emergency Contact Phone: <span className="text-black">{profileData.profileData.healthInfo.emContact.phone}</span></h4>
+                                        <h4 className="text-gray-500">Relationship to Athlete: <span className="text-black">{profileData.profileData.healthInfo.emContact.relation}</span></h4>
+                                        <h4 className="text-gray-500">Current Conditions: <span className="text-black">{profileData.profileData.healthInfo.currentConditions}</span></h4>
+                                        <h4 className="text-gray-500">Past Conditions: <span className="text-black">{profileData.profileData.healthInfo.pastConditions}</span></h4>
+                                        <div className="grid grid-cols-2">
+                                            <h4 className="text-gray-500">Surgery: <span className="text-black">{profileData.profileData.healthInfo.surgery}</span></h4>
+                                            <h4 className="text-gray-500">Injury: <span className="text-black">{profileData.profileData.healthInfo.injury}</span></h4>
+                                            <h4 className="text-gray-500">Heart: <span className="text-black">{profileData.profileData.healthInfo.heart}</span></h4>
+                                            <h4 className="text-gray-500">Past Restriction: <span className="text-black">{profileData.profileData.healthInfo.restricted}</span></h4>
+                                            <h4 className="text-gray-500">Shortness of Breath: <span className="text-black">{profileData.profileData.healthInfo.breath}</span></h4>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
                 </>
             )}
-            <h3 className="text-gray-600 text-xl">Goals</h3>
-            <button className="" onClick={handleSeeGoals}>See Goals</button>
+            <h3 className="text-gray-600 text-xl cursor-pointer flex items-center" onClick={() => setSeeGoals(!seeGoals)}>Goals <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeGoals ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
             {seeGoals && (
                 <>
                     <Goal goals={profileData.goals.active} />
                     <Goal goals={profileData.goals.inactive} />
                 </>
             )}
-            <h3 className="text-gray-600 text-xl">Reports</h3>
-            <button className="" onClick={handleSeeReports}>See Reports</button>
+            <h3 className="text-gray-600 text-xl cursor-pointer flex items-center" onClick={() => setSeeReports(!seeReports)}>Reports <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeReports ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
             {seeReports && (
                 <>
                   <DisplayReports allReports={profileData.reports} accInfo={'coach'} />

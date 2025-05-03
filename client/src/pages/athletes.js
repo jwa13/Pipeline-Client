@@ -10,6 +10,7 @@ export default function athletes() {
     const [athletes, setAthletes] = useState([]);
     const [selectedAthlete, setSelectedAthlete] = useState(null);
     const [athleteInfo, setAthleteInfo] = useState(null);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const GetAthletes = async () => {
@@ -42,8 +43,8 @@ export default function athletes() {
     const handleSelectedAthlete = async (athlete) => {
         setSelectedAthlete(athlete);
         console.log(athlete.value);
-        // setLoading(true); - allows for the page to display a loading message
-        // setAtheteInfo(null); - clears out previous athlete information if this is the n+1th selection
+        setLoading(true);
+        setAthleteInfo(null);
         try {
             const token = localStorage.getItem('jwt');
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athlete-info/${athlete.value}`, {
@@ -58,6 +59,7 @@ export default function athletes() {
             }
             const data = await response.json();
             setAthleteInfo(data);
+            setLoading(false);
         } catch (error) {
             console.error(error);
         }
@@ -73,6 +75,11 @@ export default function athletes() {
                     {athletes && (<><Select options={athletes} value={selectedAthlete} onChange={handleSelectedAthlete} placeholder="View _____'s Profile: " className="md:mr-2 md:px-6 pt-1" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} /></>)}
                     {athleteInfo && (
                         <><ProfileView profileData={athleteInfo}/></>
+                    )}
+                    {loading && (
+                        <>
+                            <p className="text-gray-500">Loading...</p>
+                        </>
                     )}
                 </div>
             </div>
