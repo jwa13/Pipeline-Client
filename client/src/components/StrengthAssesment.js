@@ -1,5 +1,21 @@
 import React, { useEffect, useState } from "react";
 
+function AssesmentRating({label, id, rating, onRatingChange}) {
+    const handleRadioChange = (e) => {
+        onRatingChange(id, e.target.value)
+    }
+    return (
+        <div className="pl-2 py-2 shadow-md">
+            <label htmlFor={id} className="text-black">{label}</label>
+            <div className="flex space-x-4">
+                <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange}/>Good</label>
+                <label className="text-yellow-500"><input type="radio" className="mr-1" name={id} value="average" checked={rating === 'average'} onChange={handleRadioChange}/>Average</label>
+                <label className="text-red-500"><input type="radio" className="mr-1" name={id} value="needs improvement" checked={rating === 'needs improvement'} onChange={handleRadioChange}/>Needs Improvement</label>
+            </div>
+        </div>
+    );
+}
+
 const StrengthAssesment = ({ ready }) => {
     const [lowerBodyRatings, setLowerBodyRatings] = useState({
         'Overhead Squat': '',
@@ -54,23 +70,6 @@ const StrengthAssesment = ({ ready }) => {
             ...prevRatings,
             [id]: value,
         }));
-    }
-
-
-    function AssesmentRating({label, id, rating, onRatingChange}) {
-        const handleRadioChange = (e) => {
-            onRatingChange(id, e.target.value)
-        }
-        return (
-            <div className="pl-2 py-2 shadow-md">
-                <label htmlFor={id} className="text-black">{label}</label>
-                <div className="flex space-x-4">
-                    <label className="text-green-500"><input type="radio" className="mr-1" name={id} value="good" checked={rating === 'good'} onChange={handleRadioChange}/>Good</label>
-                    <label className="text-yellow-500"><input type="radio" className="mr-1" name={id} value="average" checked={rating === 'average'} onChange={handleRadioChange}/>Average</label>
-                    <label className="text-red-500"><input type="radio" className="mr-1" name={id} value="needs improvement" checked={rating === 'needs improvement'} onChange={handleRadioChange}/>Needs Improvement</label>
-                </div>
-            </div>
-        );
     }
 
     useEffect(() => {
