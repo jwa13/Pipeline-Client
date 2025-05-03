@@ -44,6 +44,28 @@ const PitchDataInputGroup = React.memo(({ pitchType, pitchTypeAbbrev, pitchData,
     )
 });
 
+function SkillScore({ label, id, rating, onRatingChange, subset }) {
+    const handleSkillRating = (e) => {
+        const enteredValue = e.target.value;
+        if(enteredValue === "") {
+            onRatingChange(id, "", subset);
+            return;
+        }
+        const numValue = parseInt(enteredValue, 10);
+        if(!isNaN(numValue) && numValue >= 1 && numValue <= 10){
+            onRatingChange(id, e.target.value, subset);
+        }
+    }
+    return (
+        <div className="pl-2">
+            <div className="py-1">
+                <label htmlFor={id} className="text-black pr-2">{label}</label>
+                <input type="number" placeholder="1-10" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded" name={id} value={rating} onChange={handleSkillRating} min="1" max="10" />
+            </div>
+        </div>
+    )
+}
+
 const SkillsAssesment = ({ ready }) => {
     const [pitchingChecked, setPitchingChecked] = useState(false);
     const [catchingChecked, setCatchingChecked] = useState(false);
@@ -179,20 +201,6 @@ const SkillsAssesment = ({ ready }) => {
         }
     }
 
-    function SkillScore({ label, id, rating, onRatingChange, subset }) {
-        const handleSkillRating = (e) => {
-            onRatingChange(id, e.target.value, subset);
-        }
-        return (
-            <div className="pl-2">
-                <div className="py-1">
-                    <label htmlFor={id} className="text-black pr-2">{label}</label>
-                    <input type="number" placeholder="1-10" className="text-black pl-1 w-[75px] shadow-md [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none border border-gray-300 rounded" name={id} value={rating} onChange={handleSkillRating} />
-                </div>
-            </div>
-        )
-    }
-
     useEffect(() => {
         let data = { infieldRatings, infieldNotes, outfieldRatings, outfieldNotes, throwingRatings, throwingNotes, hittingRatings, hittingNotes };
         if (pitchingChecked) {
@@ -223,7 +231,7 @@ const SkillsAssesment = ({ ready }) => {
                 <SkillScore label="Range/Routes/Speed" id="Range/Routes/Speed" rating={infieldRatings["Range/Routes/Speed"]} onRatingChange={handleSkillScore} subset="infield" />
             </div>
             <label htmlFor="infieldNotes" className="text-black col-span-2 pl-2">Notes</label>
-            <input type="text" placeholder="Additional Notes" id="infieldNotes" value={infieldNotes} onChange={(e) => setInfieldNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+            <input type="text" placeholder="Additional Notes" id="infieldNotes" value={infieldNotes} onChange={(e) => setInfieldNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
 
             <div className="col-span-full">
                 <h3 className="text-black underline text-lg font-semibold">Outfield</h3>
@@ -235,7 +243,7 @@ const SkillsAssesment = ({ ready }) => {
                 <SkillScore label="Range/Routes/Speed" id="Range/Routes/Speed" rating={outfieldRatings["Range/Routes/Speed"]} onRatingChange={handleSkillScore} subset="outfield" />
             </div>
             <label htmlFor="outfieldNotes" className="text-black col-span-2 pl-2">Notes</label>
-            <input type="text" placeholder="Additional Notes" id="outfieldNotes" value={outfieldNotes} onChange={(e) => setOutfieldNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+            <input type="text" placeholder="Additional Notes" id="outfieldNotes" value={outfieldNotes} onChange={(e) => setOutfieldNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
 
             <div className="col-span-full">
                 <h3 className="text-black underline text-lg font-semibold">Throwing</h3>
@@ -253,7 +261,7 @@ const SkillsAssesment = ({ ready }) => {
                 </div>
             </div>
             <label htmlFor="throwingNotes" className="text-black col-span-2 pl-2">Notes</label>
-            <input type="text" placeholder="Additional Notes" id="throwingNotes" value={throwingNotes} onChange={(e) => setThrowingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+            <input type="text" placeholder="Additional Notes" id="throwingNotes" value={throwingNotes} onChange={(e) => setThrowingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
 
             <div className="col-span-full">
                 <h3 className="text-black underline text-lg font-semibold">Hitting</h3>
@@ -272,7 +280,7 @@ const SkillsAssesment = ({ ready }) => {
                 </div>
             </div>
             <label htmlFor="hittingNotes" className="text-black col-span-2 pl-2">Notes</label>
-            <input type="text" placeholder="Additional Notes" id="hittingNotes" value={hittingNotes} onChange={(e) => setHittingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+            <input type="text" placeholder="Additional Notes" id="hittingNotes" value={hittingNotes} onChange={(e) => setHittingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
 
             <div className="col-span-full">
                 <label htmlFor="pitchingCheckbox" className="text-black text-center pr-1 text-lg font-semibold underline">Pitching</label>
@@ -324,7 +332,7 @@ const SkillsAssesment = ({ ready }) => {
                         </>
                     )}
                     <label htmlFor="pitchingNotes" className="text-black col-span-2 pl-2">Notes</label>
-                    <input type="text" placeholder="Additional Notes" id="pitchingNotes" value={pitchingNotes} onChange={(e) => setPitchingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+                    <input type="text" placeholder="Additional Notes" id="pitchingNotes" value={pitchingNotes} onChange={(e) => setPitchingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
                 </>
             )}
 
@@ -343,7 +351,7 @@ const SkillsAssesment = ({ ready }) => {
                         <SkillScore label="Arm Strength" id="Arm Strength" rating={catchingRatings["Arm Strength"]} onRatingChange={handleSkillScore} subset={"catching"} />
                     </div>
                     <label htmlFor="catchingNotes" className="text-black col-span-2 pl-2">Notes</label>
-                    <input type="text" placeholder="Additional Notes" id="catchingNotes" value={catchingNotes} onChange={(e) => setCatchingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2"></input>
+                    <input type="text" placeholder="Additional Notes" id="catchingNotes" value={catchingNotes} onChange={(e) => setCatchingNotes(e.target.value)} className="col-span-2 shadow-md pl-2 pt-2 pb-2 text-black"></input>
                 </>
             )}
         </>
