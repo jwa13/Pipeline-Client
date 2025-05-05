@@ -100,7 +100,7 @@ export default function profile() {
             <div className="flex flex-col flex-1 pb-16 md:pb-0 md:ml-64 min-h-screen">
                 <TopBar pageName={"Profile"} onLogout={handleLogout}/>
                 <div className="flex-1 p-4 bg-white">
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:md:pl-6 pt-2 tracking-wider">Account Information</h2>
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:md:pl-6 md:pt-2 tracking-wider">Account Information</h2>
                     {profileData && profileData.guardianFirstName && (<h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-6 pt-2 underline">Athlete</h3>)}
                     <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
                     {profileData && populateProfile(profileData)}

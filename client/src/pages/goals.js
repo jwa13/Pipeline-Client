@@ -107,7 +107,7 @@ export default function goals() {
             <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
                 <TopBar pageName={"Goals"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white">
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Active Goals</h2>
+                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Active Goals</h2>
                     <div className="flex flex-col flex-1 md:ml-6 pt-1 xl:grid xl:grid-cols-3">
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
