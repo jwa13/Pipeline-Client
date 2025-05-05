@@ -14,7 +14,8 @@ export default function home() {
     const router = useRouter();
 
     const [profileData, setProfileData] = useState(null);
-    const [accType, setAccType] = useState(null)
+    const [accType, setAccType] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const handleLogout = () => {
         if(typeof window != 'undefined') {
@@ -45,6 +46,7 @@ export default function home() {
                 const data = await response.json();
                 console.log(data);
                 setProfileData(data);
+                setLoading(false);
             } catch (error) {
                 console.error(error);
             }
@@ -61,32 +63,47 @@ export default function home() {
                     {accType && accType === 'athlete' && (
                         <>
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Active Goals</h2>
-                            <div className="flex flex-col flex-1 md:ml-6 pt-1 xl:grid xl:grid-cols-3">
-                                {profileData?.data?.goals?.[0] ? (<Goal goals={profileData.data.goals} />) : (<p className="text-black">You have no active goals right now, to set a new goal navigate to the goals page or click <a href="/goals" className="underline">here</a></p>)}
-                            </div>
-
-                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
-                            {profileData && (console.log(profileData.data.recentReport))}
-                            {profileData ? (
-                                <>
-                                    <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
-                                        {profileData.data.recentReport.report.reportType === 'hitting' && (
-                                            <HittingReport report={profileData.data.recentReport} accType={accType} />
-                                        )}
-                                        {profileData.data.recentReport.report.reportType === 'pitching' && (
-                                            <PitchingReport report={profileData.data.recentReport} accType={accType} />
-                                        )}
-                                        {profileData.data.recentReport.report.reportType === 'strength' && (
-                                            <StrengthReport report={profileData.data.recentReport} accType={accType} />
-                                        )}
-                                        {profileData.data.recentReport.report.reportType === 'skills' && (
-                                            <SkillsReport report={profileData.data.recentReport} accType={accType} />
-                                        )}
-                                    </div>
-                                </>
+                            {loading ? (
+                                <div className="md:ml-6 pt-1">
+                                    <p className="text-gray-500">Loading goals...</p>
+                                </div>
                             ) : (
-                                <p className="text-black">No reports available, schedule an evaluation!</p>
+                                <div className="flex flex-col flex-1 md:ml-6 pt-1 xl:grid xl:grid-cols-3">
+                                    {profileData?.data?.goals?.[0] ? (
+                                        <Goal goals={profileData.data.goals} />
+                                    ) : (
+                                        <p className="text-black">You have no active goals right now, to set a new goal navigate to the goals page or click <a href="/goals" className="underline">here</a></p>
+                                    )}
+                                </div>
                             )}
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
+                            {loading ? (
+                                <div className="md:ml-6 md:pl-2 pt-1">
+                                    <p className="text-gray-500">Loading report...</p>
+                                </div>
+                            ) : (
+                                <>
+                                    {profileData?.data?.recentReport ? (
+                                        <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
+                                            {profileData.data.recentReport.report.reportType === 'hitting' && (
+                                                <HittingReport report={profileData.data.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.data.recentReport.report.reportType === 'pitching' && (
+                                                <PitchingReport report={profileData.data.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.data.recentReport.report.reportType === 'strength' && (
+                                                <StrengthReport report={profileData.data.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.data.recentReport.report.reportType === 'skills' && (
+                                                <SkillsReport report={profileData.data.recentReport} accType={accType} />
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-black">No reports available, schedule an evaluation!</p>
+                                    )}
+                                </>
+                            )}
+                            {profileData && (console.log(profileData.data.recentReport))}
                             {profileData && !profileData.data.health && (<HealthAlert />)}
                         </>
                     )}
