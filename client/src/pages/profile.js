@@ -128,10 +128,10 @@ export default function profile() {
                     )}
                     {profileData && (profileData.accType === 'athlete') && (profileData.hasGoals === false) && (
                         <>
-                            <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 px-10 py-3 m-4 md:m-10 rounded relative" role="alert">
+                            <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 mt-3 md:px-10 md:py-3 md:m-4 md:mx-10 md:my-5 rounded relative" role="alert">
                                 <div className="grid grid-flow-col-dense items-center">
-                                    <a href="/goals"><img src="/trophy.svg" className="mx-auto h-10 pr-10" alt="Trohy represents goals"></img></a>
-                                    <strong className="font text-white text-xl font-bebas-neue tracking-wide"><span className="text-2xl">{profileData && (profileData.firstName)}!</span> You have not set any goals yet, click the trophy or navigate to the goals tab to set new goals!</strong>
+                                    <a href="/goals"><img src="/trophy.svg" className="md:mx-auto h-10 md:pr-10 pl-3 md:pl-0 pr-3 md:pr-0" alt="Trohy represents goals"></img></a>
+                                    <strong className="font text-white text-md md:text-xl font-bebas-neue tracking-wide"><span className="text-lg md:text-2xl">{profileData && (profileData.firstName)}!</span> You have not set any goals yet, click the trophy or navigate to the goals tab to set new goals!</strong>
                                 </div>
                             </div>
                         </>
