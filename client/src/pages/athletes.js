@@ -42,7 +42,7 @@ export default function athletes() {
 
     const handleSelectedAthlete = async (athlete) => {
         setSelectedAthlete(athlete);
-        console.log(athlete.value);
+        // console.log(athlete.value);
         setLoading(true);
         setAthleteInfo(null);
         try {

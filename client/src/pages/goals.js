@@ -37,8 +37,8 @@ export default function goals() {
                     router.push("/login");
                 }
                 const data = await response.json();
-                console.log(data);
-                console.log(data.inactive.length);
+                // console.log(data);
+                // console.log(data.inactive.length);
 
                 if(data.active.length > 0) {
                     setActiveGoals(data.active);
@@ -74,7 +74,7 @@ export default function goals() {
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log("submitted");
+        // console.log("submitted");
 
         const goal = {};
         goal.type = goalType;
@@ -85,7 +85,7 @@ export default function goals() {
         const formattedDate = now.toISOString();
 
         goal.dateCreated = formattedDate;
-        console.log(JSON.stringify(goal));
+        // console.log(JSON.stringify(goal));
 
         try {
             const token = localStorage.getItem("jwt");

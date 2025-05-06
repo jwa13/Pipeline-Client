@@ -6,7 +6,7 @@ const handleLogin = async (email, password) => {
         const result = await signInWithEmailAndPassword(auth, email, password);
         const user = result.user;
         const idToken = await user.getIdToken();
-        console.log(idToken);
+        // console.log(idToken);
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/login`, {
             method: "POST",
@@ -17,7 +17,7 @@ const handleLogin = async (email, password) => {
         const data = await response.json();
         if(data.token) {
             localStorage.setItem("jwt", data.token);
-            console.log("jwt:", data.token);
+            // console.log("jwt:", data.token);
         }
     } catch (error) {
         throw error;

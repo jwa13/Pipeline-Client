@@ -17,7 +17,7 @@ export default function health() {
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log('health submitted');
+        // console.log('health submitted');
 
         const healthInfo = {};
         healthInfo.name = emContactName;

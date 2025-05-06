@@ -39,7 +39,7 @@ export default function newUserForm() {
 
     const submit = async (e) => {
         e.preventDefault();
-        console.log("submitted");
+        // console.log("submitted");
 
         const accountInfo = {};
         accountInfo.type = accountType;
@@ -68,7 +68,7 @@ export default function newUserForm() {
                 accountInfo.guardianPhone = gaurdianPhone;
             }
         }
-        console.log(localStorage.getItem("jwt"));
+        // console.log(localStorage.getItem("jwt"));
         await handleNewUser(accountInfo);
         router.push("/login");
     }

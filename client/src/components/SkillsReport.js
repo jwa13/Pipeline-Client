@@ -42,7 +42,7 @@ const SkillsReport = ({report, accType}) => {
 
     return (
         <>
-            {console.log(report)}
+            {/* {console.log(report)} */}
             {!moreData && (
                 <div className="flex flex-wrap items-center p-1">
                     {accType === 'coach' && (<h2 className="mr-4 text-black">Athlete Name: <span className="text-gray-600">{report.athleteName}</span></h2>)}
