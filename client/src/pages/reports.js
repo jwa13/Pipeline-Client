@@ -131,7 +131,7 @@ export default function reports() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(reportData);
+        // console.log(reportData);
         try{
             const token = localStorage.getItem("jwt");
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/newReport`, {

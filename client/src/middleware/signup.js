@@ -7,7 +7,7 @@ const handleSignUp = async (email, password) => {
         const user = userCredentail.user;
         const idToken = await user.getIdToken();
 
-        console.log("Firebase Token:", idToken);
+        // console.log("Firebase Token:", idToken);
 
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/signup`, {
             method: "POST",
@@ -18,7 +18,7 @@ const handleSignUp = async (email, password) => {
         const data = await response.json();
         if(data.token) {
             localStorage.setItem("jwt", data.token);
-            console.log("jwt:", data.token);
+            // console.log("jwt:", data.token);
         }
     } catch (error) {
         throw error;

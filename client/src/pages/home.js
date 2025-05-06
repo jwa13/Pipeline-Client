@@ -44,7 +44,7 @@ export default function home() {
                 }
 
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
                 setProfileData(data);
                 setLoading(false);
             } catch (error) {
@@ -103,7 +103,7 @@ export default function home() {
                                     )}
                                 </>
                             )}
-                            {profileData && (console.log(profileData.data.recentReport))}
+                            {/* {profileData && (console.log(profileData.data.recentReport))} */}
                             {profileData && !profileData.data.health && (<HealthAlert />)}
                         </>
                     )}

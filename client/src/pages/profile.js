@@ -28,7 +28,7 @@ export default function profile() {
                     router.push("/login");
                 }
                 const data = await response.json();
-                console.log(data);
+                // console.log(data);
                 setProfileData(data);
             } catch (error) {
                 console.error(error);
