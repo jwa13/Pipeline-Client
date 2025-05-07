@@ -171,7 +171,7 @@ export default function goals() {
                         {completedGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No completed goals</h2>)}
                         {completedGoals && (
                             <>
-                                <Goal goals={completedGoals}/>
+                                <Goal goals={completedGoals} />
                             </>
                         )}
                     </div>
