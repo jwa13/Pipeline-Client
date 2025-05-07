@@ -37,15 +37,16 @@ export default function goals() {
                     router.push("/login");
                 }
                 const data = await response.json();
+                if(!data.message) {
+                    if(data.active.length > 0) {
+                        setActiveGoals(data.active);
+                    }
+                    if(data.inactive.length > 0) {
+                        setCompletedGoals(data.inactive);
+                    }
+                }
                 // console.log(data);
                 // console.log(data.inactive.length);
-
-                if(data.active.length > 0) {
-                    setActiveGoals(data.active);
-                }
-                if(data.inactive.length > 0) {
-                    setCompletedGoals(data.inactive);
-                }
             } catch (error) {
                 console.error(error);
             }
