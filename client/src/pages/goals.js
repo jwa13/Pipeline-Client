@@ -72,6 +72,22 @@ export default function goals() {
         }
     }
 
+    const handleComplete = async (goalId) => {
+        try {
+            const token = localStorage.getItem('jwt');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/completeGoal/${goalId}`, {
+                method: 'POST',
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"}
+            });
+            const status = await response.status;
+            if(status === 200) {
+                router.reload("/goals");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     const submit = async (e) => {
         e.preventDefault();
         // console.log("submitted");
@@ -112,7 +128,7 @@ export default function goals() {
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
                             <>
-                                <Goal goals={activeGoals}/>
+                                <Goal goals={activeGoals} handleComplete={handleComplete} />
                             </>
                         )}
                     </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const Goal = ({ goals }) => {
+const Goal = ({ goals, handleComplete }) => {
     const formatDate = (unformattedDate) => {
         const date = new Date(unformattedDate);
         const options = {
@@ -18,39 +18,33 @@ const Goal = ({ goals }) => {
         const daysLeft = Math.ceil(diff / (1000*60*60*24));
         return daysLeft;
     }
-    if(goals[0].active) {
-        return (
-            <>
-                {goals.map((item, index) => {
-                    return (
-                        <div key={index} className="shadow-md p-2 grid grid-cols-3 pb-2 md:ml-1">
-                            <h2 className="text-gray-700 font-bebas-neue text-2xl col-span-full flex justify-center pb-1">{item.content}</h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Type: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{item.type}</span></h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Created On: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{formatDate(item.dateCreated)}</span></h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Days Left: <span className="pl-1"  style={{ fontFamily: 'Arial' }}>{daysLeft(item.targetCompletion)}</span></h2>
+
+    return (
+        <>
+            {goals.map((item) => {
+                const currentGoal = item.goal;
+                return (
+                    <div key={item.id} className="shadow-md p-2 pb-2 md:ml-1">
+                        <div className="grid grid-cols-3">
+                            <h2 className="text-gray-700 font-bebas-neue text-2xl col-span-full flex justify-center pb-1">{currentGoal.content}</h2>
+                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Type: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{currentGoal.type}</span></h2>
+                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Created On: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{formatDate(currentGoal.dateCreated)}</span></h2>
+                            {currentGoal.active ? (
+                                <h2 className="text-gray-700 font-bebas-neue flex justify-center">Days Left: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{daysLeft(currentGoal.targetCompletion)}</span></h2>
+                            ) : (
+                                <h2 className="text-gray-700 font-bebas-neue flex justify-center">Achieved: <span className="pl-1" style={{ fontFamily: 'Arial' }}></span></h2>
+                            )}
                         </div>
-                    )
-                })}
-            </>
-        );
-    }
-    if(goals[0].active == false) {
-        return (
-            <>
-                {goals.map((item, index) => {
-                    return (
-                        <div key={index} className="shadow-md p-2 grid grid-cols-3 pb-2 md:ml-1">
-                            <h2 className="text-gray-700 font-bebas-neue text-2xl col-span-full flex justify-center pb-1">{item.content}</h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Type: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{item.type}</span></h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Created On: <span className="pl-1" style={{ fontFamily: 'Arial' }}>{formatDate(item.dateCreated)}</span></h2>
-                            <h2 className="text-gray-700 font-bebas-neue flex justify-center">Achieved: <span className="pl-1" style={{ fontFamily: 'Arial' }}></span></h2>
-                        </div>
-                    )
-                })}
-            </>
-        )
-    }
-    
+                        {currentGoal.active && handleComplete &&(
+                            <>
+                                <button onClick={() => handleComplete(item.id)}>Mark as Complete</button>
+                            </>
+                        )}
+                    </div>
+                )
+            })}
+        </>
+    ) 
 }
 
 export default Goal;
