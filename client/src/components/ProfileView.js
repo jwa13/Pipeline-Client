@@ -111,14 +111,28 @@ const ProfileView = ({profileData}) => {
             <h3 className="text-gray-600 text-xl cursor-pointer flex items-center" onClick={() => setSeeGoals(!seeGoals)}>Goals <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeGoals ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
             {seeGoals && (
                 <>
-                    <Goal goals={profileData.goals.active} />
-                    <Goal goals={profileData.goals.inactive} />
+                    {profileData?.goals ? (
+                        <>
+                            <h4 className="text-gray-500 underline">Active</h4>
+                            {profileData?.goals?.active?.[0] ? (<Goal goals={profileData.goals.active} />) : (<p className="text-black">This athlete has no active goals</p>)}
+                            <h4 className="text-gray-500 underline">Inactive</h4>
+                            {profileData?.goals?.inactive?.[0] ? (<Goal goals={profileData.goals.inactive} />) : (<p className="text-black">This athlete has no inactive goals</p>)}
+                        </>
+                    ) : (
+                        <>
+                            <p className="text-black">This athlete has no goals set</p>
+                        </>
+                    )}
                 </>
             )}
             <h3 className="text-gray-600 text-xl cursor-pointer flex items-center" onClick={() => setSeeReports(!seeReports)}>Reports <span className={`text-gray-500 ml-2 transform transition-transform duration-200 ${seeReports ? 'rotate-0' : '-rotate-90'}`}>⏷</span></h3>
             {seeReports && (
                 <>
-                  <DisplayReports allReports={profileData.reports} accInfo={'coach'} />
+                    {profileData?.reports?.[0] ? (
+                        <DisplayReports allReports={profileData.reports} accInfo={'coach'} />
+                    ) : (
+                        <p className="text-black">This athlete has no reports yet</p>
+                    )}
                 </>
             )}
         </>
