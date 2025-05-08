@@ -76,7 +76,7 @@ export default function home() {
                                     )}
                                 </div>
                             )}
-                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 pt-2 tracking-wider">Most Recent Report</h2>
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Most Recent Report</h2>
                             {loading ? (
                                 <div className="md:ml-6 md:pl-2 pt-1">
                                     <p className="text-gray-500">Loading report...</p>
@@ -105,6 +105,38 @@ export default function home() {
                             )}
                             {/* {profileData && (console.log(profileData.data.recentReport))} */}
                             {profileData && !profileData.data.health && (<HealthAlert />)}
+                        </>
+                    )}
+                    {accType === 'coach' && (
+                        <>
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Most Recent Report</h2>
+                            {loading ? (
+                                <div className="md:ml-6 md:pl-2 pt-1">
+                                    <p className="text-gray-500">Loading report...</p>
+                                </div>
+                            ) : (
+                                <>
+                                    {profileData?.responseData?.recentReport ? (
+                                        <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
+                                            {profileData.responseData.recentReport.report.reportType === 'hitting' && (
+                                                <HittingReport report={profileData.responseData.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.responseData.recentReport.report.reportType === 'pitching' && (
+                                                <PitchingReport report={profileData.responseData.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.responseData.recentReport.report.reportType === 'strength' && (
+                                                <StrengthReport report={profileData.responseData.recentReport} accType={accType} />
+                                            )}
+                                            {profileData.responseData.recentReport.report.reportType === 'skills' && (
+                                                <SkillsReport report={profileData.responseData.recentReport} accType={accType} />
+                                            )}
+                                        </div>
+                                    ) : (
+                                        <p className="text-black">You haven't created any reports yet. When you fill out a player report it will appear here.</p>
+                                    )}
+                                </>
+                            )}
+                            <h3 className="text-gray-600 text-2xl md:px-6 pt-2">Current Number of Athletes: {loading ? (<>Loading athlete count...</>) : (<>{profileData.responseData.numberOfAthletes}</>)}</h3>
                         </>
                     )}
                 </div>
