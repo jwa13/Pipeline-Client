@@ -37,15 +37,16 @@ export default function goals() {
                     router.push("/login");
                 }
                 const data = await response.json();
+                if(!data.message) {
+                    if(data.active.length > 0) {
+                        setActiveGoals(data.active);
+                    }
+                    if(data.inactive.length > 0) {
+                        setCompletedGoals(data.inactive);
+                    }
+                }
                 // console.log(data);
                 // console.log(data.inactive.length);
-
-                if(data.active.length > 0) {
-                    setActiveGoals(data.active);
-                }
-                if(data.inactive.length > 0) {
-                    setCompletedGoals(data.inactive);
-                }
             } catch (error) {
                 console.error(error);
             }
@@ -69,6 +70,22 @@ export default function goals() {
             return <button onClick={submit} className="justify-self-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Add Goal</button>
         } else {
             return <button onClick={submit} disabled className="justify-self-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Add Goal</button>
+        }
+    }
+
+    const handleComplete = async (goalId) => {
+        try {
+            const token = localStorage.getItem('jwt');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/completeGoal/${goalId}`, {
+                method: 'POST',
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"}
+            });
+            const status = await response.status;
+            if(status === 200) {
+                router.reload("/goals");
+            }
+        } catch (error) {
+            console.error(error);
         }
     }
 
@@ -112,7 +129,7 @@ export default function goals() {
                         {activeGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No active goals</h2>)}
                         {activeGoals && (
                             <>
-                                <Goal goals={activeGoals}/>
+                                <Goal goals={activeGoals} handleComplete={handleComplete} />
                             </>
                         )}
                     </div>
@@ -155,7 +172,7 @@ export default function goals() {
                         {completedGoals === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No completed goals</h2>)}
                         {completedGoals && (
                             <>
-                                <Goal goals={completedGoals}/>
+                                <Goal goals={completedGoals} />
                             </>
                         )}
                     </div>
