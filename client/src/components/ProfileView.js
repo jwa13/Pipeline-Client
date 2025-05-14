@@ -11,13 +11,13 @@ function DisplayReports({allReports, accInfo}) {
             {allReports.map((report) => {
                 switch (report.report.reportType) {
                     case 'hitting': 
-                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 px-2 pt-1 shadow-md bg-gray-100 mb-2"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'pitching':
-                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 px-2 pt-1 shadow-md bg-gray-100 mb-2"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'strength':
-                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 px-2 pt-1 shadow-md bg-gray-100 mb-2"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     case 'skills':
-                        return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                        return (<div className="flex flex-col flex-1 px-2 pt-1 shadow-md bg-gray-100 mb-2"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
                 }
             })}
         </>

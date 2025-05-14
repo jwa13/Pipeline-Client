@@ -152,13 +152,13 @@ export default function reports() {
                 {allReports.map((report) => {
                     switch (report.report.reportType) {
                         case 'hitting': 
-                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md bg-gray-100 mb-2"><HittingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'pitching':
-                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md bg-gray-100 mb-2"><PitchingReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'strength':
-                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md bg-gray-100 mb-2"><StrengthReport key={report.reportId} report={report} accType={accInfo} /></div>)
                         case 'skills':
-                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
+                            return (<div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md bg-gray-100 mb-2"><SkillsReport key={report.reportId} report={report} accType={accInfo} /></div>)
                     }
                 })}
             </>
@@ -174,7 +174,7 @@ export default function reports() {
                     {accInfo && accInfo === 'coach' && (
                         <>
                             <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:px-6 md:pt-2 tracking-wider">Most Recent Report</h2>
-                            <div className="flex flex-col flex-1 md:ml-6 pl-2 pt-1 shadow-md">
+                            <div className="flex flex-col flex-1 md:ml-6 pl-2 py-2 shadow-md bg-gray-100">
                                 {recentReport === null && (<h2 className="text-gray-600 text-l pt-1 pb-2">No Reports Found</h2>)}
                                 {recentReport && recentReport.report.reportType === 'hitting' && (<HittingReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'pitching' && (<PitchingReport report={recentReport} accType={accInfo} />)}
