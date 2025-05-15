@@ -69,8 +69,13 @@ export default function newUserForm() {
             }
         }
         // console.log(localStorage.getItem("jwt"));
-        await handleNewUser(accountInfo);
-        router.push("/login");
+        const status = await handleNewUser(accountInfo);
+        if(status === 200) {
+            router.push("/home");
+        } else if(status === 401) {
+            router.push("/login?message=session-expired");
+        }
+        // router.push("/login");
     }
 
     function SubmitButton() {

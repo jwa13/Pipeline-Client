@@ -13,6 +13,8 @@ export default function login() {
     useEffect(() => {
         if(router.query.message === 'account-exists') {
             setLoginMessage('An account with this email already exists. Please log in');
+        } else if(router.query.message === 'session-expired') {
+            setLoginMessage('Session expired, please re-login');
         }
     }, [router.query.message]);
 
