@@ -81,10 +81,11 @@ const PitchingReport = ({report, accType}) => {
                 <div>
                     <div className="grid grid-cols-1">
                         <h2 className="text-gray-700 text-2xl col-span-1 text-center"><span className="font-bold">Pitching</span> Report for <span className="font-bold">{report.athleteName}</span> {accType === 'athlete' && (<>by Coach <span className="font-bold">{report.coachName}</span></>)} on <span className="font-bold">{formatDate(report.report.dateCreated)}</span></h2>
+                        <div className="bg-gray-500 rounded-full h-0.5"></div>
                         <div className="grid grid-cols-3 gap-x-2">
                             {report.report.ratings && (
                                 <>
-                                    <h3 className="col-span-3 text-xl text-gray-700 underline pl-1">Movement Screen</h3>
+                                    <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Movement Screen</h3>
                                     <h4 className="text-center text-green-600 font-bold">Strength</h4>
                                     <h4 className="text-center text-yellow-600 font-bold">Developing</h4>
                                     <h4 className="text-center text-red-600 font-bold">Weakness</h4>
@@ -93,20 +94,25 @@ const PitchingReport = ({report, accType}) => {
                                     <p className="text-center text-gray-700">{getScreenRatings(report, "needs improvement")}</p>
                                 </>
                             )}
+                            <div className="col-span-3 bg-gray-500 rounded-full h-0.5 mt-2"></div>
                             {report.report.mechRatings && (
                                 <>
-                                    <h3 className="col-span-3 text-xl text-gray-700 underline pl-1">Mechanical Evaluation</h3>
+                                    <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Mechanical Evaluation</h3>
                                     <h4 className="text-center text-green-600 font-bold">Strength</h4>
                                     <h4 className="text-center text-yellow-600 font-bold">Developing</h4>
                                     <h4 className="text-center text-red-600 font-bold">Weakness</h4>
                                     <p className="text-center text-gray-700">{getMechanicsRatings(report, "good")}</p>
                                     <p className="text-center text-gray-700">{getMechanicsRatings(report, "average")}</p>
                                     <p className="text-center text-gray-700">{getMechanicsRatings(report, "needs improvement")}</p>
+                                    <div className="col-span-3 pt-1">
+                                        <p className="text-gray-700 pl-2 pb-1 font-semibold">Notes: {report.report.mechComments}</p>
+                                    </div>
                                 </>
                             )}
+                            <div className="col-span-3 bg-gray-500 rounded-full h-0.5 mt-1"></div>
                             {report.report.pitchMetrics && (
                                 <>
-                                    <h3 className="col-span-3 text-xl text-gray-700 underline pl-1">Pitch Metrics</h3>
+                                    <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Pitch Metrics</h3>
                                     <DisplayMetrics pitchMetrics={report.report.pitchMetrics} />
                                 </>
                             )}
