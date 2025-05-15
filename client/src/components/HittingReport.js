@@ -106,6 +106,7 @@ const HittingReport = ({ report, accType }) => {
                             <p className="text-center text-gray-700">{getGoodLoad(report)}</p>
                             <p className="text-center text-gray-700">{getAvgLoad(report)}</p>
                             <p className="text-center text-gray-700">{getImprovementLoad(report)}</p>
+                            <div className="col-span-3 bg-gray-500 rounded-full h-0.5 mt-2"></div>
                             <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Swing</h3>
                             <div className="col-span-3 grid grid-cols-2 gap-x-2">
                                 <h4 className="text-center text-green-600 font-bold">Good</h4>
@@ -113,6 +114,7 @@ const HittingReport = ({ report, accType }) => {
                                 <p className="text-center text-gray-700">{getGoodSwing(report)}</p>
                                 <p className="text-center text-gray-700">{getBadSwing(report)}</p>
                             </div>
+                            <div className="col-span-3 bg-gray-500 rounded-full h-0.5 mt-2"></div>
                             <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Metrics</h3>
                             <div className="col-span-3 grid grid-cols-2 gap-x-2">
                                 <h4 className="text-center text-gray-700 font-bold">Tee</h4>
