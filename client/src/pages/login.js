@@ -9,12 +9,16 @@ export default function login() {
     const router = useRouter();
     const [badCred, setBadCred] = useState(false);
     const [loginMessage, setLoginMessage] = useState('');
+    const [goodData, setGoodData] = useState(false);
 
     useEffect(() => {
         if(router.query.message === 'account-exists') {
             setLoginMessage('An account with this email already exists. Please log in');
         } else if(router.query.message === 'session-expired') {
             setLoginMessage('Session expired, please re-login');
+        } else if(router.query.message === 'account-data-success') {
+            setLoginMessage('Account data updated successfully, please re-login to access your account');
+            setGoodData(true);
         }
     }, [router.query.message]);
 
@@ -45,6 +49,14 @@ export default function login() {
                         <div className='flex justify-between items-center'>
                             <p className='text-sm'>{loginMessage}</p>
                             <button onClick={() => setLoginMessage('')} className='text-red-700 font-bold text-lg ml-4'>x</button>
+                        </div>
+                    </div>
+                )}
+                {loginMessage && goodData && (
+                    <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md shadow-md w-[350px] absolute top-1">
+                        <div className='flex justify-between items-center'>
+                            <p className='text-sm'>{loginMessage}</p>
+                            <button onClick={() => setLoginMessage('')} className='text-green-700 font-bold text-lg ml-4'>x</button>
                         </div>
                     </div>
                 )}

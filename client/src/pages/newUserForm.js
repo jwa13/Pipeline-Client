@@ -71,7 +71,7 @@ export default function newUserForm() {
         // console.log(localStorage.getItem("jwt"));
         const status = await handleNewUser(accountInfo);
         if(status === 200) {
-            router.push("/home");
+            router.push("/login?message=account-data-success");
         } else if(status === 401) {
             router.push("/login?message=session-expired");
         }

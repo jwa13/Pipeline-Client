@@ -43,6 +43,7 @@ export default function home() {
                     return;
                 } else if(status === 303) {
                     router.push("/newUserForm");
+                    return;
                 } else if (status === 200) {
                     const data = await response.json();
                     // console.log(data);
