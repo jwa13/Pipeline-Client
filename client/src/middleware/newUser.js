@@ -7,6 +7,7 @@ const handleNewUser = async (accInfo) => {
             body: JSON.stringify(accInfo)
         });
         const status = await response.status;
+        return status;
     } catch (error) {
         console.error(error);
     }
