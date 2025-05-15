@@ -46,18 +46,20 @@ const PitchingReport = ({report, accType}) => {
             <>
                 {pitches.map(([pitchType, metrics]) => (
                     <>
-                        <h4 className="col-span-3 text-center text-md text-gray-700">{pitchType}</h4>
-                        <div className="col-span-3 grid grid-cols-2">
-                            <p className="text-gray-700 text-center">Max Velo: {metrics.MaxVelo}</p>
-                            <p className="text-gray-700 text-center">Avg Velo: {metrics.AverageVelo}</p>
-                            <p className="text-gray-700 text-center">Max RPM: {metrics.MaxRPM}</p>
-                            <p className="text-gray-700 text-center">Average RPM: {metrics.AverageRPM}</p>
-                            <p className="text-gray-700 text-center">Average Spin Efficiency: {metrics.SpinEfficencyAvg}</p>
-                            <p className="text-gray-700 text-center">Spin Axis: {metrics.SpinAxis}</p>
-                            <p className="text-gray-700 text-center">Average Horizontal Break: {metrics.HorizontalBreak}</p>
-                            <p className="text-gray-700 text-center">Average Vertical Break: {metrics.VerticalBreak}</p>
-                            <p className="text-gray-700 text-center">Average Release Height: {metrics.AverageReleaseHeight}</p>
-                            <p className="text-gray-700 text-center">Average Release Side: {metrics.AverageReleaseSide}</p>
+                        <div>
+                            <h4 className="text-center text-md text-gray-700">{pitchType}</h4>
+                            <div className="grid grid-cols-2 gap-y-1">
+                                <p className="text-gray-700 text-center text-xs md:text-md">Max Velo: {metrics.MaxVelo}mph</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Avg Velo: {metrics.AverageVelo}mph</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Max RPM: {metrics.MaxRPM}</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Average RPM: {metrics.AverageRPM}</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Average Spin Efficiency: {metrics.SpinEfficencyAvg}%</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Spin Axis: {metrics.SpinAxis}</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Avg Horizontal Break: {metrics.HorizontalBreak}in</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Avg Vertical Break: {metrics.VerticalBreak}in</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Avg Release Height: {metrics.AverageReleaseHeight}</p>
+                                <p className="text-gray-700 text-center text-xs md:text-md">Avg Release Side: {metrics.AverageReleaseSide}</p>
+                            </div>
                         </div>
                     </>
                 ))}
@@ -86,12 +88,23 @@ const PitchingReport = ({report, accType}) => {
                             {report.report.ratings && (
                                 <>
                                     <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Movement Screen</h3>
-                                    <h4 className="text-center text-green-600 font-bold">Strength</h4>
-                                    <h4 className="text-center text-yellow-600 font-bold">Developing</h4>
-                                    <h4 className="text-center text-red-600 font-bold">Weakness</h4>
-                                    <p className="text-center text-gray-700">{getScreenRatings(report, "good")}</p>
-                                    <p className="text-center text-gray-700">{getScreenRatings(report, "average")}</p>
-                                    <p className="text-center text-gray-700">{getScreenRatings(report, "needs improvement")}</p>
+                                    <div className="col-span-3 grid grid-cols-2 gap-x-1">
+                                        <div>
+                                            <h4 className="text-center text-green-600 font-bold">Strength</h4>
+                                            <p className="text-center text-gray-700">{getScreenRatings(report, "good")}</p>
+                                        </div>
+                                        <div>
+                                            <h4 className="text-center text-yellow-600 font-bold">Developing</h4>
+                                            <p className="text-center text-gray-700">{getScreenRatings(report, "average")}</p>
+                                        </div>
+                                    </div>
+                                    <div className="col-span-3">
+                                        <h4 className="text-center text-red-600 font-bold">Weakness</h4>
+                                        <p className="text-center text-gray-700">{getScreenRatings(report, "needs improvement")}</p>
+                                        {accType === 'athlete' && (
+                                            <p className="text-center text-gray-500 text-sm">Tip - This is the area with the most potential for improvement!</p>
+                                        )}
+                                    </div>
                                 </>
                             )}
                             <div className="col-span-3 bg-gray-500 rounded-full h-0.5 mt-2"></div>
@@ -113,7 +126,9 @@ const PitchingReport = ({report, accType}) => {
                             {report.report.pitchMetrics && (
                                 <>
                                     <h3 className="col-span-3 text-2xl text-gray-700 pl-1 flex items-center justify-center pt-2 font-bebas-neue">Pitch Metrics</h3>
-                                    <DisplayMetrics pitchMetrics={report.report.pitchMetrics} />
+                                    <div className="col-span-3 grid grid-cols-2">
+                                        <DisplayMetrics pitchMetrics={report.report.pitchMetrics} />
+                                    </div>
                                 </>
                             )}
                         </div>
