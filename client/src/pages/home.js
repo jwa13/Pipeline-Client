@@ -41,12 +41,14 @@ export default function home() {
                 if(status === 401) {
                     router.push("/login");
                     return;
-                }
-
-                const data = await response.json();
-                // console.log(data);
-                setProfileData(data);
-                setLoading(false);
+                } else if(status === 303) {
+                    router.push("/newUserForm");
+                } else if (status === 200) {
+                    const data = await response.json();
+                    // console.log(data);
+                    setProfileData(data);
+                    setLoading(false);
+                }    
             } catch (error) {
                 console.error(error);
             }
