@@ -87,7 +87,7 @@ export default function home() {
                             ) : (
                                 <>
                                     {profileData?.data?.recentReport ? (
-                                        <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
+                                        <div className="bg-gray-100 flex flex-col flex-1 md:ml-6 md:pl-2 py-2 shadow-md">
                                             {profileData.data.recentReport.report.reportType === 'hitting' && (
                                                 <HittingReport report={profileData.data.recentReport} accType={accType} />
                                             )}
@@ -120,7 +120,7 @@ export default function home() {
                             ) : (
                                 <>
                                     {profileData?.responseData?.recentReport ? (
-                                        <div className="flex flex-col flex-1 md:ml-6 md:pl-2 pt-1 shadow-md">
+                                        <div className="bg-gray-100 flex flex-col flex-1 md:ml-6 md:pl-2 py-2 shadow-md">
                                             {profileData.responseData.recentReport.report.reportType === 'hitting' && (
                                                 <HittingReport report={profileData.responseData.recentReport} accType={accType} />
                                             )}
