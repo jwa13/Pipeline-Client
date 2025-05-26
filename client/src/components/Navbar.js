@@ -56,12 +56,12 @@ const Navbar = () => {
         return useMemo(() => (
             <>
                 {accType === 'athlete' && (
-                    <Link className="block hover:bg-gray-700 p-2 rounded" href="/goals"><TrophyIcon className="h-6 w-6"/></Link>
+                    <Link className="block hover:bg-gray-700 p-2 rounded" href="/goals"><TrophyIcon className="h-6 w-6 text-white"/></Link>
                 )}
                 {accType === 'coach' && (
                     <>
-                        <Link href="/athletes" className="block hover:bg-gray-700 p-2 rounded"><UserGroupIcon className="h-6 w-6"/></Link>
-                        <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><DocumentTextIcon className="h-6 w-6"/></Link>
+                        <Link href="/athletes" className="block hover:bg-gray-700 p-2 rounded"><UserGroupIcon className="h-6 w-6 text-white"/></Link>
+                        <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><DocumentTextIcon className="h-6 w-6 text-white"/></Link>
                     </>
                 )}
             </>
@@ -83,12 +83,12 @@ const Navbar = () => {
             </aside>
 
             <nav className="fixed bottom-0 left-0 w-full bg-gray-700 p-4 z-50 flex justify-around md:hidden">
-                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><HomeIcon className="h-6 w-6" /></Link>
-                <Link href="/profile" className="block hover:bg-gray-700 p-2 rounded"><UserIcon className="h-6 w-6" /></Link>
+                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><HomeIcon className="h-6 w-6 text-white" /></Link>
+                <Link href="/profile" className="block hover:bg-gray-700 p-2 rounded"><UserIcon className="h-6 w-6 text-white" /></Link>
                 <IconViews />
-                <Link href="/reports" className="block hover:bg-gray-700 p-2 rounded"><FolderIcon className="h-6 w-6"/></Link>
-                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><ChartBarSquareIcon className="h-6 w-6" /></Link>
-                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><CalendarDaysIcon className="h-6 w-6"/></Link>
+                <Link href="/reports" className="block hover:bg-gray-700 p-2 rounded"><FolderIcon className="h-6 w-6 text-white"/></Link>
+                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><ChartBarSquareIcon className="h-6 w-6 text-white" /></Link>
+                <Link href="/home" className="block hover:bg-gray-700 p-2 rounded"><CalendarDaysIcon className="h-6 w-6 text-white"/></Link>
             </nav>
         </>
     );
