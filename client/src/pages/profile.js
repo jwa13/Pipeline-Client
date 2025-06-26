@@ -67,30 +67,66 @@ export default function profile() {
         return feet + "' " + inches + "''";
     }
 
-    const populateProfile = (profileData) => {
-        if(profileData.accType == 'coach') {
-            return (
-                <>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Email - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.email}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.phone}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Specialties - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.specialty.map(item => item.label).join(', ')}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Joined - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{formatDate(profileData.createdAt)}</span></h3>
-                </>
-            )
-        } else if(profileData.accType == 'athlete') {
-            return (
-                <>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Age - <span className="text-black pl-1 text-2xl font-semibold" style={{ fontFamily: 'Arial' }}>{getAge(profileData.DOB)}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Height - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{getHeight(profileData.height)}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Weight - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.weight} lbs</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Positions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.positions.map(item => item.label).join(', ')}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Throwing Hand - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.throwing.value}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Bats - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.hitting.value}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Email - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.email}</span></h3>
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.phone}</span></h3>
-                </>
-            )
-        }
+    // const populateProfile = (profileData) => {
+    //     if(profileData.accType == 'coach') {
+    //         return (
+    //             <>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Email - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.email}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.phone}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Specialties - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.specialty.map(item => item.label).join(', ')}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Joined - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{formatDate(profileData.createdAt)}</span></h3>
+    //             </>
+    //         )
+    //     } else if(profileData.accType == 'athlete') {
+    //         return (
+    //             <>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Age - <span className="text-black pl-1 text-2xl font-semibold" style={{ fontFamily: 'Arial' }}>{getAge(profileData.DOB)}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Height - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{getHeight(profileData.height)}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2 col-span-full">Weight - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.weight} lbs</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Positions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.positions.map(item => item.label).join(', ')}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Throwing Hand - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.throwing.value}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Bats - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.hitting.value}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Email - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.email}</span></h3>
+    //                 <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.phone}</span></h3>
+    //             </>
+    //         )
+    //     }
+    // }
+
+    const populateBox1 = (profileData) => {
+        return (
+            <>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Age - <span className="text-black pl-1 text-2xl font-semibold" style={{ fontFamily: 'Arial' }}>{getAge(profileData.DOB)}</span></h3>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Height - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{getHeight(profileData.height)}</span></h3>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2 col-span-full">Weight - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.weight} lbs</span></h3> 
+            </>
+        )
+    }
+
+    const populateBox2 = (profileData) => {
+        return (
+            <>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Throws - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.throwing.value === 'Right' ? 'R' : profileData.throwing.value === 'Left' ? 'L' : ''}</span></h3>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Bats - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.hitting.value === 'Right' ? 'R' : profileData.hitting.value === 'Left' ? 'L' : ''}</span></h3>
+            </>
+        )
+    }
+
+    const populateBox3 = (profileData) => {
+        return (
+            <>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Positions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.positions.map(item => item.label).join(', ')}</span></h3>
+            </>
+        )
+    }
+
+    const populateBox4 = (profileData) => {
+        return (
+            <>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Email - <span className="text-black pl-1 text-[clamp(1rem,4vw,6rem)] md:text-[clamp(1rem,2.5vw,4rem)] lg:text-[clamp(1rem,2vw,4rem)] font-semibold" style={{fontFamily: 'Arial'}}>{profileData.email}</span></h3>
+                <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.phone}</span></h3>
+            </>
+        )
     }
 
 
@@ -100,32 +136,112 @@ export default function profile() {
             <div className="flex flex-col flex-1 pb-16 md:pb-0 md:ml-64 min-h-screen">
                 <TopBar pageName={"Profile"} onLogout={handleLogout}/>
                 <div className="flex-1 p-4 bg-white">
-                    <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:md:pl-6 md:pt-2 tracking-wider">Account Information</h2>
-                    {profileData && profileData.guardianFirstName && (<h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-6 pt-2 underline">Athlete</h3>)}
-                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
-                    {profileData && populateProfile(profileData)}
-                    {profileData && profileData.guardianFirstName && (
+                    {/* <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:md:pl-2 md:pt-2 tracking-wider">Account Information</h2> */}
+                    {profileData && profileData.accType === 'athlete' && (
                         <>
-                            <h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-6 pt-4 underline">Guardian</h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.guardianPhone}</span></h3>
+                            <div className="grid grid-cols-[65%_35%] w-full gap-1">
+                                <div className="bg-gray-200 rounded-sm text-black font-semibold pl-2 md:pl-4 py-1 col-span-full overflow-hidden whitespace-nowrap text-ellipsis">
+                                    <span className="block text-[clamp(1rem,8vw,4rem)] leading-tight">
+                                        {profileData?.firstName} {profileData?.lastName}
+                                    </span>
+                                </div>
+                                <div className="bg-gray-200 rounded-sm text-black pl-2 py-1">
+                                    <div className="grid grid-cols-[40%_60%]">
+                                        {profileData && populateBox1(profileData)}
+                                    </div>
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1">
+                                    {profileData && populateBox2(profileData)}
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1 col-span-full">
+                                    {profileData && populateBox3(profileData)}
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1 col-span-full">
+                                    {profileData && populateBox4(profileData)}
+                                </div>
+                            </div>
+                            {profileData && profileData.guardianFirstName && (
+                                <>
+                                    <h3 className="text-gray-500 font-bebas-neue text-2xl pt-4 underline">Guardian</h3>
+                                    <div className="grid grid-cols-1 w-full bg-gray-200 rounded-sm pl-2 py-1">
+                                        <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{ fontFamily: 'Arial' }}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
+                                        <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{ fontFamily: 'Arial' }}>{profileData.guardianPhone}</span></h3>
+                                    </div>
+                                </>
+                            )}
+                            {profileData && profileData.hasHealth && (
+                                <>
+                                    <h3 className="text-gray-500 font-bebas-neue text-2xl pt-4 underline">Health Information</h3>
+                                    <div className="grid grid-cols-[65%_35%] w-full gap-1">
+                                        <div className="col-span-full bg-gray-200 rounded-sm pl-2 py-1">
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Contact - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.name}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.phone}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Relationship - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.relation}</span></h3>
+                                        </div>
+                                        <div className="bg-gray-200 rounded-sm pl-2 py-1">
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Current Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.currentConditions}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Past Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.pastConditions}</span></h3>
+                                        </div>
+                                        <div className="bg-gray-200 rounded-sm pl-2 py-1">
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Surgery - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.surgery}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Injury - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.injury}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Heart - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.heart}</span></h3>
+                                        </div>
+                                        <div className="col-span-full bg-gray-200 rounded-sm pl-2 py-1">
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Past Restriction - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.restricted}</span></h3>
+                                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Shortness of Breath - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.breath}</span></h3>
+                                        </div>
+                                    </div>
+                                </>
+                            )}
                         </>
                     )}
-                    {profileData && profileData.hasHealth &&  (
+                    {profileData && profileData.accType === 'coach' && (
                         <>
-                            <h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-6 pt-4 underline">Health Information</h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Emergency Contact Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.name}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Emergency Contact Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.phone}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Emergency Contact Relationship - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.relation}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Current Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.currentConditions}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Past Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.pastConditions}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Surgery - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.surgery}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Injury - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.injury}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Heart - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.heart}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Past Restriction - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.restricted}</span></h3>
-                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-6 pt-2">Shortness of Breath - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.breath}</span></h3>
+                            <div className="grid grid-cols-[60%_40%] w-full gap-1">
+                                <div className="bg-gray-200 rounded-sm text-black font-semibold pl-2 md:pl-4 py-1 col-span-full overflow-hidden whitespace-nowrap text-ellipsis">
+                                    <span className="block text-[clamp(1rem,8vw,4rem)] leading-tight">
+                                        {profileData?.firstName} {profileData?.lastName}
+                                    </span>
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1 col-span-full">
+                                    {profileData && populateBox4(profileData)}
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1">
+                                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2">Specialties - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.specialty.map(item => item.label).join(', ')}</span></h3>
+                                </div>
+                                <div className="bg-gray-200 rounded-sm pl-2 py-1">
+                                    <h3 className="text-gray-500 font-bebas-neue text-md md:text-xl md:pl-2 pt-2">Joined - <span className="text-black pl-1 text-md md:text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{formatDate(profileData.createdAt)}</span></h3>
+                                </div>
+                            </div>
                         </>
                     )}
+                    
+                    {/* {profileData && profileData.guardianFirstName && (<h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-2 pt-2 underline">Athlete</h3>)}
+                    <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
+                    {profileData && populateProfile(profileData)} */}
+                    {/* {profileData && profileData.guardianFirstName && (
+                        <>
+                            <h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-2 pt-4 underline">Guardian</h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData && profileData.firstName} {profileData && profileData.lastName}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.guardianPhone}</span></h3>
+                        </>
+                    )} */}
+                    {/* {profileData && profileData.hasHealth &&  (
+                        <>
+                            <h3 className="text-gray-500 font-bebas-neue text-2xl md:pl-2 pt-4 underline">Health Information</h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Emergency Contact Name - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.name}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Emergency Contact Phone - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.phone}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Emergency Contact Relationship - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.emContact.relation}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Current Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.currentConditions}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Past Conditions - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.pastConditions}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Surgery - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.surgery}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Injury - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.injury}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Heart - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.heart}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Past Restriction - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.restricted}</span></h3>
+                            <h3 className="text-gray-500 font-bebas-neue text-xl md:pl-2 pt-2">Shortness of Breath - <span className="text-black pl-1 text-2xl font-semibold" style={{fontFamily: 'Arial'}}>{profileData.healthInfo.breath}</span></h3>
+                        </>
+                    )} */}
                     {profileData && (profileData.accType === 'athlete') && (profileData.hasGoals === false) && (
                         <>
                             <div className="bg-[hsl(43.3,46,64)] border-4 border-gray-500 text-green-700 mt-3 md:px-10 md:py-3 md:m-4 md:mx-10 md:my-5 rounded relative" role="alert">
