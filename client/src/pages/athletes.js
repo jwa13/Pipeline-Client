@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { jwtDecode } from "jwt-decode";
 import Select from "react-select";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
@@ -11,26 +12,58 @@ export default function athletes() {
     const [selectedAthlete, setSelectedAthlete] = useState(null);
     const [athleteInfo, setAthleteInfo] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [accInfo, setAccInfo] = useState(null);
+    const [uid, setUid] = useState(null);
+    const [assign, setAssign] = useState(false);
+    const [coaches, setCoaches] = useState([]);
+    const [selectedCoach, setSelectedCoach] = useState(null);
+    const [assignButton, setAssignButton] = useState(true);
+    const [alreadyAssigned, setAlreadyAssigned] = useState(false);
+    const [assignedSuccess, setAssignedSuccess] = useState(false);
 
     useEffect(() => {
-        const GetAthletes = async () => {
+        let currentUid = null;
+        if (typeof window != 'undefined') {
+            const token = localStorage.getItem('jwt');
+            const decodedToken = jwtDecode(token);
+            setAccInfo(decodedToken.accType);
+            setUid(decodedToken.uid);
+            currentUid = decodedToken.uid;
+        }
+        const GetAthletes = async (uid) => {
             try {
                 const token = localStorage.getItem('jwt');
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
-                    method: "GET",
-                    headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
-                });
-                const status = await response.status;
-                if(status === 401) {
-                    router.push("/login");
+                if (uid === 'VlATcDItbRY1Nek0kASJ4sGAvuK2' || uid === 'oAZqMSfddcU5Y3Uu6XB3I5EFFkc2') {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/athletes`, {
+                        method: "GET",
+                        headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" },
+                    });
+                    const status = await response.status;
+                    if (status === 401) {
+                        router.push("/login");
+                    }
+                    const data = await response.json();
+                    setAthletes(data.athletes);
+                    setAccInfo('admin');
+                } else {
+                    const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/myAthletes`, {
+                        method: "GET",
+                        headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+                    });
+                    const status = await response.status;
+                    if (status === 401) {
+                        router.push("/login");
+                    }
+                    const data = await response.json();
+                    setAthletes(data.myAthletes);
                 }
-                const data = await response.json();
-                setAthletes(data.athletes);
             } catch (error) {
                 console.error(error);
             }
         }
-        GetAthletes();
+        if(currentUid) {
+            GetAthletes(currentUid);
+        }
     }, []);
 
     const handleLogout = () => {
@@ -41,6 +74,8 @@ export default function athletes() {
     }
 
     const handleSelectedAthlete = async (athlete) => {
+        setAssignedSuccess(false);
+        setAssignButton(true);
         setSelectedAthlete(athlete);
         // console.log(athlete.value);
         setLoading(true);
@@ -65,16 +100,90 @@ export default function athletes() {
         }
     }
 
+    const handleSelectedCoach = (coach) => {
+        setSelectedCoach(coach);
+        setAlreadyAssigned(false);
+    }
+
+    const handleAssignment = async () => {
+        setAssign(true);
+        setAssignButton(false);
+        try {
+            const token = localStorage.getItem('jwt');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/coaches`, {
+                method: "GET",
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+            });
+            const status = await response.status;
+            if(status === 401) {
+                router.push("/login");
+            }
+            const data = await response.json();
+            setCoaches(data.coaches);
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
+    const handleSubmit = async () => {
+        try {
+            const token = localStorage.getItem('jwt');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/assignAthlete/${selectedAthlete.value}/${selectedCoach.value}`, {
+                method: "POST",
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+            });
+            const message = await response.json();
+            const status = await response.status;
+            if(status === 200) {
+                if(message.message === 'Athlete already assigned to that coach') {
+                    setAlreadyAssigned(true);
+                } else {
+                    setAssign(false);
+                    setAssignedSuccess(true);
+                }
+            } else if(status === 401) {
+                router.push("/login");
+            } else {
+
+            }
+        } catch (error) {   
+            console.error(error);
+        }
+    }
+
     return (
         <div className="flex min-h-screen">
             <Navbar />
             <div className="flex flex-col pb-16 md:pb-0 flex-1 md:ml-64">
                 <TopBar pageName={"Athletes"} onLogout={handleLogout} />
                 <div className="flex-1 p-4 bg-white md:pl-6">
+                    {console.log(athletes)}
                     <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:pt-2 tracking-wider">Select Athlete</h2>
                     {athletes && (<><Select options={athletes} value={selectedAthlete} onChange={handleSelectedAthlete} placeholder="View _____'s Profile: " className="md:mr-2 pt-1" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} /></>)}
                     {athleteInfo && (
                         <><ProfileView profileData={athleteInfo}/></>
+                    )}
+                    {accInfo && accInfo === 'admin' && selectedAthlete && !loading && assignButton && (
+                        <>
+                            <button onClick={handleAssignment} className="mt-2 justify-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Assign Athlete</button>
+                        </>
+                    )}
+                    {assignedSuccess && (
+                        <>
+                            <h4 className="text-green-400 text-lg font-semibold underline">Player assigned successfully!</h4>
+                        </>
+                    )}
+                    {assign && coaches && (
+                        <>
+                            <h2 className="text-gray-600 font-bebas-neue text-4xl underline md:pt-2 tracking-wider">Select Coach</h2>
+                            <Select options={coaches} value={selectedCoach} onChange={handleSelectedCoach} placeholder="Assign to: _____ " className="md:mr-2 pt-1" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
+                                {alreadyAssigned && (
+                                    <>
+                                        <h4 className="text-red-400 text-md underline">That player has already been assigned to that coach</h4>
+                                    </>
+                                )}
+                            <button onClick={handleSubmit} className="mt-2 justify-center mb-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Assign Athlete</button>
+                        </>
                     )}
                     {loading && (
                         <>
