@@ -181,7 +181,13 @@ export default function reports() {
                                 {recentReport && recentReport.report.reportType === 'skills' && (<SkillsReport report={recentReport} accType={accInfo} />)}
                                 {recentReport && recentReport.report.reportType === 'strength' && (<StrengthReport report={recentReport} accType={accInfo} />)}
                             </div>
-                            {!reportVisible && (<button onClick={handleCreateButton} className="text-gray-500 pl-2 md:pl-8 pt-1 hover:underline">Create Report</button>)}
+                            {!reportVisible && (
+                                <>
+                                    <div className="grid grid-cols-1">
+                                        <button onClick={handleCreateButton} className="justify-self-center my-2 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[160px] hover:underline">Create New Report</button>
+                                    </div>
+                                </>
+                            )}
                             {reportVisible && (
                                 <>
                                     <div className="flex flex-col flex-1 md:ml-6 pl-2 pt-2 pr-2 pb-2 shadow-md">
