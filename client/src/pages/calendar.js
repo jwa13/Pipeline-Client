@@ -3,8 +3,11 @@ import { EventCalendar } from "../components/calendar";
 import Navbar from "../components/Navbar";
 import TopBar from "../components/TopBar";
 import { CalendarProvider } from "@/components/calendar/calendar-context";
+import { useRouter } from "next/router";
 
 export default function calendar() {
+    const router = useRouter();
+
     const handleLogout = () => {
         if(typeof window != 'undefined') {
             localStorage.removeItem('jwt');
