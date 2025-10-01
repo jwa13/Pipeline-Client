@@ -4,7 +4,6 @@ import TopBar from "../components/TopBar";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Select from "react-select";
-import { da } from "date-fns/locale";
 
 export default function programs() {
     const router = useRouter();
@@ -202,19 +201,10 @@ export default function programs() {
 
                                 {/* 4) Cancel vs Save */}
                                 <div className="mt-6 flex justify-end space-x-3">
-                                    <button
-                                        onClick={() => {
-                                            RemoveExercise(modalWeek, modalDay, modalExIdx);
-                                            setModalOpen(false);
-                                        }}
-                                        className="px-4 py-2 border rounded"
-                                    >
+                                    <button onClick={() => { RemoveExercise(modalWeek, modalDay, modalExIdx); setModalOpen(false);}} className="px-4 py-2 border rounded">
                                         Cancel
                                     </button>
-                                    <button
-                                        onClick={() => setModalOpen(false)}
-                                        className="px-4 py-2 bg-blue-600 text-white rounded"
-                                    >
+                                    <button onClick={() => setModalOpen(false)} className="px-4 py-2 bg-blue-600 text-white rounded">
                                         Save
                                     </button>
                                 </div>
