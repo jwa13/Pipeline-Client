@@ -7,7 +7,7 @@ import Select from "react-select";
 
 export default function programs() {
     const router = useRouter();
-    const [createVisible, setCreateVisible] = useState(true);
+    const [createVisible, setCreateVisible] = useState(false);
     const [templateName, setTemplateName] = useState("");
     const [numberOfWeeks, setNumberOfWeeks] = useState(null);
     const [templateType, setTemplateType] = useState(null);
@@ -17,10 +17,20 @@ export default function programs() {
     const [isModalOpen, setModalOpen] = useState(false);
     const [modalExIdx, setModalExIdx] = useState(null);
 
+    const [newExercise, setNewExercise] = useState(false);
+    const [exerciseType, setExerciseType] = useState("");
+    const [exerciseName, setExerciseName] = useState("");
+    const [distance, setDistance] = useState(null);
+    const [throws, setThrows] = useState(null);
+    const [videoLink, setVideoLink] = useState("");
+    const [exerciseDesc, setExerciseDesc] = useState("");
+
     const options = [
         {value: "throwing", label: "Throwing"},
         {value: "hitting", label: "Hitting"},
-        {value: "strength", label: "Strength"}
+        {value: "strength", label: "Strength"},
+        {value: "warmup", label: "Warm-Up"},
+        {value: "drill", label: "Drill"}
     ];
     const daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
@@ -74,6 +84,10 @@ export default function programs() {
         setCreateVisible(true);
     }
 
+    const handleCreateExercise = () => {
+        setNewExercise(true);
+    }
+
     function OpenModal(weekIdx, day) {
         setWeeks(ws => {
             const copy = [...ws];
@@ -105,6 +119,53 @@ export default function programs() {
                     {!createVisible && (
                         <button onClick={handleCreateTemplate} className="my-2 md:mx-6 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Create Template</button>
                     )}
+                    {!newExercise && (
+                        <button onClick={handleCreateExercise} className="my-2 md:mx-6 bg-white border-[2px] border-gray-700 shadow-md p-1 text-gray-700 w-[150px]">Create Exercise</button>
+                    )}
+                    {newExercise && (
+                        <>
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                                <div className="bg-white rounded-lg p-6 w-11/12 md:w-1/2 lg:w-1/3">
+                                    <h2 className="text-xl font-semibold mb-4">Exercise Builder</h2>
+
+                                    <div className="mb-4">
+                                        <input className="w-full border rounded p-2" type="text" id="exerciseName" placeholder="Exercise Name" autoComplete="off" value={exerciseName} onChange={(e) => setExerciseName(e.target.value)}/>
+                                    </div>
+
+                                    <div className="mb-4">
+                                        <Select options={options} value={exerciseType} onChange={setExerciseType} placeholder="Exercise Type: " className="mr-2" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
+                                    </div>
+
+                                    {exerciseType.value === 'throwing' && (
+                                        <>
+                                            <div className="w-full grid grid-cols-2 gap-2">
+                                                <input className="w-full border rounded py-1 pl-2" type="number" id="distance" placeholder="Distance (ft)" autoComplete="off" value={distance} onChange={(e) => setDistance(e.target.value)}/>
+                                                <input className="w-full border rounded py-1 pl-2" type="number" id="throws" placeholder="Throws" autoComplete="off" value={throws} onChange={(e) => setThrows(e.target.value)}/>
+                                            </div>
+                                        </>
+                                    )}
+                                    {exerciseType.value === 'strength' && (
+                                        <>
+                                            <div className="w-full grid grid-cols-2 gap-2">
+                                                <textarea value={exerciseDesc} onChange={(e) => setExerciseDesc} className="col-span-2 border rounded py-1 pl-2" placeholder="Exercise Description"/>
+                                                <input className="col-span-2 border rounded py-1 pl-2" type="text" id="video" placeholder="Video Link" autoComplete="off" value={videoLink} onChange={(e) => setVideoLink(e.target.value)}/>
+                                            </div>
+                                        </>
+                                    )}
+
+                                    <div className="mt-6 flex justify-end space-x-3">
+                                        <button onClick={() => setNewExercise(false)} className="px-4 py-2 border rounded">
+                                            Cancel
+                                        </button>
+                                        <button onClick={() => setNewExercise(false)} className="px-4 py-2 bg-blue-600 text-white rounded">
+                                            Save
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </>
+                    )}
+
                     {createVisible && (
                         <>
                             <div className="grid grid-cols-2 md:mx-6 pt-1 gap-2">
@@ -169,16 +230,13 @@ export default function programs() {
                                 {/* 3) Conditionally render based on type */}
                                 {weeks[modalWeek][modalDay][modalExIdx].type === 'strength' && (
                                     <div className="space-y-4">
-                                        <div>
-                                            <label className="block text-sm">Reps / Sets</label>
-                                            <input
-                                                type="text"
-                                                value={weeks[modalWeek][modalDay][modalExIdx].reps}
-                                                onChange={e =>
-                                                    updateExercise(modalWeek, modalDay, modalExIdx, 'reps', e.target.value)
-                                                }
-                                                className="w-full border rounded p-2"
-                                            />
+                                        <div className="">
+                                            <label className="block text-sm">Sets: </label>
+                                            <input type="number" value={weeks[modalWeek][modalDay][modalExIdx].sets} onChange={e => updateExercise(modalWeek, modalDay, modalExIdx, 'reps', e.target.value)} className="border rounded p-2"/>
+                                        </div>
+                                        <div className="">
+                                            <label className="block text-sm">Reps: </label>
+                                            <input type="number" value={weeks[modalWeek][modalDay][modalExIdx].reps} onChange={e => updateExercise(modalWeek, modalDay, modalExIdx, 'reps', e.target.value)} className="border rounded p-2"/>
                                         </div>
                                     </div>
                                 )}
