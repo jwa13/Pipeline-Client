@@ -20,8 +20,6 @@ export default function programs() {
     const [newExercise, setNewExercise] = useState(false);
     const [exerciseType, setExerciseType] = useState("");
     const [exerciseName, setExerciseName] = useState("");
-    const [distance, setDistance] = useState(null);
-    const [throws, setThrows] = useState(null);
     const [videoLink, setVideoLink] = useState("");
     const [exerciseDesc, setExerciseDesc] = useState("");
 
@@ -88,6 +86,40 @@ export default function programs() {
         setNewExercise(true);
     }
 
+    const handleCancelExercise = () => {
+        setExerciseType("");
+        setNewExercise(false);
+    }
+
+    const handleSaveExercise = async (e) => {
+        e.preventDefault();
+
+        const exercise = {};
+        exercise.type = exerciseType.value;
+        exercise.name = exerciseName;
+        exercise.desc = exerciseDesc;
+        exercise.video = videoLink;
+
+        try {
+            const token = localStorage.getItem("jwt");
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/newGoal`, {
+                method: "Post",
+                headers: {"Authorization": `Bearer ${token}`, "Content-Type": "application/json"},
+                body: JSON.stringify(exercise)
+            });
+            const status = await response.status;
+            if(status === 200) {
+                setExerciseType("");
+                setNewExercise(false);
+                setExerciseDesc("");
+                setExerciseName("");
+                setVideoLink("");
+            }
+        } catch (error) {
+            console.error(error);
+        }
+    }
+
     function OpenModal(weekIdx, day) {
         setWeeks(ws => {
             const copy = [...ws];
@@ -135,16 +167,7 @@ export default function programs() {
                                     <div className="mb-4">
                                         <Select options={options} value={exerciseType} onChange={setExerciseType} placeholder="Exercise Type: " className="mr-2" classNamePrefix="react-select" styles={{ control: (base) => ({ ...base, borderRadius: "0px" }), option: (base, { isSelected }) => ({ ...base, color: isSelected ? "#555" : "#000" }) }} />
                                     </div>
-
-                                    {exerciseType.value === 'throwing' && (
-                                        <>
-                                            <div className="w-full grid grid-cols-2 gap-2">
-                                                <input className="w-full border rounded py-1 pl-2" type="number" id="distance" placeholder="Distance (ft)" autoComplete="off" value={distance} onChange={(e) => setDistance(e.target.value)}/>
-                                                <input className="w-full border rounded py-1 pl-2" type="number" id="throws" placeholder="Throws" autoComplete="off" value={throws} onChange={(e) => setThrows(e.target.value)}/>
-                                            </div>
-                                        </>
-                                    )}
-                                    {exerciseType.value === 'strength' && (
+                                    {exerciseType !== "" && (
                                         <>
                                             <div className="w-full grid grid-cols-2 gap-2">
                                                 <textarea value={exerciseDesc} onChange={(e) => setExerciseDesc} className="col-span-2 border rounded py-1 pl-2" placeholder="Exercise Description"/>
@@ -152,9 +175,8 @@ export default function programs() {
                                             </div>
                                         </>
                                     )}
-
                                     <div className="mt-6 flex justify-end space-x-3">
-                                        <button onClick={() => setNewExercise(false)} className="px-4 py-2 border rounded">
+                                        <button onClick={() => handleCancelExercise()} className="px-4 py-2 border rounded">
                                             Cancel
                                         </button>
                                         <button onClick={() => setNewExercise(false)} className="px-4 py-2 bg-blue-600 text-white rounded">
